@@ -10,8 +10,6 @@ import androidx.wear.ambient.AmbientModeSupport;
 public class MainActivity extends FragmentActivity implements
         AmbientModeSupport.AmbientCallbackProvider {
 
-    private TextView mTextView;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -19,11 +17,6 @@ public class MainActivity extends FragmentActivity implements
 
         AmbientModeSupport.attach(this);
 
-
-        mTextView = (TextView) findViewById(R.id.text);
-
-        // Enables Always-on
-        //setAmbientEnabled();
     }
 
     @Override
