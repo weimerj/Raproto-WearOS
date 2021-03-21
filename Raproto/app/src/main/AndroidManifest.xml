@@ -41,6 +41,14 @@
             android:label="@string/disclamer"
             android:name=".Disclamer">
         </activity>
+        <activity
+            android:label="@string/help"
+            android:name=".Help">
+        </activity>
+        <activity
+            android:label="@string/info"
+            android:name=".Info">
+        </activity>
     </application>
 
 </manifest>

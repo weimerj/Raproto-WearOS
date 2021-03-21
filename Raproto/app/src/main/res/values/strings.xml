@@ -21,4 +21,13 @@
     STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
     USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</string>
     <string name="help">Help</string>
+    <string name="help_info">TO START LOGGING:\n<b>step 1:</b>  configure system (if needed)\n <b>
+        step 2:</b> Press on\nTO CONFIGURE:\n*** Requires Wifi ***\nSettings->Configuration->
+        Update\n If successful, "Update Complete" will be displayed below \"Update\"</string>
+    <string name="info_info">Raproto: A rapid prototyping platform for the Internet-of-Medical-Things.\n
+    Developed by: The PRECISE Center, University of Pennsylvania \n
+    Raproto provides data collection, storage, analysis APIs, and feedback mechanisms
+    that can be utilized to prototype various medical devices using inexpensive hardware that is
+    commonly available. \n For more information about future developments, contact:
+    "James Weimer weimerj@seas.upenn.edu</string>
 </resources>
