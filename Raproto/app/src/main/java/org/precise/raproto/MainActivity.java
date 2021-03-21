@@ -5,10 +5,12 @@ import android.os.Bundle;
 import androidx.fragment.app.FragmentActivity;
 import androidx.wear.ambient.AmbientModeSupport;
 
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +30,6 @@ public class MainActivity extends FragmentActivity implements
 
         // Create a list of items for adapter to display.
         mItems = new ArrayList<>();
-        mItems.add(new ListsItem(R.string.app_name));
         mItems.add(new ListsItem(R.string.device_id));
         mItems.add(new ListsItem(R.string.on_off));
         mItems.add(new ListsItem(R.string.sync));
@@ -39,6 +40,15 @@ public class MainActivity extends FragmentActivity implements
         ListViewAdapter adapter = new ListViewAdapter(this, mItems);
         final ListView listView = findViewById(R.id.list_view_lists);
         listView.setAdapter(adapter);
+
+        // Set header of listView to be the title from title_layout.
+        LayoutInflater inflater = LayoutInflater.from(this);
+        View titleLayout = inflater.inflate(R.layout.title_layout, null);
+        TextView titleView = titleLayout.findViewById(R.id.title_text);
+        titleView.setText(R.string.app_name);
+        titleView.setOnClickListener(null); // make title non-clickable.
+
+        listView.addHeaderView(titleView);
 
         // Goes to a new screen when you click on one of the list items.
         // Dependent upon position of click.
