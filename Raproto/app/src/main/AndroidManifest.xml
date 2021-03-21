@@ -37,6 +37,10 @@
             android:label="@string/about"
             android:name=".AboutActivity">
         </activity>
+        <activity
+            android:label="@string/disclamer"
+            android:name=".Disclamer">
+        </activity>
     </application>
 
 </manifest>

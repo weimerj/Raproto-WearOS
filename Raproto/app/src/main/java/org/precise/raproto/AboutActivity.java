@@ -28,7 +28,7 @@ public class AboutActivity extends FragmentActivity
         mItems = new ArrayList<>();
         mItems.add(new ListsItem(R.string.version));
         mItems.add(new ListsItem(R.string.info));
-        mItems.add(new ListsItem(R.string.disclamer));
+        mItems.add(new ListsItem(R.string.disclamer, Disclamer.class));
         mItems.add(new ListsItem(R.string.help));
 
         // Initialize an adapter and set it to ListView listView.
