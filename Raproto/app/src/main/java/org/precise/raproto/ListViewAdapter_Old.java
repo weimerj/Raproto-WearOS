@@ -16,7 +16,6 @@
 package org.precise.raproto;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,11 +28,11 @@ import androidx.annotation.Nullable;
 
 import java.util.List;
 
-public class AboutListViewAdapter<T extends Item> extends ArrayAdapter<T> {
+public class ListViewAdapter_Old<T extends Item> extends ArrayAdapter<T> {
     private final LayoutInflater mInflater;
     private List<T> mItems;
 
-    public AboutListViewAdapter(@NonNull Context context, @NonNull List<T> items) {
+    public ListViewAdapter_Old(@NonNull Context context, @NonNull List<T> items) {
         super(context, R.layout.list_item_layout, items);
         mInflater = LayoutInflater.from(context);
         mItems = items;
@@ -43,32 +42,17 @@ public class AboutListViewAdapter<T extends Item> extends ArrayAdapter<T> {
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         Holder holder;
-        int type = mItems.get(position).getItemType();
         if (convertView == null) {
+            convertView = mInflater.inflate(R.layout.list_item_layout, parent, false);
             holder = new Holder();
-            Log.d("Type", String.valueOf(type));
-            switch(type) {
-                case 0:
-                    convertView = mInflater.inflate(R.layout.list_item_layout_text_only, parent, false);
-                    holder.mTextView = convertView.findViewById(R.id.item_text);
-                    break;
-                case 1:
-                    convertView = mInflater.inflate(R.layout.list_item_layout, parent, false);
-                    holder.mTextView = convertView.findViewById(R.id.item_text);
-                    holder.mImageView = convertView.findViewById(R.id.item_image);
-                    break;
-            }
+            holder.mTextView = convertView.findViewById(R.id.item_text);
+            holder.mImageView = convertView.findViewById(R.id.item_image);
             convertView.setTag(holder); // Cache the holder for future use.
         } else {
             holder = (Holder) convertView.getTag();
         }
         holder.mTextView.setText(mItems.get(position).getItemId());
         return convertView;
-    }
-
-    @Override
-    public boolean isEnabled(int position) {
-        return true;
     }
 
     private static class Holder {
