@@ -36,7 +36,7 @@ public class MainActivity extends FragmentActivity implements
         mItems.add(new ListsItem(R.string.about, AboutActivity.class, 1));
 
         // Initialize an adapter and set it to ListView listView.
-        ListViewAdapter_Old adapter = new ListViewAdapter_Old(this, mItems);
+        ListViewAdapter adapter = new ListViewAdapter(this, mItems);
         final ListView listView = findViewById(R.id.list_view_lists);
         listView.setAdapter(adapter);
 
