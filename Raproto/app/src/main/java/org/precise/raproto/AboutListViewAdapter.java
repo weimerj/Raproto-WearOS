@@ -16,6 +16,7 @@
 package org.precise.raproto;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,11 +43,21 @@ public class AboutListViewAdapter<T extends Item> extends ArrayAdapter<T> {
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         Holder holder;
+        int type = mItems.get(position).getItemType();
         if (convertView == null) {
-            convertView = mInflater.inflate(R.layout.list_item_layout, parent, false);
             holder = new Holder();
-            holder.mTextView = convertView.findViewById(R.id.item_text);
-            holder.mImageView = convertView.findViewById(R.id.item_image);
+            Log.d("Type", String.valueOf(type));
+            switch(type) {
+                case 0:
+                    convertView = mInflater.inflate(R.layout.list_item_layout_text_only, parent, false);
+                    holder.mTextView = convertView.findViewById(R.id.item_text);
+                    break;
+                case 1:
+                    convertView = mInflater.inflate(R.layout.list_item_layout, parent, false);
+                    holder.mTextView = convertView.findViewById(R.id.item_text);
+                    holder.mImageView = convertView.findViewById(R.id.item_image);
+                    break;
+            }
             convertView.setTag(holder); // Cache the holder for future use.
         } else {
             holder = (Holder) convertView.getTag();
@@ -57,9 +68,6 @@ public class AboutListViewAdapter<T extends Item> extends ArrayAdapter<T> {
 
     @Override
     public boolean isEnabled(int position) {
-        if(position == 0) {
-            return false;
-        }
         return true;
     }
 

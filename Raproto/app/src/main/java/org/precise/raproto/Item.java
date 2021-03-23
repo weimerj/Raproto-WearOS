@@ -17,4 +17,5 @@ package org.precise.raproto;
 
 public interface Item {
     int getItemId();
+    int getItemType();
 }

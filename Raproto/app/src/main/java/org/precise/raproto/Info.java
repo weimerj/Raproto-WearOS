@@ -15,8 +15,6 @@
  */
 package org.precise.raproto;
 
-import android.graphics.drawable.Animatable2.AnimationCallback;
-import android.graphics.drawable.AnimatedVectorDrawable;
 import android.os.Bundle;
 
 import androidx.fragment.app.FragmentActivity;

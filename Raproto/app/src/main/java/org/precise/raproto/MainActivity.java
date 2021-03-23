@@ -30,11 +30,11 @@ public class MainActivity extends FragmentActivity implements
 
         // Create a list of items for adapter to display.
         mItems = new ArrayList<>();
-        mItems.add(new ListsItem(R.string.device_id));
-        mItems.add(new ListsItem(R.string.on_off));
-        mItems.add(new ListsItem(R.string.sync));
-        mItems.add(new ListsItem(R.string.settings));
-        mItems.add(new ListsItem(R.string.about, AboutActivity.class));
+        mItems.add(new ListsItem(R.string.device_id, 1));
+        mItems.add(new ListsItem(R.string.on_off, 1));
+        mItems.add(new ListsItem(R.string.sync, 1));
+        mItems.add(new ListsItem(R.string.settings, 1));
+        mItems.add(new ListsItem(R.string.about, AboutActivity.class, 1));
 
         // Initialize an adapter and set it to ListView listView.
         ListViewAdapter adapter = new ListViewAdapter(this, mItems);
