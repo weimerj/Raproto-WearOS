@@ -30,4 +30,8 @@
     that can be utilized to prototype various medical devices using inexpensive hardware that is
     commonly available. \n For more information about future developments, contact:
     "James Weimer weimerj@seas.upenn.edu</string>
+    <string name="configuration">Configuration</string>
+    <string name="MQTT">MQTT</string>
+
+
 </resources>

@@ -57,6 +57,10 @@ public class ListViewAdapter<T extends Item> extends ArrayAdapter<T> {
                     holder.mTextView = convertView.findViewById(R.id.item_text);
                     holder.mImageView = convertView.findViewById(R.id.item_image);
                     break;
+                case 2:
+                    convertView = mInflater.inflate(R.layout.list_item_layout_toggle, parent, false);
+                    holder.mTextView = convertView.findViewById(R.id.item_text);
+                    break;
             }
             convertView.setTag(holder); // Cache the holder for future use.
         } else {

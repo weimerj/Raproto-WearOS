@@ -49,6 +49,10 @@
             android:label="@string/info"
             android:name=".Info">
         </activity>
+        <activity
+            android:label="@string/settings"
+            android:name=".SettingsActivity">
+        </activity>
     </application>
 
 </manifest>
