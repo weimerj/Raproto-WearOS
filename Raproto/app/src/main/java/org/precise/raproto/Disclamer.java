@@ -26,10 +26,6 @@ import androidx.wear.ambient.AmbientModeSupport;
 
 public class Disclamer extends FragmentActivity implements
         AmbientModeSupport.AmbientCallbackProvider {
-    private AnimatedVectorDrawable mAnimatedVectorDrawableSwipe;
-    private AnimatedVectorDrawable mAnimatedVectorDrawableTap;
-    private AnimationCallback mAnimationCallback;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,8 +37,6 @@ public class Disclamer extends FragmentActivity implements
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mAnimatedVectorDrawableSwipe.unregisterAnimationCallback(mAnimationCallback);
-        mAnimatedVectorDrawableTap.unregisterAnimationCallback(mAnimationCallback);
     }
 
     @Override
