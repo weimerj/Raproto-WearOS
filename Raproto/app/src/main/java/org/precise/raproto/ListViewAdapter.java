@@ -66,7 +66,7 @@ public class ListViewAdapter<T extends Item> extends ArrayAdapter<T> {
         } else {
             holder = (Holder) convertView.getTag();
         }
-        holder.mTextView.setText(mItems.get(position).getItemId());
+        holder.mTextView.setText(mItems.get(position).getItemName());
         return convertView;
     }
 

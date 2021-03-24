@@ -20,37 +20,35 @@ import android.content.Context;
 import android.content.Intent;
 
 public class ListsItem implements Item {
-    private final int mItemId;
+    private final String mItemName;
     private final Class mClass;
     private final int mItemType;
 
-    public ListsItem(int itemId, Class<? extends Activity> clazz, int itemType) {
-        mItemId = itemId;
+
+    public ListsItem(String itemName, Class<? extends Activity> clazz, int itemType) {
+        mItemName = itemName;
         mClass = clazz;
         mItemType = itemType;
     }
 
-    public ListsItem(int itemId, int itemType) {
-        mItemId = itemId;
+    public ListsItem(String itemName, int itemType) {
+        mItemName = itemName;
         mClass = null;
         mItemType = itemType;
-
     }
-
-    public int getItemId() {
-        return mItemId;
+    
+    public String getItemName() {
+        return mItemName;
     }
 
     public int getItemType() {
         return mItemType;
     }
 
-
     public void launchActivity(Context context) {
         if (mClass != null) {
             Intent intent = new Intent(context, mClass);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
             context.startActivity(intent);
         }
     }

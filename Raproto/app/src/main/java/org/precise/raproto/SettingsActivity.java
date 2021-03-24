@@ -26,8 +26,8 @@ public class SettingsActivity extends FragmentActivity
 
         // Create a list of items for adapter to display.
         mItems = new ArrayList<>();
-        mItems.add(new ListsItem(R.string.configuration, 0));
-        mItems.add(new ListsItem(R.string.MQTT,0));
+        mItems.add(new ListsItem(getString(R.string.configuration), 0));
+        mItems.add(new ListsItem(getString(R.string.MQTT),0));
 
         // Initialize an adapter and set it to ListView listView.
         ListViewAdapter adapter = new ListViewAdapter(this, mItems);

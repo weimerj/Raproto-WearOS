@@ -1,5 +1,6 @@
 package org.precise.raproto;
 
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,8 @@ import androidx.wear.ambient.AmbientModeSupport;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.precise.raproto.BuildConfig;
+
 
 public class AboutActivity extends FragmentActivity
         implements AmbientModeSupport.AmbientCallbackProvider {
@@ -24,12 +27,15 @@ public class AboutActivity extends FragmentActivity
 
         AmbientModeSupport.attach(this);
 
+        String versionName = BuildConfig.VERSION_NAME;
+
+        Resources res = getResources();
         // Create a list of items for adapter to display.
         mItems = new ArrayList<>();
-        mItems.add(new ListsItem(R.string.version, 0));
-        mItems.add(new ListsItem(R.string.info, Info.class,1));
-        mItems.add(new ListsItem(R.string.disclamer, Disclamer.class, 1));
-        mItems.add(new ListsItem(R.string.help, Help.class, 1));
+        mItems.add(new ListsItem(getString(R.string.version, versionName), 0));
+        mItems.add(new ListsItem(getString(R.string.info), Info.class,1));
+        mItems.add(new ListsItem(getString(R.string.disclamer), Disclamer.class, 1));
+        mItems.add(new ListsItem(getString(R.string.help), Help.class, 1));
 
         // Initialize an adapter and set it to ListView listView.
         ListViewAdapter adapter = new ListViewAdapter(this, mItems);
