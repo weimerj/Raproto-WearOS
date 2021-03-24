@@ -24,7 +24,6 @@ public class ListsItem implements Item {
     private final Class mClass;
     private final int mItemType;
 
-
     public ListsItem(String itemName, Class<? extends Activity> clazz, int itemType) {
         mItemName = itemName;
         mClass = clazz;
@@ -36,7 +35,7 @@ public class ListsItem implements Item {
         mClass = null;
         mItemType = itemType;
     }
-    
+
     public String getItemName() {
         return mItemName;
     }
