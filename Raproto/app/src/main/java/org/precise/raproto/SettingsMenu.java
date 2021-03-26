@@ -13,7 +13,7 @@ import androidx.wear.ambient.AmbientModeSupport;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SettingsActivity extends FragmentActivity
+public class SettingsMenu extends FragmentActivity
         implements AmbientModeSupport.AmbientCallbackProvider {
 
     private List<ListsItem> mItems;
