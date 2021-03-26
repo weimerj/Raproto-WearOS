@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Raproto\n\<font size="12">Device Name</font></string>
     <string name="default_text">TextView</string>
-    <string name="device_id">Device ID</string>
+    <string name="device_id">Device ID:\<font size="10">\n%1$s</font></string>
     <string name="on_off">On/Off</string>
     <string name="sync">Sync Now\n\<font size="10">Last Sync: Never</font></string>
     <string name="settings">Settings</string>

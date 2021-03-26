@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.fragment.app.FragmentActivity;
 import androidx.wear.ambient.AmbientModeSupport;
 
+import android.provider.Settings;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -13,6 +14,9 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
+import android.provider.Settings.Secure;
+
+
 
 public class MainActivity extends FragmentActivity implements
         AmbientModeSupport.AmbientCallbackProvider {
@@ -24,12 +28,14 @@ public class MainActivity extends FragmentActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        String android_id = Settings.Secure.getString(MainActivity.this.getContentResolver(),
+                Settings.Secure.ANDROID_ID);
 
         AmbientModeSupport.attach(this);
 
         // Create a list of items for adapter to display.
         mItems = new ArrayList<>();
-        mItems.add(new ListsItem(getString(R.string.device_id), 0));
+        mItems.add(new ListsItem(getString(R.string.device_id, android_id), 0));
         mItems.add(new ListsItem(getString(R.string.on_off), 2));
         mItems.add(new ListsItem(getString(R.string.sync), 1));
         mItems.add(new ListsItem(getString(R.string.settings), SettingsActivity.class,1));
