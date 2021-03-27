@@ -19,18 +19,18 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 
-public class ListsItem implements Item {
+public class ListsItem {
     private final String mItemName;
     private final Class mClass;
-    private final int mItemType;
+    private final String mItemType;
 
-    public ListsItem(String itemName, Class<? extends Activity> clazz, int itemType) {
+    public ListsItem(String itemName, Class<? extends Activity> clazz, String itemType) {
         mItemName = itemName;
         mClass = clazz;
         mItemType = itemType;
     }
 
-    public ListsItem(String itemName, int itemType) {
+    public ListsItem(String itemName, String itemType) {
         mItemName = itemName;
         mClass = null;
         mItemType = itemType;
@@ -40,7 +40,7 @@ public class ListsItem implements Item {
         return mItemName;
     }
 
-    public int getItemType() {
+    public String getItemType() {
         return mItemType;
     }
 

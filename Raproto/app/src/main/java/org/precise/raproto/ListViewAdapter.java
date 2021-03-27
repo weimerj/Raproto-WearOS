@@ -29,12 +29,12 @@ import androidx.annotation.Nullable;
 
 import java.util.List;
 
-public class ListViewAdapter<T extends Item> extends ArrayAdapter<T> {
+public class ListViewAdapter extends ArrayAdapter<ListsItem> {
     private final LayoutInflater mInflater;
-    private List<T> mItems;
+    private List<ListsItem> mItems;
 
-    public ListViewAdapter(@NonNull Context context, @NonNull List<T> items) {
-        super(context, R.layout.list_item_layout, items);
+    public ListViewAdapter(@NonNull Context context, @NonNull List<ListsItem> items) {
+        super(context, R.layout.list_item_arrow, items);
         mInflater = LayoutInflater.from(context);
         mItems = items;
     }
@@ -43,22 +43,26 @@ public class ListViewAdapter<T extends Item> extends ArrayAdapter<T> {
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         Holder holder;
-        int type = mItems.get(position).getItemType();
+        String type = mItems.get(position).getItemType();
         if (convertView == null) {
             holder = new Holder();
             Log.d("Type", String.valueOf(type));
             switch(type) {
-                case 0:
-                    convertView = mInflater.inflate(R.layout.list_item_layout_text_only, parent, false);
+                case "text_only":
+                    convertView = mInflater.inflate(R.layout.list_item_text_only, parent, false);
                     holder.mTextView = convertView.findViewById(R.id.item_text);
                     break;
-                case 1:
-                    convertView = mInflater.inflate(R.layout.list_item_layout, parent, false);
+                case "arrow":
+                    convertView = mInflater.inflate(R.layout.list_item_arrow, parent, false);
                     holder.mTextView = convertView.findViewById(R.id.item_text);
                     holder.mImageView = convertView.findViewById(R.id.item_image);
                     break;
-                case 2:
-                    convertView = mInflater.inflate(R.layout.list_item_layout_toggle, parent, false);
+                case "toggle":
+                    convertView = mInflater.inflate(R.layout.list_item_toggle, parent, false);
+                    holder.mTextView = convertView.findViewById(R.id.item_text);
+                    break;
+                case "2_rows":
+                    convertView = mInflater.inflate(R.layout.list_item_toggle, parent, false);
                     holder.mTextView = convertView.findViewById(R.id.item_text);
                     break;
             }

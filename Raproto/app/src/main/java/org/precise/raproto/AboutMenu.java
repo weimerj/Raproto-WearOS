@@ -32,10 +32,10 @@ public class AboutMenu extends FragmentActivity
         Resources res = getResources();
         // Create a list of items for adapter to display.
         mItems = new ArrayList<>();
-        mItems.add(new ListsItem(getString(R.string.version, versionName), 0));
-        mItems.add(new ListsItem(getString(R.string.info), Info.class,1));
-        mItems.add(new ListsItem(getString(R.string.disclamer), Disclamer.class, 1));
-        mItems.add(new ListsItem(getString(R.string.help), Help.class, 1));
+        mItems.add(new ListsItem(getString(R.string.version, versionName), "text_only"));
+        mItems.add(new ListsItem(getString(R.string.info), Info.class,"toggle"));
+        mItems.add(new ListsItem(getString(R.string.disclamer), Disclamer.class, "toggle"));
+        mItems.add(new ListsItem(getString(R.string.help), Help.class, "toggle"));
 
         // Initialize an adapter and set it to ListView listView.
         ListViewAdapter adapter = new ListViewAdapter(this, mItems);

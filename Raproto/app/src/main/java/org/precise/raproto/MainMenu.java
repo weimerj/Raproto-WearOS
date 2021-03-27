@@ -16,11 +16,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class MainMenu extends FragmentActivity implements
-        AmbientModeSupport.AmbientCallbackProvider {
+public class MainMenu extends FragmentActivity implements AmbientModeSupport.AmbientCallbackProvider {
 
     private List<ListsItem> mItems;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,12 +31,12 @@ public class MainMenu extends FragmentActivity implements
 
         // Create a list of items for adapter to display.
         mItems = new ArrayList<>();
-        mItems.add(new ListsItem(getString(R.string.device_id, android_id), 0));
-        mItems.add(new ListsItem(getString(R.string.on_off), 2));
-        mItems.add(new ListsItem(getString(R.string.sync), 1));
-        mItems.add(new ListsItem(getString(R.string.settings), SettingsMenu.class,1));
-        mItems.add(new ListsItem(getString(R.string.about), AboutMenu.class, 1));
-        mItems.add(new ListsItem(getString(R.string.exit), 0));
+        mItems.add(new ListsItem(getString(R.string.device_id, android_id), "text_only"));
+        mItems.add(new ListsItem(getString(R.string.on_off), "toggle"));
+        mItems.add(new ListsItem(getString(R.string.sync), "arrow"));
+        mItems.add(new ListsItem(getString(R.string.settings), SettingsMenu.class,"arrow"));
+        mItems.add(new ListsItem(getString(R.string.about), AboutMenu.class, "arrow"));
+        mItems.add(new ListsItem(getString(R.string.exit), "text_only"));
 
 
         // Initialize an adapter and set it to ListView listView.

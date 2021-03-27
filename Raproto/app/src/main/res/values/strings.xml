@@ -8,7 +8,7 @@
     <string name="about">About</string>
     <string name="version">Version: %1$s</string>
     <string name="info">Info</string>
-    <string name="exit">Exit\n<font size="12">Save and Stop</font></string>
+    <string name="exit">Exit\n<font size="8">Save and Stop</font></string>
     <string name="disclamer">Disclamer</string>
     <string name="discalmer_info">DISCLAIMER: USE OF THIS SOFTWARE IN ANY WAY AND RELIANCE ON THE
     CONTENTS IS DONE AT THE USER\'S DISCRETION AND RISK. YOU HEREBY AGREE THAT YOU WILL BE SOLELY
