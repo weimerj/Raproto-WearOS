@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Raproto\n\<small>Device Name</small></string>
     <string name="default_text">TextView</string>
-    <string name="device_id">Device ID:\<small>\n%1$s</small></string>
+    <string name="device_id">Device ID:</string>
     <string name="on_off">On/Off</string>
     <string name="sync">Sync Now\n\<small>Last Sync: Never</small></string>
     <string name="settings">Settings</string>
@@ -39,8 +39,4 @@
     <string name="broker">Broker Address:\n</string>
     <string name="user_name">Username:\n</string>
     <string name="password">Password:\n</string>
-
-
-
-
 </resources>

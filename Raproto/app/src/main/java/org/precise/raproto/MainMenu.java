@@ -31,7 +31,7 @@ public class MainMenu extends FragmentActivity implements AmbientModeSupport.Amb
 
         // Create a list of items for adapter to display.
         mItems = new ArrayList<>();
-        mItems.add(new ListsItem(getString(R.string.device_id, android_id), "text_only"));
+        mItems.add(new ListsItem(getString(R.string.device_id), android_id, "2_rows"));
         mItems.add(new ListsItem(getString(R.string.on_off), "toggle"));
         mItems.add(new ListsItem(getString(R.string.sync), "arrow"));
         mItems.add(new ListsItem(getString(R.string.settings), SettingsMenu.class,"arrow"));

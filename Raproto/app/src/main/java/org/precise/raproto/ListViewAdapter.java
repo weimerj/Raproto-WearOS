@@ -62,8 +62,10 @@ public class ListViewAdapter extends ArrayAdapter<ListsItem> {
                     holder.mTextView = convertView.findViewById(R.id.item_text);
                     break;
                 case "2_rows":
-                    convertView = mInflater.inflate(R.layout.list_item_toggle, parent, false);
+                    convertView = mInflater.inflate(R.layout.list_item_2_rows, parent, false);
                     holder.mTextView = convertView.findViewById(R.id.item_text);
+                    holder.mTextView2 = convertView.findViewById(R.id.item_text2);
+                    holder.mTextView2.setText(mItems.get(position).getItemName2());
                     break;
             }
             convertView.setTag(holder); // Cache the holder for future use.
@@ -81,6 +83,7 @@ public class ListViewAdapter extends ArrayAdapter<ListsItem> {
 
     private static class Holder {
         TextView mTextView;
+        TextView mTextView2;
         ImageView mImageView;
     }
 }
