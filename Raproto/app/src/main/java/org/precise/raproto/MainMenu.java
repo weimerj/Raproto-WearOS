@@ -33,10 +33,10 @@ public class MainMenu extends FragmentActivity implements AmbientModeSupport.Amb
         mItems = new ArrayList<>();
         mItems.add(new ListsItem(getString(R.string.device_id), android_id, "2_rows"));
         mItems.add(new ListsItem(getString(R.string.on_off), "toggle"));
-        mItems.add(new ListsItem(getString(R.string.sync), "arrow"));
+        mItems.add(new ListsItem(getString(R.string.sync), getString(R.string.messages),"2_rows"));
         mItems.add(new ListsItem(getString(R.string.settings), SettingsMenu.class,"arrow"));
         mItems.add(new ListsItem(getString(R.string.about), AboutMenu.class, "arrow"));
-        mItems.add(new ListsItem(getString(R.string.exit), "text_only"));
+        mItems.add(new ListsItem(getString(R.string.exit), getString(R.string.save),"2_rows"));
 
 
         // Initialize an adapter and set it to ListView listView.

@@ -26,9 +26,9 @@ public class ConfigurationMenu extends FragmentActivity
 
         // Create a list of items for adapter to display.
         mItems = new ArrayList<>();
-        mItems.add(new ListsItem(getString(R.string.update), "text_only"));
-        mItems.add(new ListsItem(getString(R.string.subscribe), "text_only"));
-        mItems.add(new ListsItem(getString(R.string.publish), "text_only"));
+        mItems.add(new ListsItem(getString(R.string.update), getString(R.string.update_status), "2_rows"));
+        mItems.add(new ListsItem(getString(R.string.subscribe), getString(R.string.subscribe_topic), "2_rows"));
+        mItems.add(new ListsItem(getString(R.string.publish), getString(R.string.publish_topic),"2_rows"));
 
         // Initialize an adapter and set it to ListView listView.
         ListViewAdapter adapter = new ListViewAdapter(this, mItems);
@@ -39,7 +39,7 @@ public class ConfigurationMenu extends FragmentActivity
         LayoutInflater inflater = LayoutInflater.from(this);
         View titleLayout = inflater.inflate(R.layout.title_layout, null);
         TextView titleView = titleLayout.findViewById(R.id.title_text);
-        titleView.setText(R.string.settings);
+        titleView.setText(R.string.configuration);
         titleView.setOnClickListener(null); // make title non-clickable.
 
         listView.addHeaderView(titleView);

@@ -1,14 +1,17 @@
 <resources>
     <string name="app_name">Raproto\n\<small>Device Name</small></string>
+    <string name="raproto">Raproto</string>
     <string name="default_text">TextView</string>
     <string name="device_id">Device ID:</string>
     <string name="on_off">On/Off</string>
-    <string name="sync">Sync Now\n\<small>Last Sync: Never</small></string>
+    <string name="sync">Sync Now</string>
+    <string name="messages">0 messages</string>
     <string name="settings">Settings</string>
     <string name="about">About</string>
     <string name="version">Version: %1$s</string>
     <string name="info">Info</string>
-    <string name="exit">Exit\n<font size="8">Save and Stop</font></string>
+    <string name="exit">Exit</string>
+    <string name="save">Save and Stop</string>
     <string name="disclamer">Disclamer</string>
     <string name="discalmer_info">DISCLAIMER: USE OF THIS SOFTWARE IN ANY WAY AND RELIANCE ON THE
     CONTENTS IS DONE AT THE USER\'S DISCRETION AND RISK. YOU HEREBY AGREE THAT YOU WILL BE SOLELY
@@ -32,11 +35,17 @@
     commonly available. \n For more information about future developments, contact:
     "James Weimer weimerj@seas.upenn.edu</string>
     <string name="configuration">Configuration</string>
+    <string name="config_time">Never</string>
     <string name="MQTT">MQTT</string>
-    <string name="update">Update\n Status:Unknown</string>
-    <string name="subscribe">Subscribe Topic:\n </string>
-    <string name="publish">Publish Topic:\n</string>
-    <string name="broker">Broker Address:\n</string>
-    <string name="user_name">Username:\n</string>
-    <string name="password">Password:\n</string>
+    <string name="update">Update Status:</string>
+    <string name="update_status">Unknown</string>
+    <string name="subscribe">Subscribe Topic:</string>
+    <string name="subscribe_topic">v1/devices/me.attributes/response/</string>
+    <string name="publish">Publish Topic:</string>
+    <string name="publish_topic">v1/devices/me.attributes/request/</string>
+    <string name="broker">Broker Address:</string>
+    <string name="broker_address">ssl://tb.precise.seas.upenn.edu:8888</string>
+    <string name="user_name">Username:</string>
+    <string name="password">Password:</string>
+    <string name="pass">(null)</string>
 </resources>

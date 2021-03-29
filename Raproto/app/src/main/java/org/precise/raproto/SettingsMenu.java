@@ -26,8 +26,8 @@ public class SettingsMenu extends FragmentActivity
 
         // Create a list of items for adapter to display.
         mItems = new ArrayList<>();
-        mItems.add(new ListsItem(getString(R.string.configuration), ConfigurationMenu.class, "arrow"));
-        mItems.add(new ListsItem(getString(R.string.MQTT),MQTTMenu.class,"arrow"));
+        mItems.add(new ListsItem(getString(R.string.configuration), getString(R.string.config_time), ConfigurationMenu.class, "2_rows"));
+        mItems.add(new ListsItem(getString(R.string.MQTT), getString(R.string.broker_address), MQTTMenu.class,"2_rows"));
 
         // Initialize an adapter and set it to ListView listView.
         ListViewAdapter adapter = new ListViewAdapter(this, mItems);
