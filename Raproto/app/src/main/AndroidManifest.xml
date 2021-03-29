@@ -53,6 +53,10 @@
             android:label="@string/settings"
             android:name=".SettingsMenu">
         </activity>
+        <activity
+            android:label="@string/configuration"
+            android:name=".ConfigurationMenu">
+        </activity>
     </application>
 
 </manifest>

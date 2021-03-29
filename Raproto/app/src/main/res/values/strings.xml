@@ -33,4 +33,9 @@
     "James Weimer weimerj@seas.upenn.edu</string>
     <string name="configuration">Configuration</string>
     <string name="MQTT">MQTT</string>
+    <string name="update">Update\n Status:Unknown</string>
+    <string name="subscribe">Subscribe Topic:\n </string>
+    <string name="publish">Publish Topic:\n</string>
+
+
 </resources>
