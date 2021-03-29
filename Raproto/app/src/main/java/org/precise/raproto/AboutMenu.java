@@ -33,13 +33,13 @@ public class AboutMenu extends FragmentActivity
         // Create a list of items for adapter to display.
         mItems = new ArrayList<>();
         mItems.add(new ListsItem(getString(R.string.version, versionName), "text_only"));
-        mItems.add(new ListsItem(getString(R.string.info), Info.class,"toggle"));
-        mItems.add(new ListsItem(getString(R.string.disclamer), Disclamer.class, "toggle"));
-        mItems.add(new ListsItem(getString(R.string.help), Help.class, "toggle"));
+        mItems.add(new ListsItem(getString(R.string.info), Info.class,"arrow"));
+        mItems.add(new ListsItem(getString(R.string.disclamer), Disclamer.class, "arrow"));
+        mItems.add(new ListsItem(getString(R.string.help), Help.class, "arrow"));
 
         // Initialize an adapter and set it to ListView listView.
         ListViewAdapter adapter = new ListViewAdapter(this, mItems);
-        final ListView listView = findViewById(R.id.about_lists);
+        final ListView listView = findViewById(R.id.list_view_lists);
         listView.setAdapter(adapter);
 
         // Set header of listView to be the title from title_layout.
