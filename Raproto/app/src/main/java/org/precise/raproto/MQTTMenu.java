@@ -13,7 +13,7 @@ import androidx.wear.ambient.AmbientModeSupport;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SettingsMenu extends FragmentActivity
+public class MQTTMenu extends FragmentActivity
         implements AmbientModeSupport.AmbientCallbackProvider {
 
     private List<ListsItem> mItems;
@@ -26,8 +26,9 @@ public class SettingsMenu extends FragmentActivity
 
         // Create a list of items for adapter to display.
         mItems = new ArrayList<>();
-        mItems.add(new ListsItem(getString(R.string.configuration), ConfigurationMenu.class, "arrow"));
-        mItems.add(new ListsItem(getString(R.string.MQTT),MQTTMenu.class,"arrow"));
+        mItems.add(new ListsItem(getString(R.string.broker), "text_only"));
+        mItems.add(new ListsItem(getString(R.string.user_name), "text_only"));
+        mItems.add(new ListsItem(getString(R.string.password), "text_only"));
 
         // Initialize an adapter and set it to ListView listView.
         ListViewAdapter adapter = new ListViewAdapter(this, mItems);

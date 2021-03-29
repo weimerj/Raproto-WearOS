@@ -57,6 +57,10 @@
             android:label="@string/configuration"
             android:name=".ConfigurationMenu">
         </activity>
+        <activity
+            android:label="@string/MQTT"
+            android:name=".MQTTMenu">
+        </activity>
     </application>
 
 </manifest>

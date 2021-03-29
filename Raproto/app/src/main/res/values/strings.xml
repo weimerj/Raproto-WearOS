@@ -36,6 +36,11 @@
     <string name="update">Update\n Status:Unknown</string>
     <string name="subscribe">Subscribe Topic:\n </string>
     <string name="publish">Publish Topic:\n</string>
+    <string name="broker">Broker Address:\n</string>
+    <string name="user_name">Username:\n</string>
+    <string name="password">Password:\n</string>
+
+
 
 
 </resources>
