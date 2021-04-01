@@ -1,16 +1,21 @@
 package org.precise.raproto;
 
+import android.annotation.SuppressLint;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.fragment.app.FragmentActivity;
 import androidx.wear.ambient.AmbientModeSupport;
+import androidx.wear.widget.drawer.WearableActionDrawerView;
 
 import android.provider.Settings;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +24,9 @@ import java.util.List;
 public class MainMenu extends FragmentActivity implements AmbientModeSupport.AmbientCallbackProvider {
 
     private List<ListsItem> mItems;
+    private ListViewAdapterToggle mAdapter;
 
+    @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,11 +45,26 @@ public class MainMenu extends FragmentActivity implements AmbientModeSupport.Amb
         mItems.add(new ListsItem(getString(R.string.about), AboutMenu.class, "arrow"));
         mItems.add(new ListsItem(getString(R.string.exit), getString(R.string.save),"2_rows"));
 
+        // Custom adapter used so we can use custom layout for the rows within the list.
+        mAdapter =
+                new ListViewAdapterToggle(
+                        this,
+                        mItems,
+                        new ListViewAdapterToggle.SwitchChangeListener() {
+                            @Override
+                            public void onChange(boolean switchOn) {
+                                if (switchOn) {
+                                    Toast.makeText(getApplicationContext(),"On",Toast.LENGTH_SHORT).show();
+                                } else {
+                                    Toast.makeText(getApplicationContext(),"Off",Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
 
         // Initialize an adapter and set it to ListView listView.
-        ListViewAdapter adapter = new ListViewAdapter(this, mItems);
+        //ListViewAdapter adapter = new ListViewAdapter(this, mItems);
         final ListView listView = findViewById(R.id.list_view_lists);
-        listView.setAdapter(adapter);
+        listView.setAdapter(mAdapter);
 
         // Set header of listView to be the title from title_layout.
         LayoutInflater inflater = LayoutInflater.from(this);

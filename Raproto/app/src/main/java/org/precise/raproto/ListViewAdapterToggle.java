@@ -24,26 +24,40 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import java.util.List;
 
-public class ListViewAdapter extends ArrayAdapter<ListsItem> {
+public class ListViewAdapterToggle extends ArrayAdapter<ListsItem> {
+
+    // For custom listener.
+    public interface SwitchChangeListener {
+
+        void onChange(boolean switchOn);
+    }
 
     private final LayoutInflater mInflater;
     private List<ListsItem> mItems;
+    private SwitchChangeListener mSwitchChangeListener;
+    private Switch mSwitchWidget;
+    private Context mContext;
 
-    public ListViewAdapter(@NonNull Context context, @NonNull List<ListsItem> items) {
+
+    public ListViewAdapterToggle(Context context, List<ListsItem> items, SwitchChangeListener switchChangeListener) {
         super(context, R.layout.list_item_arrow, items);
         mInflater = LayoutInflater.from(context);
         mItems = items;
+        mContext = context;
+
+        // Forces activity to implement a SwitchChangeListener
+        mSwitchChangeListener = switchChangeListener;
     }
 
-    @NonNull
     @Override
-    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+    public View getView(int position, View convertView, ViewGroup parent) {
         Holder holder;
         String type = mItems.get(position).getItemType();
         if (convertView == null) {
@@ -62,6 +76,18 @@ public class ListViewAdapter extends ArrayAdapter<ListsItem> {
                 case "toggle":
                     convertView = mInflater.inflate(R.layout.list_item_toggle, parent, false);
                     holder.mTextView = convertView.findViewById(R.id.item_text);
+                    mSwitchWidget = convertView.findViewById(R.id.switch_widget);
+                    // Set the OnClickListener (Observer pattern used here).
+                    convertView.setOnClickListener(
+                            new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    mSwitchWidget.setChecked(!(mSwitchWidget.isChecked()));
+                                    if (mSwitchChangeListener != null) {
+                                        mSwitchChangeListener.onChange(mSwitchWidget.isChecked());
+                                    }
+                                }
+                            });
                     break;
                 case "2_rows":
                     convertView = mInflater.inflate(R.layout.list_item_2_rows, parent, false);
@@ -83,6 +109,10 @@ public class ListViewAdapter extends ArrayAdapter<ListsItem> {
         }
         holder.mTextView.setText(mItems.get(position).getItemName());
         return convertView;
+    }
+
+    public String getSwitchToggleString(boolean isChecked) {
+        return isChecked ? mContext.getString(R.string.on) : mContext.getString(R.string.off);
     }
 
     @Override
