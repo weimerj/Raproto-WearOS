@@ -51,12 +51,16 @@ public class MainMenu extends FragmentActivity implements AmbientModeSupport.Amb
                         this,
                         mItems,
                         new ListViewAdapterToggle.SwitchChangeListener() {
+                            @SuppressLint("ResourceAsColor")
                             @Override
                             public void onChange(boolean switchOn) {
                                 if (switchOn) {
-                                    Toast.makeText(getApplicationContext(),"On",Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getApplicationContext(),"Collecting Sensor Data",Toast.LENGTH_SHORT).show();
+                                    View view = getWindow().getDecorView();
+                                    view.setBackgroundColor(Color.parseColor("#37803a"));
                                 } else {
-                                    Toast.makeText(getApplicationContext(),"Off",Toast.LENGTH_SHORT).show();
+                                    View view = getWindow().getDecorView();
+                                    view.setBackgroundColor(Color.BLACK);
                                 }
                             }
                         });
