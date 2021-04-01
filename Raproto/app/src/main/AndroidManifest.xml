@@ -33,6 +33,8 @@
             </intent-filter>
         </activity>
 
+        <service android:name=".SensorService" />
+
         <activity
             android:label="@string/about"
             android:name=".AboutMenu">

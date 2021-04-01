@@ -36,8 +36,7 @@ public class MainMenu extends FragmentActivity implements AmbientModeSupport.Amb
         String android_id = Settings.Secure.getString(MainMenu.this.getContentResolver(),
                 Settings.Secure.ANDROID_ID);
 
-        final Context context = getApplicationContext();
-        final Intent sensorIntent = new Intent(context,SensorService.class);
+        final Intent sensorIntent = new Intent(MainMenu.this,SensorService.class);
 
         AmbientModeSupport.attach(this);
 
@@ -60,16 +59,16 @@ public class MainMenu extends FragmentActivity implements AmbientModeSupport.Amb
                             @Override
                             public void onChange(boolean switchOn) {
                                 if (switchOn) {
-                                    Toast.makeText(getApplicationContext(),"Collecting Sensor Data",Toast.LENGTH_SHORT).show();
+                                    //Toast.makeText(getApplicationContext(),"Collecting Sensor Data",Toast.LENGTH_SHORT).show();
                                     View view = getWindow().getDecorView();
                                     //Todo: Change this color of green to match the Tizen App
                                     view.setBackgroundColor(Color.parseColor("#37803a"));
-                                    context.startService(sensorIntent);
+                                    startService(sensorIntent);
 
                                 } else {
                                     View view = getWindow().getDecorView();
                                     view.setBackgroundColor(Color.BLACK);
-                                    context.stopService(sensorIntent);
+                                    stopService(sensorIntent);
                                 }
                             }
                         });
