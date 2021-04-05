@@ -1,5 +1,7 @@
 package org.precise.raproto;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +21,12 @@ public class SettingsMenu extends FragmentActivity
     private List<ListsItem> mItems;
 
     protected void onCreate(Bundle savedInstanceState) {
+        // Get the color preference
+        SharedPreferences sharedPref = getSharedPreferences("RaprotoColorFile", Context.MODE_PRIVATE);
+        int colorValue = sharedPref.getInt("color", 0);
+        View view = this.getWindow().getDecorView();
+        view.setBackgroundColor(colorValue);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.menu);
 

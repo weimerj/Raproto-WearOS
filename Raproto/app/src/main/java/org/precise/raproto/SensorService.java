@@ -58,7 +58,7 @@ public class SensorService extends Service implements SensorEventListener {
     @Override
     public void onSensorChanged(SensorEvent sensorEvent) {
 
-        Toast.makeText(getApplicationContext(),"Collecting Accel Data",Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getApplicationContext(),"Collecting Accel Data",Toast.LENGTH_SHORT).show();
 
         mSensorManager.registerListener(this, mSensor, SensorManager.SENSOR_DELAY_NORMAL);
 

@@ -1,5 +1,7 @@
 package org.precise.raproto;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.view.LayoutInflater;
@@ -20,6 +22,12 @@ public class MQTTMenu extends FragmentActivity
     private List<ListsItem> mItems;
 
     protected void onCreate(Bundle savedInstanceState) {
+
+        SharedPreferences sharedPref = getSharedPreferences("RaprotoColorFile", Context.MODE_PRIVATE);
+        int colorValue = sharedPref.getInt("color", 0);
+        View view = this.getWindow().getDecorView();
+        view.setBackgroundColor(colorValue);
+        
         super.onCreate(savedInstanceState);
         setContentView(R.layout.menu);
         String android_id = Settings.Secure.getString(MQTTMenu.this.getContentResolver(),

@@ -15,7 +15,10 @@
  */
 package org.precise.raproto;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.View;
 
 import androidx.fragment.app.FragmentActivity;
 import androidx.wear.ambient.AmbientModeSupport;
@@ -26,6 +29,12 @@ public class Disclamer extends FragmentActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.disclamer);
+
+        // Get the color preference
+        SharedPreferences sharedPref = getSharedPreferences("RaprotoColorFile", Context.MODE_PRIVATE);
+        int colorValue = sharedPref.getInt("color", 0);
+        View view = this.getWindow().getDecorView();
+        view.setBackgroundColor(colorValue);
 
         AmbientModeSupport.attach(this);
     }

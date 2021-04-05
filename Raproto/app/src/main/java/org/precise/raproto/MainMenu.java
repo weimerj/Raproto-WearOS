@@ -3,6 +3,7 @@ package org.precise.raproto;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 
@@ -62,12 +63,21 @@ public class MainMenu extends FragmentActivity implements AmbientModeSupport.Amb
                                     //Toast.makeText(getApplicationContext(),"Collecting Sensor Data",Toast.LENGTH_SHORT).show();
                                     View view = getWindow().getDecorView();
                                     //Todo: Change this color of green to match the Tizen App
-                                    view.setBackgroundColor(Color.parseColor("#37803a"));
+                                    int color = Color.parseColor("#37803a");
+                                    view.setBackgroundColor(color);
                                     startService(sensorIntent);
+                                    SharedPreferences sharedPref = MainMenu.this.getSharedPreferences("RaprotoColorFile",Context.MODE_PRIVATE);
+                                    SharedPreferences.Editor editor = sharedPref.edit();
+                                    editor.putInt("color", color);
+                                    editor.apply();
 
                                 } else {
                                     View view = getWindow().getDecorView();
                                     view.setBackgroundColor(Color.BLACK);
+                                    SharedPreferences sharedPref = MainMenu.this.getSharedPreferences("RaprotoColorFile",Context.MODE_PRIVATE);
+                                    SharedPreferences.Editor editor = sharedPref.edit();
+                                    editor.putInt("color", Color.BLACK);
+                                    editor.apply();
                                     stopService(sensorIntent);
                                 }
                             }
