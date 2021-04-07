@@ -37,6 +37,11 @@ public class MainMenu extends FragmentActivity implements AmbientModeSupport.Amb
         String android_id = Settings.Secure.getString(MainMenu.this.getContentResolver(),
                 Settings.Secure.ANDROID_ID);
 
+        SharedPreferences sharedPref = getSharedPreferences("RaprotoColorFile", Context.MODE_PRIVATE);
+        int colorValue = sharedPref.getInt("color", 0);
+        View view = this.getWindow().getDecorView();
+        view.setBackgroundColor(colorValue);
+
         final Intent sensorIntent = new Intent(MainMenu.this,SensorService.class);
 
         AmbientModeSupport.attach(this);
