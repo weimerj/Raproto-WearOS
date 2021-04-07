@@ -41,6 +41,7 @@ public class MainMenu extends FragmentActivity implements AmbientModeSupport.Amb
         int colorValue = sharedPref.getInt("color", 0);
         View view = this.getWindow().getDecorView();
         view.setBackgroundColor(colorValue);
+        //TODO: Fix the Toggle switch to be on if the app is on
 
         final Intent sensorIntent = new Intent(MainMenu.this,SensorService.class);
 
@@ -65,7 +66,7 @@ public class MainMenu extends FragmentActivity implements AmbientModeSupport.Amb
                             @Override
                             public void onChange(boolean switchOn) {
                                 if (switchOn) {
-                                    //Toast.makeText(getApplicationContext(),"Collecting Sensor Data",Toast.LENGTH_SHORT).show();
+                                    //Todo: Make the toggle switch work not just pressing the list item
                                     View view = getWindow().getDecorView();
                                     //Todo: Change this color of green to match the Tizen App
                                     int color = Color.parseColor("#37803a");
@@ -113,7 +114,6 @@ public class MainMenu extends FragmentActivity implements AmbientModeSupport.Amb
                                 .launchActivity(getApplicationContext());
                     }
                 });
-
     }
 
     @Override

@@ -1,6 +1,7 @@
 package org.precise.raproto;
 
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -9,7 +10,6 @@ import android.hardware.SensorManager;
 import android.os.IBinder;
 import android.provider.Settings;
 import android.util.Log;
-import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -17,9 +17,12 @@ import org.json.JSONObject;
 public class SensorService extends Service implements SensorEventListener {
 
     private SensorManager mSensorManager;
-    private Sensor mSensor;
+
+    private DatabaseHandler db;
+
 
     public SensorService() {
+
     }
 
     @Override
@@ -27,6 +30,10 @@ public class SensorService extends Service implements SensorEventListener {
         super.onCreate();
         String android_id = Settings.Secure.getString(SensorService.this.getContentResolver(),
                 Settings.Secure.ANDROID_ID);
+
+        //Create Database handler
+        db = new DatabaseHandler(this);
+
     }
 
     @Override
@@ -36,6 +43,7 @@ public class SensorService extends Service implements SensorEventListener {
         mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
 
         // Registering Sensors
+        //TODO: Add Battery
         mSensorManager.registerListener(this, mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_NORMAL);
         mSensorManager.registerListener(this, mSensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE), SensorManager.SENSOR_DELAY_NORMAL);
         mSensorManager.registerListener(this, mSensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY), SensorManager.SENSOR_DELAY_NORMAL);
@@ -70,9 +78,11 @@ public class SensorService extends Service implements SensorEventListener {
                 float accel_y = sensorEvent.values[1];
                 float accel_z = sensorEvent.values[2];
                 long tsLong = System.currentTimeMillis()/1000;
+                String accel_string = "ACC:{\"x\":" + accel_x + ",\"y\":"+ accel_y+",\"z\":" + accel_z +"}";
+
 
                 JSONObject xyz = new JSONObject();
-                try {
+                /*try {
                     xyz.put("x", accel_x);
                     xyz.put("y", accel_y);
                     xyz.put("z", accel_z);
@@ -84,15 +94,21 @@ public class SensorService extends Service implements SensorEventListener {
                     accel.put("ACC", xyz);
                 } catch (JSONException e) {
                     e.printStackTrace();
-                }
+                }*/
                 JSONObject accel_json = new JSONObject();
                 try {
                     accel_json.put("ts", tsLong);
-                    accel_json.put("values", accel);
+                    accel_json.put("values", accel_string);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
                 Log.w("myApp", String.valueOf(accel_json));
+                try {
+                    db.addJson(accel_json);
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
                 break;
 
             case Sensor.TYPE_GYROSCOPE:
