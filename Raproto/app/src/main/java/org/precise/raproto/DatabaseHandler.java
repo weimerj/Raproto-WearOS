@@ -16,7 +16,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String KEY_ts= "ts";
     private static final String KEY_values= "valuess";
 
-
     public DatabaseHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
@@ -43,5 +42,4 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.insert(TABLE_NAME, null, json_values);
         //db.close();
     }
-
 }
