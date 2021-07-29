@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/scroll_view_tutorial_images"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_centerHorizontal="true"
+    android:layout_centerVertical="true">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="?android:dialogPreferredPadding"
+        android:paddingBottom="?android:dialogPreferredPadding"
+        android:paddingStart="?android:listPreferredItemPaddingStart"
+        android:paddingEnd="?android:listPreferredItemPaddingEnd"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/title_images"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+            android:gravity="center_horizontal"
+            android:text="@string/disclamer"
+            android:textAppearance="@style/android:TextAppearance.Material.Title"/>
+        <TextView
+            android:id="@+id/description_1_tutorial_image"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+            android:gravity="center_horizontal"
+            android:text="@string/discalmer_info"
+            android:textAppearance="@style/android:TextAppearance.Material.Body1"/>
+    </LinearLayout>
+</ScrollView>
