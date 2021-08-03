@@ -2,40 +2,27 @@
     <string name="app_name">Raproto\n\<small>Device Name</small></string>
     <string name="raproto">Raproto</string>
     <string name="default_text">TextView</string>
+
+    <!-- Device ID -->
     <string name="device_id">Device ID:</string>
+
+    <!-- On/Off -->
     <string name="on_off">On/Off</string>
+    <string name="on">On</string>
+    <string name="off">Off</string>
+
+    <!-- Sync Now -->
     <string name="sync">Sync Now</string>
     <string name="messages">0 messages</string>
+
+    <!-- Settings Menu -->
     <string name="settings">Settings</string>
-    <string name="about">About</string>
-    <string name="version">Version: %1$s</string>
-    <string name="info">Info</string>
-    <string name="exit">Exit</string>
-    <string name="save">Save and Stop</string>
-    <string name="disclamer">Disclamer</string>
-    <string name="discalmer_info">DISCLAIMER: USE OF THIS SOFTWARE IN ANY WAY AND RELIANCE ON THE
-    CONTENTS IS DONE AT THE USER\'S DISCRETION AND RISK. YOU HEREBY AGREE THAT YOU WILL BE SOLELY
-    RESPONSIBLE FOR ANY DAMAGE OR HARM THAT RESULTS FROM SUCH USE. THIS SOFTWARE IS PROVIDED BY THE
-    COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING,
-    BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
-    PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR
-    ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
-    NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
-    BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
-    STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
-    USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</string>
-    <string name="help">Help</string>
-    <string name="help_info">TO START LOGGING:\n<b>Step 1:</b> Configure System (if needed)\n<b>Step 2:</b> Turn On\n\n
-        TO CONFIGURE:\n*** Requires Wifi ***\nSettings->Configuration->
-        Update\n If successful, "Update Complete" will be displayed below \"Update\"</string>
-    <string name="info_info">Raproto: A rapid prototyping platform for the Internet-of-Medical-Things.\n
-    Developed by: The PRECISE Center, University of Pennsylvania \n
-    Raproto provides data collection, storage, analysis APIs, and feedback mechanisms
-    that can be utilized to prototype various medical devices using inexpensive hardware that is
-    commonly available. \n For more information about future developments, contact:
-    "James Weimer weimerj@seas.upenn.edu</string>
+
+    <!-- Configuration Menu -->
     <string name="configuration">Configuration</string>
     <string name="config_time">Never</string>
+
+    <!-- MQTT Menu -->
     <string name="MQTT">MQTT</string>
     <string name="update">Update Status:</string>
     <string name="update_status">Unknown</string>
@@ -48,6 +35,44 @@
     <string name="user_name">Username:</string>
     <string name="password">Password:</string>
     <string name="pass">(null)</string>
-    <string name="on">On</string>
-    <string name="off">Off</string>
+
+    <!-- About Menu -->
+    <string name="about">About</string>
+    <string name="version">Version: %1$s</string>
+
+    <!-- Info Screen -->
+    <string name="info">Info</string>
+
+    <!-- Exit -->
+    <string name="exit">Exit</string>
+    <string name="save">Save and Stop</string>
+
+    <!-- Disclamer Screen -->
+    <string name="disclamer">Disclamer</string>
+    <string name="discalmer_info">DISCLAIMER: USE OF THIS SOFTWARE IN ANY WAY AND RELIANCE ON THE
+    CONTENTS IS DONE AT THE USER\'S DISCRETION AND RISK. YOU HEREBY AGREE THAT YOU WILL BE SOLELY
+    RESPONSIBLE FOR ANY DAMAGE OR HARM THAT RESULTS FROM SUCH USE. THIS SOFTWARE IS PROVIDED BY THE
+    COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING,
+    BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+    PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR
+    ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+    NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+    BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+    STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
+    USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</string>
+
+    <!-- Help Screen -->
+    <string name="help">Help</string>
+    <string name="help_info">TO START LOGGING:\n<b>Step 1:</b> Configure System (if needed)\n<b>Step 2:</b> Turn On\n\n
+        TO CONFIGURE:\n*** Requires Wifi ***\nSettings->Configuration->
+        Update\n If successful, "Update Complete" will be displayed below \"Update\"</string>
+
+    <!-- Info Screen -->
+    <string name="info_info">Raproto: A rapid prototyping platform for the Internet-of-Medical-Things.\n
+    Developed by: The PRECISE Center, University of Pennsylvania \n
+    Raproto provides data collection, storage, analysis APIs, and feedback mechanisms
+    that can be utilized to prototype various medical devices using inexpensive hardware that is
+    commonly available. \n For more information about future developments, contact:
+    Amanda Watson aawatson@seas.upenn.edu or James Weimer weimerj@seas.upenn.edu</string>
+
 </resources>
