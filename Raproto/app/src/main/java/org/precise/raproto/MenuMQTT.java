@@ -23,7 +23,7 @@ public class MenuMQTT extends FragmentActivity
 
     protected void onCreate(Bundle savedInstanceState) {
 
-        SharedPreferences sharedPref = getSharedPreferences("RaprotoColorFile", Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = getSharedPreferences("Raproto", Context.MODE_PRIVATE);
         int colorValue = sharedPref.getInt("color", 0);
         View view = this.getWindow().getDecorView();
         view.setBackgroundColor(colorValue);

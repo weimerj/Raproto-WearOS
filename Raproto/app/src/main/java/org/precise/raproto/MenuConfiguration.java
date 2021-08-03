@@ -25,7 +25,7 @@ public class MenuConfiguration extends FragmentActivity
         setContentView(R.layout.menu);
 
         // Get the color preference
-        SharedPreferences sharedPref = getSharedPreferences("RaprotoColorFile", Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = getSharedPreferences("Raproto", Context.MODE_PRIVATE);
         int colorValue = sharedPref.getInt("color", 0);
         View view = this.getWindow().getDecorView();
         view.setBackgroundColor(colorValue);
