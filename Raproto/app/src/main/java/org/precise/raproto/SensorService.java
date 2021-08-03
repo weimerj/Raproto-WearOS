@@ -77,7 +77,7 @@ public class SensorService extends Service implements SensorEventListener {
                 float accel_x = sensorEvent.values[0];
                 float accel_y = sensorEvent.values[1];
                 float accel_z = sensorEvent.values[2];
-                long tsLong = System.currentTimeMillis()/1000;
+                long tsLong = System.currentTimeMillis();
 
                 JSONObject xyz = new JSONObject();
                 try {
@@ -113,7 +113,7 @@ public class SensorService extends Service implements SensorEventListener {
                 float gyro_x = sensorEvent.values[0];
                 float gyro_y = sensorEvent.values[1];
                 float gyro_z = sensorEvent.values[2];
-                tsLong = System.currentTimeMillis()/1000;
+                tsLong = System.currentTimeMillis();
 
                 JSONObject gyro_xyz = new JSONObject();
                 try {
@@ -149,7 +149,7 @@ public class SensorService extends Service implements SensorEventListener {
                 float grav_x = sensorEvent.values[0];
                 float grav_y = sensorEvent.values[1];
                 float grav_z = sensorEvent.values[2];
-                tsLong = System.currentTimeMillis()/1000;
+                tsLong = System.currentTimeMillis();
 
                 JSONObject grav_xyz = new JSONObject();
                 try {
@@ -184,7 +184,7 @@ public class SensorService extends Service implements SensorEventListener {
             case Sensor.TYPE_HEART_RATE:
                 //TODO: Look into Green light vs red light
                 float hrm = sensorEvent.values[0];
-                tsLong = System.currentTimeMillis()/1000;
+                tsLong = System.currentTimeMillis();
 
                 JSONObject hrm_obj = new JSONObject();
                 try {
