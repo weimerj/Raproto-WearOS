@@ -9,22 +9,19 @@ import android.os.Bundle;
 
 import androidx.fragment.app.FragmentActivity;
 import androidx.wear.ambient.AmbientModeSupport;
-import androidx.wear.widget.drawer.WearableActionDrawerView;
 
 import android.provider.Settings;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class MainMenu extends FragmentActivity implements AmbientModeSupport.AmbientCallbackProvider {
+public class MenuMain extends FragmentActivity implements AmbientModeSupport.AmbientCallbackProvider {
 
     private List<ListsItem> mItems;
     private ListViewAdapterToggle mAdapter;
@@ -33,8 +30,8 @@ public class MainMenu extends FragmentActivity implements AmbientModeSupport.Amb
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main_menu);
-        String android_id = Settings.Secure.getString(MainMenu.this.getContentResolver(),
+        setContentView(R.layout.menu_main);
+        String android_id = Settings.Secure.getString(MenuMain.this.getContentResolver(),
                 Settings.Secure.ANDROID_ID);
 
         SharedPreferences sharedPref = getSharedPreferences("RaprotoColorFile", Context.MODE_PRIVATE);
@@ -43,7 +40,7 @@ public class MainMenu extends FragmentActivity implements AmbientModeSupport.Amb
         view.setBackgroundColor(colorValue);
         //TODO: Fix the Toggle switch to be on if the app is on
 
-        final Intent sensorIntent = new Intent(MainMenu.this,SensorService.class);
+        final Intent sensorIntent = new Intent(MenuMain.this,SensorService.class);
 
         AmbientModeSupport.attach(this);
 
@@ -52,8 +49,8 @@ public class MainMenu extends FragmentActivity implements AmbientModeSupport.Amb
         mItems.add(new ListsItem(getString(R.string.device_id), android_id, "2_rows"));
         mItems.add(new ListsItem(getString(R.string.on_off), "toggle"));
         mItems.add(new ListsItem(getString(R.string.sync), getString(R.string.messages),"2_rows"));
-        mItems.add(new ListsItem(getString(R.string.settings), SettingsMenu.class,"arrow"));
-        mItems.add(new ListsItem(getString(R.string.about), AboutMenu.class, "arrow"));
+        mItems.add(new ListsItem(getString(R.string.settings), MenuSettings.class,"arrow"));
+        mItems.add(new ListsItem(getString(R.string.about), MenuAbout.class, "arrow"));
         mItems.add(new ListsItem(getString(R.string.exit), getString(R.string.save),"2_rows"));
 
         // Custom adapter used so we can use custom layout for the rows within the list.
@@ -72,7 +69,7 @@ public class MainMenu extends FragmentActivity implements AmbientModeSupport.Amb
                                     int color = Color.parseColor("#37803a");
                                     view.setBackgroundColor(color);
                                     startService(sensorIntent);
-                                    SharedPreferences sharedPref = MainMenu.this.getSharedPreferences("RaprotoColorFile",Context.MODE_PRIVATE);
+                                    SharedPreferences sharedPref = MenuMain.this.getSharedPreferences("RaprotoColorFile",Context.MODE_PRIVATE);
                                     SharedPreferences.Editor editor = sharedPref.edit();
                                     editor.putInt("color", color);
                                     editor.apply();
@@ -80,7 +77,7 @@ public class MainMenu extends FragmentActivity implements AmbientModeSupport.Amb
                                 } else {
                                     View view = getWindow().getDecorView();
                                     view.setBackgroundColor(Color.BLACK);
-                                    SharedPreferences sharedPref = MainMenu.this.getSharedPreferences("RaprotoColorFile",Context.MODE_PRIVATE);
+                                    SharedPreferences sharedPref = MenuMain.this.getSharedPreferences("RaprotoColorFile",Context.MODE_PRIVATE);
                                     SharedPreferences.Editor editor = sharedPref.edit();
                                     editor.putInt("color", Color.BLACK);
                                     editor.apply();
@@ -96,7 +93,7 @@ public class MainMenu extends FragmentActivity implements AmbientModeSupport.Amb
 
         // Set header of listView to be the title from title_layout.
         LayoutInflater inflater = LayoutInflater.from(this);
-        View titleLayout = inflater.inflate(R.layout.title_layout, null);
+        View titleLayout = inflater.inflate(R.layout.title, null);
         TextView titleView = titleLayout.findViewById(R.id.title_text);
         titleView.setText(R.string.app_name);
         titleView.setOnClickListener(null); // make title non-clickable.

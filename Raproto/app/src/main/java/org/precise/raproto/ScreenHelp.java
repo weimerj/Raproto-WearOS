@@ -22,13 +22,13 @@ import android.view.View;
 import androidx.fragment.app.FragmentActivity;
 import androidx.wear.ambient.AmbientModeSupport;
 
-public class Help extends FragmentActivity implements
+public class ScreenHelp extends FragmentActivity implements
         AmbientModeSupport.AmbientCallbackProvider {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.help);
+        setContentView(R.layout.screen_help);
 
         // Get the color preference
         SharedPreferences sharedPref = getSharedPreferences("RaprotoColorFile", Context.MODE_PRIVATE);

@@ -2,6 +2,7 @@ package org.precise.raproto;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,14 +16,15 @@ import androidx.wear.ambient.AmbientModeSupport;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ConfigurationMenu extends FragmentActivity
+
+public class MenuAbout extends FragmentActivity
         implements AmbientModeSupport.AmbientCallbackProvider {
 
     private List<ListsItem> mItems;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.menu);
+        setContentView(R.layout.menu_main);
 
         // Get the color preference
         SharedPreferences sharedPref = getSharedPreferences("RaprotoColorFile", Context.MODE_PRIVATE);
@@ -32,22 +34,26 @@ public class ConfigurationMenu extends FragmentActivity
 
         AmbientModeSupport.attach(this);
 
+        String versionName = BuildConfig.VERSION_NAME;
+
+        Resources res = getResources();
         // Create a list of items for adapter to display.
         mItems = new ArrayList<>();
-        mItems.add(new ListsItem(getString(R.string.update), getString(R.string.update_status), "2_rows"));
-        mItems.add(new ListsItem(getString(R.string.subscribe), getString(R.string.subscribe_topic), "2_rows"));
-        mItems.add(new ListsItem(getString(R.string.publish), getString(R.string.publish_topic),"2_rows"));
+        mItems.add(new ListsItem(getString(R.string.version, versionName), "text_only"));
+        mItems.add(new ListsItem(getString(R.string.info), ScreenInfo.class,"arrow"));
+        mItems.add(new ListsItem(getString(R.string.disclamer), ScreenDisclamer.class, "arrow"));
+        mItems.add(new ListsItem(getString(R.string.help), ScreenHelp.class, "arrow"));
 
         // Initialize an adapter and set it to ListView listView.
         ListViewAdapter adapter = new ListViewAdapter(this, mItems);
-        final ListView listView = findViewById(R.id.about_lists);
+        final ListView listView = findViewById(R.id.list_view_lists);
         listView.setAdapter(adapter);
 
         // Set header of listView to be the title from title_layout.
         LayoutInflater inflater = LayoutInflater.from(this);
-        View titleLayout = inflater.inflate(R.layout.title_layout, null);
+        View titleLayout = inflater.inflate(R.layout.title, null);
         TextView titleView = titleLayout.findViewById(R.id.title_text);
-        titleView.setText(R.string.configuration);
+        titleView.setText(R.string.about);
         titleView.setOnClickListener(null); // make title non-clickable.
 
         listView.addHeaderView(titleView);

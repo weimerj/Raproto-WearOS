@@ -23,13 +23,12 @@ import android.view.View;
 import androidx.fragment.app.FragmentActivity;
 import androidx.wear.ambient.AmbientModeSupport;
 
-public class Info extends FragmentActivity implements
+public class ScreenDisclamer extends FragmentActivity implements
         AmbientModeSupport.AmbientCallbackProvider {
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.info);
+        setContentView(R.layout.screen_disclamer);
 
         // Get the color preference
         SharedPreferences sharedPref = getSharedPreferences("RaprotoColorFile", Context.MODE_PRIVATE);

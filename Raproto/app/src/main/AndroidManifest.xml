@@ -28,7 +28,7 @@
             android:value="true" />
 
         <activity
-            android:name=".MainMenu"
+            android:name=".MenuMain"
             android:label="@string/raproto">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -43,31 +43,31 @@
 
         <activity
             android:label="@string/about"
-            android:name=".AboutMenu">
+            android:name=".MenuAbout">
         </activity>
         <activity
             android:label="@string/disclamer"
-            android:name=".Disclamer">
+            android:name=".ScreenDisclamer">
         </activity>
         <activity
             android:label="@string/help"
-            android:name=".Help">
+            android:name=".ScreenHelp">
         </activity>
         <activity
             android:label="@string/info"
-            android:name=".Info">
+            android:name=".ScreenInfo">
         </activity>
         <activity
             android:label="@string/settings"
-            android:name=".SettingsMenu">
+            android:name=".MenuSettings">
         </activity>
         <activity
             android:label="@string/configuration"
-            android:name=".ConfigurationMenu">
+            android:name=".MenuConfiguration">
         </activity>
         <activity
             android:label="@string/MQTT"
-            android:name=".MQTTMenu">
+            android:name=".MenuMQTT">
         </activity>
     </application>
 

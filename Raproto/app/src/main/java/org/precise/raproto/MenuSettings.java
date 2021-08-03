@@ -15,7 +15,7 @@ import androidx.wear.ambient.AmbientModeSupport;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SettingsMenu extends FragmentActivity
+public class MenuSettings extends FragmentActivity
         implements AmbientModeSupport.AmbientCallbackProvider {
 
     private List<ListsItem> mItems;
@@ -34,8 +34,8 @@ public class SettingsMenu extends FragmentActivity
 
         // Create a list of items for adapter to display.
         mItems = new ArrayList<>();
-        mItems.add(new ListsItem(getString(R.string.configuration), getString(R.string.config_time), ConfigurationMenu.class, "2_rows_arrow"));
-        mItems.add(new ListsItem(getString(R.string.MQTT), getString(R.string.broker_address), MQTTMenu.class,"2_rows_arrow"));
+        mItems.add(new ListsItem(getString(R.string.configuration), getString(R.string.config_time), MenuConfiguration.class, "2_rows_arrow"));
+        mItems.add(new ListsItem(getString(R.string.MQTT), getString(R.string.broker_address), MenuMQTT.class,"2_rows_arrow"));
 
         // Initialize an adapter and set it to ListView listView.
         ListViewAdapter adapter = new ListViewAdapter(this, mItems);
@@ -44,7 +44,7 @@ public class SettingsMenu extends FragmentActivity
 
         // Set header of listView to be the title from title_layout.
         LayoutInflater inflater = LayoutInflater.from(this);
-        View titleLayout = inflater.inflate(R.layout.title_layout, null);
+        View titleLayout = inflater.inflate(R.layout.title, null);
         TextView titleView = titleLayout.findViewById(R.id.title_text);
         titleView.setText(R.string.settings);
         titleView.setOnClickListener(null); // make title non-clickable.

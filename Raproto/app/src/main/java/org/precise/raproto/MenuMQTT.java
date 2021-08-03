@@ -16,7 +16,7 @@ import androidx.wear.ambient.AmbientModeSupport;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MQTTMenu extends FragmentActivity
+public class MenuMQTT extends FragmentActivity
         implements AmbientModeSupport.AmbientCallbackProvider {
 
     private List<ListsItem> mItems;
@@ -30,7 +30,7 @@ public class MQTTMenu extends FragmentActivity
         
         super.onCreate(savedInstanceState);
         setContentView(R.layout.menu);
-        String android_id = Settings.Secure.getString(MQTTMenu.this.getContentResolver(),
+        String android_id = Settings.Secure.getString(MenuMQTT.this.getContentResolver(),
                 Settings.Secure.ANDROID_ID);
 
         AmbientModeSupport.attach(this);
@@ -48,7 +48,7 @@ public class MQTTMenu extends FragmentActivity
 
         // Set header of listView to be the title from title_layout.
         LayoutInflater inflater = LayoutInflater.from(this);
-        View titleLayout = inflater.inflate(R.layout.title_layout, null);
+        View titleLayout = inflater.inflate(R.layout.title, null);
         TextView titleView = titleLayout.findViewById(R.id.title_text);
         titleView.setText(R.string.MQTT);
         titleView.setOnClickListener(null); // make title non-clickable.
