@@ -25,16 +25,19 @@ public class MenuMain extends FragmentActivity implements AmbientModeSupport.Amb
 
     private List<ListsItem> mItems;
     private ListViewAdapterToggle mAdapter;
+    private DatabaseHandler db;
 
     @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.menu_main);
+        db = new DatabaseHandler(this);
         String android_id = Settings.Secure.getString(MenuMain.this.getContentResolver(),
                 Settings.Secure.ANDROID_ID);
 
-        SharedPreferences sharedPref = getSharedPreferences("RaprotoColorFile", Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = getSharedPreferences("Raproto", Context.MODE_PRIVATE);
+        long numMessages = sharedPref.getLong("numMessages", 0);
         int colorValue = sharedPref.getInt("color", 0);
         View view = this.getWindow().getDecorView();
         view.setBackgroundColor(colorValue);
@@ -48,7 +51,7 @@ public class MenuMain extends FragmentActivity implements AmbientModeSupport.Amb
         mItems = new ArrayList<>();
         mItems.add(new ListsItem(getString(R.string.device_id), android_id, "2_rows"));
         mItems.add(new ListsItem(getString(R.string.on_off), "toggle"));
-        mItems.add(new ListsItem(getString(R.string.sync), getString(R.string.messages),"2_rows"));
+        mItems.add(new ListsItem(getString(R.string.sync), String.valueOf(db.getNumRows()),"2_rows"));
         mItems.add(new ListsItem(getString(R.string.settings), MenuSettings.class,"arrow"));
         mItems.add(new ListsItem(getString(R.string.about), MenuAbout.class, "arrow"));
         mItems.add(new ListsItem(getString(R.string.exit), getString(R.string.save),"2_rows"));
@@ -69,7 +72,7 @@ public class MenuMain extends FragmentActivity implements AmbientModeSupport.Amb
                                     int color = Color.parseColor("#37803a");
                                     view.setBackgroundColor(color);
                                     startService(sensorIntent);
-                                    SharedPreferences sharedPref = MenuMain.this.getSharedPreferences("RaprotoColorFile",Context.MODE_PRIVATE);
+                                    SharedPreferences sharedPref = MenuMain.this.getSharedPreferences("Raproto",Context.MODE_PRIVATE);
                                     SharedPreferences.Editor editor = sharedPref.edit();
                                     editor.putInt("color", color);
                                     editor.apply();
@@ -77,7 +80,7 @@ public class MenuMain extends FragmentActivity implements AmbientModeSupport.Amb
                                 } else {
                                     View view = getWindow().getDecorView();
                                     view.setBackgroundColor(Color.BLACK);
-                                    SharedPreferences sharedPref = MenuMain.this.getSharedPreferences("RaprotoColorFile",Context.MODE_PRIVATE);
+                                    SharedPreferences sharedPref = MenuMain.this.getSharedPreferences("Raproto",Context.MODE_PRIVATE);
                                     SharedPreferences.Editor editor = sharedPref.edit();
                                     editor.putInt("color", Color.BLACK);
                                     editor.apply();

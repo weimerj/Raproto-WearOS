@@ -3,6 +3,8 @@ package org.precise.raproto;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -20,6 +22,7 @@ public class SensorService extends Service implements SensorEventListener {
 
     private DatabaseHandler db;
 
+    StringBuffer buffer = new StringBuffer(1024*10);
 
     public SensorService() {
 
@@ -72,147 +75,86 @@ public class SensorService extends Service implements SensorEventListener {
 
         //TODO: Battery Sensor
 
-        switch(sensorEvent.sensor.getType()) {
-            case Sensor.TYPE_ACCELEROMETER:
-                float accel_x = sensorEvent.values[0];
-                float accel_y = sensorEvent.values[1];
-                float accel_z = sensorEvent.values[2];
-                long tsLong = System.currentTimeMillis()/1000;
+        String temp = "";
+        JSONObject json = new JSONObject();
 
-                JSONObject xyz = new JSONObject();
-                try {
-                    xyz.put("x", accel_x);
-                    xyz.put("y", accel_y);
-                    xyz.put("z", accel_z);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                JSONObject accel = new JSONObject();
-                try {
-                    accel.put("ACC", xyz);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                JSONObject accel_json = new JSONObject();
-                try {
-                    accel_json.put("ts", tsLong);
-                    accel_json.put("values", accel);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                Log.w("myApp", String.valueOf(accel_json));
-                try {
-                    db.addJson(accel_json);
+        if (buffer.length()< 1024*10) {
 
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                break;
+            switch (sensorEvent.sensor.getType()) {
+                case Sensor.TYPE_ACCELEROMETER:
+                    float accel_x = sensorEvent.values[0];
+                    float accel_y = sensorEvent.values[1];
+                    float accel_z = sensorEvent.values[2];
+                    long tsLong = System.currentTimeMillis();
 
-            case Sensor.TYPE_GYROSCOPE:
-                float gyro_x = sensorEvent.values[0];
-                float gyro_y = sensorEvent.values[1];
-                float gyro_z = sensorEvent.values[2];
-                tsLong = System.currentTimeMillis()/1000;
+                    temp = "{\"ts\":\"" + tsLong + "\",\"values\"={\"ACC\":{\"x\":" + accel_x + "\"y\":"
+                            + accel_y + ",\"z\":" + accel_z + "}}}";
 
-                JSONObject gyro_xyz = new JSONObject();
-                try {
-                    gyro_xyz.put("x", gyro_x);
-                    gyro_xyz.put("y", gyro_y);
-                    gyro_xyz.put("z", gyro_z);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                JSONObject gyro = new JSONObject();
-                try {
-                    gyro.put("GYRO", gyro_xyz);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                JSONObject gyro_json = new JSONObject();
-                try {
-                    gyro_json.put("ts", tsLong);
-                    gyro_json.put("values", gyro);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                Log.w("myApp", String.valueOf(gyro_json));
-                try {
-                    db.addJson(gyro_json);
+                    buffer.append(temp);
+                    buffer.append(",");
 
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                break;
+                    break;
 
-            case Sensor.TYPE_GRAVITY:
-                float grav_x = sensorEvent.values[0];
-                float grav_y = sensorEvent.values[1];
-                float grav_z = sensorEvent.values[2];
-                tsLong = System.currentTimeMillis()/1000;
+                case Sensor.TYPE_GYROSCOPE:
+                    float gyro_x = sensorEvent.values[0];
+                    float gyro_y = sensorEvent.values[1];
+                    float gyro_z = sensorEvent.values[2];
+                    tsLong = System.currentTimeMillis();
 
-                JSONObject grav_xyz = new JSONObject();
-                try {
-                    grav_xyz.put("x", grav_x);
-                    grav_xyz.put("y", grav_y);
-                    grav_xyz.put("z", grav_z);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                JSONObject grav = new JSONObject();
-                try {
-                    grav.put("GRAVITY", grav_xyz);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                JSONObject grav_json = new JSONObject();
-                try {
-                    grav_json.put("ts", tsLong);
-                    grav_json.put("values", grav);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                Log.w("myApp", String.valueOf(grav_json));
-                try {
-                    db.addJson(grav_json);
+                    temp = "{\"ts\":\"" + tsLong + "\",\"values\"={\"GYRO\":{\"x\":" + gyro_x + "\"y\":"
+                            + gyro_y + ",\"z\":" + gyro_z + "}}}";
+                    buffer.append(temp);
+                    buffer.append(",");
 
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                break;
+                    break;
 
-            case Sensor.TYPE_HEART_RATE:
-                //TODO: Look into Green light vs red light
-                float hrm = sensorEvent.values[0];
-                tsLong = System.currentTimeMillis()/1000;
+                case Sensor.TYPE_GRAVITY:
+                    float grav_x = sensorEvent.values[0];
+                    float grav_y = sensorEvent.values[1];
+                    float grav_z = sensorEvent.values[2];
+                    tsLong = System.currentTimeMillis();
 
-                JSONObject hrm_obj = new JSONObject();
-                try {
-                    hrm_obj.put("hrm", hrm);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                JSONObject hrm_2 = new JSONObject();
-                try {
-                    hrm_2.put("GRAVITY", hrm_obj);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                JSONObject hrm_json = new JSONObject();
-                try {
-                    hrm_json.put("ts", tsLong);
-                    hrm_json.put("values", hrm_2);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                Log.w("myApp", String.valueOf(hrm_json));
-                try {
-                    db.addJson(hrm_json);
+                    temp = "{\"ts\":\"" + tsLong + "\",\"values\"={\"GRAVITY\":{\"x\":" + grav_x + "\"y\":"
+                            + grav_y + ",\"z\":" + grav_z + "}}}";
+                    buffer.append(temp);
+                    buffer.append(",");
 
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                break;
+                    break;
+
+                case Sensor.TYPE_HEART_RATE:
+                    //TODO: Look into Green light vs red light
+                    float hrm = sensorEvent.values[0];
+                    tsLong = System.currentTimeMillis();
+
+                    temp = "{\"ts\":\"" + tsLong + "\",\"values\"={\"HRM\":{\"HRM\":" + hrm + "}}}";
+                    buffer.append(temp);
+                    buffer.append(",");
+
+                    break;
+            }
+        }
+        else{
+            try {
+                String android_id = Settings.Secure.getString(SensorService.this.getContentResolver(),
+                        Settings.Secure.ANDROID_ID);
+                json.put("device_id", android_id);
+                json.put("buffer", buffer);
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            try {
+                db.addJson(json);
+                buffer.delete(0, buffer.length());
+
+                //SharedPreferences sharedPref = getSharedPreferences("Raproto", Context.MODE_PRIVATE);
+                //SharedPreferences.Editor editor = sharedPref.edit();
+                //editor.putLong("numMessages", db.getNumRows());
+                //editor.apply();
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
     }
 
