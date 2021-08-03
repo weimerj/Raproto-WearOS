@@ -100,7 +100,6 @@ public class SensorService extends Service implements SensorEventListener {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                Log.w("myApp", String.valueOf(accel_json));
                 try {
                     db.addJson(accel_json);
 
@@ -136,7 +135,6 @@ public class SensorService extends Service implements SensorEventListener {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                Log.w("myApp", String.valueOf(gyro_json));
                 try {
                     db.addJson(gyro_json);
 
@@ -172,7 +170,6 @@ public class SensorService extends Service implements SensorEventListener {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                Log.w("myApp", String.valueOf(grav_json));
                 try {
                     db.addJson(grav_json);
 
@@ -205,7 +202,6 @@ public class SensorService extends Service implements SensorEventListener {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                Log.w("myApp", String.valueOf(hrm_json));
                 try {
                     db.addJson(hrm_json);
 
