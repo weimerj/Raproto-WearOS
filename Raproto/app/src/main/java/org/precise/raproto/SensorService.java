@@ -3,6 +3,8 @@ package org.precise.raproto;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -21,8 +23,6 @@ public class SensorService extends Service implements SensorEventListener {
     private DatabaseHandler db;
 
     StringBuffer buffer = new StringBuffer(1024*10);
-
-
 
     public SensorService() {
 
@@ -79,7 +79,6 @@ public class SensorService extends Service implements SensorEventListener {
         JSONObject json = new JSONObject();
 
         if (buffer.length()< 1024*10) {
-            Log.w("myApp", String.valueOf(buffer.length()));
 
             switch (sensorEvent.sensor.getType()) {
                 case Sensor.TYPE_ACCELEROMETER:
@@ -90,12 +89,9 @@ public class SensorService extends Service implements SensorEventListener {
 
                     temp = "{\"ts\":\"" + tsLong + "\",\"values\"={\"ACC\":{\"x\":" + accel_x + "\"y\":"
                             + accel_y + ",\"z\":" + accel_z + "}}}";
-                    Log.w("myApp", String.valueOf(temp));
 
                     buffer.append(temp);
                     buffer.append(",");
-                    Log.w("myApp", String.valueOf(buffer));
-
 
                     break;
 
@@ -148,10 +144,13 @@ public class SensorService extends Service implements SensorEventListener {
                 e.printStackTrace();
             }
             try {
-                Log.w("myApp", "Here");
-
                 db.addJson(json);
                 buffer.delete(0, buffer.length());
+
+                //SharedPreferences sharedPref = getSharedPreferences("Raproto", Context.MODE_PRIVATE);
+                //SharedPreferences.Editor editor = sharedPref.edit();
+                //editor.putLong("numMessages", db.getNumRows());
+                //editor.apply();
 
             } catch (JSONException e) {
                 e.printStackTrace();

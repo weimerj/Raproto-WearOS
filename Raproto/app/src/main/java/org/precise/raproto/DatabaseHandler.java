@@ -2,6 +2,8 @@ package org.precise.raproto;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
@@ -27,6 +29,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 KEY_values +  " TEXT)";
 
         db.execSQL(CREATE_TABLE);
+
     }
 
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
@@ -40,6 +43,15 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         json_values.put(KEY_device_id, json.getString("device_id"));
         json_values.put(KEY_values, json.getString("buffer"));
         db.insert(TABLE_NAME, null, json_values);
+
         //db.close();
     }
+
+    public long getNumRows(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        long count = DatabaseUtils.queryNumEntries(db, TABLE_NAME);
+        //db.close();
+        return count;
+    }
+
 }
