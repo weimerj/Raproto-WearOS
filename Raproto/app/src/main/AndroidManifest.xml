@@ -43,6 +43,9 @@
             android:enabled="true"
             tools:ignore="Instantiatable" />
 
+        <service android:name="org.eclipse.paho.android.service.MqttService" />
+
+
         <activity
             android:label="@string/about"
             android:name=".MenuAbout">
