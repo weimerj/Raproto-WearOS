@@ -6,17 +6,25 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
-
-import androidx.fragment.app.FragmentActivity;
-import androidx.wear.ambient.AmbientModeSupport;
-
 import android.provider.Settings;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import androidx.fragment.app.FragmentActivity;
+import androidx.wear.ambient.AmbientModeSupport;
+
+import org.eclipse.paho.android.service.MqttAndroidClient;
+import org.eclipse.paho.client.mqttv3.IMqttActionListener;
+import org.eclipse.paho.client.mqttv3.IMqttToken;
+import org.eclipse.paho.client.mqttv3.MqttClient;
+import org.eclipse.paho.client.mqttv3.MqttException;
+import org.eclipse.paho.client.mqttv3.MqttMessage;
+
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,6 +34,7 @@ public class MenuMain extends FragmentActivity implements AmbientModeSupport.Amb
     private List<ListsItem> mItems;
     private ListViewAdapterToggle mAdapter;
     private DatabaseHandler db;
+    private final String TAG = "MyApp";
 
     @SuppressLint("WrongViewCast")
     @Override
@@ -37,15 +46,15 @@ public class MenuMain extends FragmentActivity implements AmbientModeSupport.Amb
                 Settings.Secure.ANDROID_ID);
 
         SharedPreferences sharedPref = getSharedPreferences("Raproto", Context.MODE_PRIVATE);
-        long numMessages = sharedPref.getLong("numMessages", 0);
         int colorValue = sharedPref.getInt("color", 0);
         View view = this.getWindow().getDecorView();
         view.setBackgroundColor(colorValue);
         //TODO: Fix the Toggle switch to be on if the app is on
 
         final Intent sensorIntent = new Intent(MenuMain.this,SensorService.class);
-
         AmbientModeSupport.attach(this);
+
+
 
         // Create a list of items for adapter to display.
         mItems = new ArrayList<>();
