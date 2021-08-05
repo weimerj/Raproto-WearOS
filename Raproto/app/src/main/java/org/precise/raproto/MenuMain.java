@@ -17,14 +17,6 @@ import android.widget.TextView;
 import androidx.fragment.app.FragmentActivity;
 import androidx.wear.ambient.AmbientModeSupport;
 
-import org.eclipse.paho.android.service.MqttAndroidClient;
-import org.eclipse.paho.client.mqttv3.IMqttActionListener;
-import org.eclipse.paho.client.mqttv3.IMqttToken;
-import org.eclipse.paho.client.mqttv3.MqttClient;
-import org.eclipse.paho.client.mqttv3.MqttException;
-import org.eclipse.paho.client.mqttv3.MqttMessage;
-
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,7 +26,7 @@ public class MenuMain extends FragmentActivity implements AmbientModeSupport.Amb
     private List<ListsItem> mItems;
     private ListViewAdapterToggle mAdapter;
     private DatabaseHandler db;
-    private final String TAG = "MyApp";
+    private final String TAG = "MAIN";
 
     @SuppressLint("WrongViewCast")
     @Override
@@ -53,6 +45,10 @@ public class MenuMain extends FragmentActivity implements AmbientModeSupport.Amb
 
         final Intent sensorIntent = new Intent(MenuMain.this,SensorService.class);
         AmbientModeSupport.attach(this);
+        final Intent MQTTIntent = new Intent(MenuMain.this,MQTTService.class);
+        AmbientModeSupport.attach(this);
+        startService(MQTTIntent);
+
 
 
 

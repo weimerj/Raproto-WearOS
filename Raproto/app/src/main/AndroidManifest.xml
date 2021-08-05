@@ -44,7 +44,10 @@
             android:name=".SensorService"
             android:enabled="true"
             tools:ignore="Instantiatable" />
-
+        <service
+            android:name=".MQTTService"
+            android:enabled="true"
+            tools:ignore="Instantiatable" />
         <service android:name="org.eclipse.paho.android.service.MqttService" />
 
 
