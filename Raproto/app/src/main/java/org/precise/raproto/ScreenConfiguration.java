@@ -21,6 +21,8 @@ import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 
 import java.io.UnsupportedEncodingException;
+import java.util.Calendar;
+import java.util.Date;
 
 public class ScreenConfiguration extends FragmentActivity implements
         AmbientModeSupport.AmbientCallbackProvider {
@@ -70,9 +72,12 @@ public class ScreenConfiguration extends FragmentActivity implements
                                         Log.d("tag","message>>" + new String(message.getPayload()));
                                         Log.d("tag","topic>>" + topic);
                                         String payload = new String(message.getPayload());
+                                        Date currentTime = Calendar.getInstance().getTime();
+
+
 
                                         SharedPreferences.Editor editor = sharedPref.edit();
-                                        editor.putString("configTime", payload);
+                                        editor.putString("configTime", String.valueOf(currentTime));
                                         editor.apply();
 
                                     }
