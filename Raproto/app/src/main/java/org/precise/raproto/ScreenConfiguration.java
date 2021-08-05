@@ -3,6 +3,7 @@ package org.precise.raproto;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -35,6 +36,7 @@ public class ScreenConfiguration extends FragmentActivity implements
         // Get the color preference
         SharedPreferences sharedPref = getSharedPreferences("Raproto", Context.MODE_PRIVATE);
         int colorValue = sharedPref.getInt("color", 0);
+
         View view = this.getWindow().getDecorView();
         view.setBackgroundColor(colorValue);
 
@@ -68,6 +70,10 @@ public class ScreenConfiguration extends FragmentActivity implements
                                         Log.d("tag","message>>" + new String(message.getPayload()));
                                         Log.d("tag","topic>>" + topic);
                                         String payload = new String(message.getPayload());
+
+                                        SharedPreferences.Editor editor = sharedPref.edit();
+                                        editor.putString("configTime", payload);
+                                        editor.apply();
 
                                     }
 

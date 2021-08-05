@@ -24,6 +24,8 @@ public class MenuSettings extends FragmentActivity
         // Get the color preference
         SharedPreferences sharedPref = getSharedPreferences("Raproto", Context.MODE_PRIVATE);
         int colorValue = sharedPref.getInt("color", 0);
+        String lastConfig = sharedPref.getString("configTime", "");
+
         View view = this.getWindow().getDecorView();
         view.setBackgroundColor(colorValue);
 
@@ -34,7 +36,7 @@ public class MenuSettings extends FragmentActivity
 
         // Create a list of items for adapter to display.
         mItems = new ArrayList<>();
-        mItems.add(new ListsItem(getString(R.string.configuration), getString(R.string.config_time), MenuConfiguration.class, "2_rows_arrow"));
+        mItems.add(new ListsItem(getString(R.string.configuration), lastConfig, MenuConfiguration.class, "2_rows_arrow"));
         mItems.add(new ListsItem(getString(R.string.MQTT), getString(R.string.broker_address), MenuMQTT.class,"2_rows_arrow"));
 
         // Initialize an adapter and set it to ListView listView.
