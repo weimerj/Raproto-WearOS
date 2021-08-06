@@ -2,16 +2,14 @@ package org.precise.raproto;
 
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.provider.Settings;
-import android.util.Log;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
 //TODO:Close Database
 //TODO: How much space do we use for our database? When do we stop collecting?
 public class DatabaseHandler extends SQLiteOpenHelper {
@@ -55,9 +53,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     public long getNumRows(){
         SQLiteDatabase db = this.getWritableDatabase();
-        long count = DatabaseUtils.queryNumEntries(db, TABLE_NAME);
         //db.close();
-        return count;
+        return DatabaseUtils.queryNumEntries(db, TABLE_NAME);
     }
 
     public JSONObject readFirstRow() {
