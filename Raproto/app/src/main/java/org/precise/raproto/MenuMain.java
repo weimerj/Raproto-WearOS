@@ -33,7 +33,9 @@ public class MenuMain extends FragmentActivity implements AmbientModeSupport.Amb
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.menu_main);
+
         db = new DatabaseHandler(this);
+
         String android_id = Settings.Secure.getString(MenuMain.this.getContentResolver(),
                 Settings.Secure.ANDROID_ID);
 

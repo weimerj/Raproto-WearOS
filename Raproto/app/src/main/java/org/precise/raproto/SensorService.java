@@ -1,17 +1,13 @@
 package org.precise.raproto;
 
 import android.app.Service;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.IBinder;
 import android.provider.Settings;
-import android.util.Log;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -31,8 +27,6 @@ public class SensorService extends Service implements SensorEventListener {
     @Override
     public void onCreate() {
         super.onCreate();
-        String android_id = Settings.Secure.getString(SensorService.this.getContentResolver(),
-                Settings.Secure.ANDROID_ID);
 
         //Create Database handler
         db = new DatabaseHandler(this);
@@ -75,7 +69,7 @@ public class SensorService extends Service implements SensorEventListener {
 
         //TODO: Battery Sensor
 
-        String temp = "";
+        String temp;
         JSONObject json = new JSONObject();
 
         if (buffer.length()< 1024*10) {
@@ -146,11 +140,6 @@ public class SensorService extends Service implements SensorEventListener {
             try {
                 db.addJson(json);
                 buffer.delete(0, buffer.length());
-
-                //SharedPreferences sharedPref = getSharedPreferences("Raproto", Context.MODE_PRIVATE);
-                //SharedPreferences.Editor editor = sharedPref.edit();
-                //editor.putLong("numMessages", db.getNumRows());
-                //editor.apply();
 
             } catch (JSONException e) {
                 e.printStackTrace();

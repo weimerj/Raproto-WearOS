@@ -19,8 +19,9 @@ import java.io.UnsupportedEncodingException;
 public class MQTTService extends Service {
 
     private final String TAG = "MQTT Service";
-    String topic = getString(R.string.publish_topic_hive);
-    String brokerAddress = getString(R.string.broker_address_hive);
+    String topic = "Raproto/data";
+    String brokerAddress = "tcp://broker.hivemq.com:1883";
+    int qos = 0;
 
     private DatabaseHandler db;
     MqttAndroidClient client;
@@ -57,7 +58,6 @@ public class MQTTService extends Service {
                     // Something went wrong e.g. connection timeout or firewall problems
                     Log.d(TAG, "onFailure");
                     Log.d(TAG, "Exception Occurred" + exception);
-
                 }
             });
         } catch (MqttException e) {
@@ -81,14 +81,8 @@ public class MQTTService extends Service {
         public void run() {
             Log.d(TAG, "Made it into Run");
 
-            int qos = 0;
-
-            Log.d(TAG, "Trying");
-
             while(db.getNumRows()>0) {
                 JSONObject json = db.readFirstRow();
-                String payload = "the payload from my service";
-                Log.d(TAG, payload);
 
                 try {
                     byte[] encodedPayload = json.toString().getBytes("UTF-8");

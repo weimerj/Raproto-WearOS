@@ -75,4 +75,9 @@
     commonly available. \n For more information about future developments, contact:
     Amanda Watson aawatson@seas.upenn.edu or James Weimer weimerj@seas.upenn.edu</string>
 
+    <!-- Hive -->
+    <string name="broker_address_hive">tcp://broker.hivemq.com:1883</string>
+    <string name="subscribe_topic_hive">v1/devices/me.attributes/response/</string>
+    <string name="publish_topic_hive">Raproto/data</string>
+
 </resources>
