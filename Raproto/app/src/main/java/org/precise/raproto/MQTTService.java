@@ -56,12 +56,12 @@ public class MQTTService extends Service {
                 public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
                     // Something went wrong e.g. connection timeout or firewall problems
                     Log.d(TAG, "onFailure");
-                    Log.d(TAG, "Exception Occured" + exception);
+                    Log.d(TAG, "Exception Occurred" + exception);
 
                 }
             });
         } catch (MqttException e) {
-            Log.d(TAG, "Exception Occured" + e);
+            Log.d(TAG, "Exception Occurred" + e);
             e.printStackTrace();
 
         }
@@ -96,7 +96,7 @@ public class MQTTService extends Service {
                     client.publish(topic, message);
                     db.deleteFirstRow();
                 } catch (UnsupportedEncodingException | MqttException e) {
-                    Log.d(TAG, "Exception Occured" + e);
+                    Log.d(TAG, "Exception Occurred" + e);
 
                     e.printStackTrace();
                 }
