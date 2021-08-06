@@ -41,24 +41,29 @@ public class MQTTService extends Service {
         client = new MqttAndroidClient(this.getApplicationContext(), "tcp://broker.hivemq.com:1883", clientId);
 
         try {
+            Log.d(TAG, "Trying to Connect");
+
             IMqttToken token = client.connect();
+            //token.waitForCompletion();
             token.setActionCallback(new IMqttActionListener() {
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {
                     // We are connected
                     Log.d(TAG, "onSuccess");
-
                 }
 
                 @Override
                 public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
                     // Something went wrong e.g. connection timeout or firewall problems
                     Log.d(TAG, "onFailure");
+                    Log.d(TAG, "Exception Occured" + exception);
 
                 }
             });
         } catch (MqttException e) {
+            Log.d(TAG, "Exception Occured" + e);
             e.printStackTrace();
+
         }
         mHandler.postDelayed(mUpdateTask, 10000);
 
@@ -67,7 +72,6 @@ public class MQTTService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-
 
         return START_STICKY;
     }
@@ -78,39 +82,24 @@ public class MQTTService extends Service {
             Log.d(TAG, "Made it into Run");
 
             int qos = 0;
-            try {
-                IMqttToken subToken = client.subscribe(topic, qos);
-                subToken.setActionCallback(new IMqttActionListener() {
-                    @Override
-                    public void onSuccess(IMqttToken asyncActionToken) {
-                        // The message was published
 
-                        while(db.getNumRows()>0){
-                            JSONObject json = db.readFirstRow();
-                            String payload = "the payload from my service";
-                            byte[] encodedPayload = new byte[0];
-                            try {
-                                encodedPayload = json.toString().getBytes("UTF-8");
-                                MqttMessage message = new MqttMessage(encodedPayload);
-                                client.publish(topic, message);
-                                db.deleteFirstRow();
-                            } catch (UnsupportedEncodingException | MqttException e) {
-                                e.printStackTrace();
-                            }
-                        }
+            Log.d(TAG, "Trying");
 
-                    }
+            while(db.getNumRows()>0) {
+                JSONObject json = db.readFirstRow();
+                String payload = "the payload from my service";
+                Log.d(TAG, payload);
 
-                    @Override
-                    public void onFailure(IMqttToken asyncActionToken,
-                                          Throwable exception) {
-                        // The subscription could not be performed, maybe the user was not
-                        // authorized to subscribe on the specified topic e.g. using wildcards
+                try {
+                    byte[] encodedPayload = json.toString().getBytes("UTF-8");
+                    MqttMessage message = new MqttMessage(encodedPayload);
+                    client.publish(topic, message);
+                    db.deleteFirstRow();
+                } catch (UnsupportedEncodingException | MqttException e) {
+                    Log.d(TAG, "Exception Occured" + e);
 
-                    }
-                });
-            } catch (MqttException e) {
-                e.printStackTrace();
+                    e.printStackTrace();
+                }
             }
 
             mHandler.postDelayed(this, 20000);
