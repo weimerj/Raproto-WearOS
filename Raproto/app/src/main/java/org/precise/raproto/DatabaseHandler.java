@@ -72,6 +72,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 e.printStackTrace();
             }
         }
+        cursor.close();
         return json;
     }
 
@@ -82,6 +83,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             String rowId = cursor.getString(cursor.getColumnIndex(KEY_ID));
             db.delete(TABLE_NAME, KEY_ID + "=?",  new String[]{rowId});
         }
+        cursor.close();
     }
 
 }

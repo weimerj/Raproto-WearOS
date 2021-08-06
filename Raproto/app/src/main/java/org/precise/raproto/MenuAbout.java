@@ -2,7 +2,6 @@ package org.precise.raproto;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,7 +35,6 @@ public class MenuAbout extends FragmentActivity
 
         String versionName = BuildConfig.VERSION_NAME;
 
-        Resources res = getResources();
         // Create a list of items for adapter to display.
         mItems = new ArrayList<>();
         mItems.add(new ListsItem(getString(R.string.version, versionName), "text_only"));

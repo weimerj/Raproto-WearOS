@@ -3,7 +3,6 @@ package org.precise.raproto;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -20,7 +19,6 @@ import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 
-import java.io.UnsupportedEncodingException;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -68,13 +66,11 @@ public class ScreenConfiguration extends FragmentActivity implements
                                     }
 
                                     @Override
-                                    public void messageArrived(String topic, MqttMessage message) throws Exception {
+                                    public void messageArrived(String topic, MqttMessage message) {
                                         Log.d("tag","message>>" + new String(message.getPayload()));
                                         Log.d("tag","topic>>" + topic);
                                         String payload = new String(message.getPayload());
                                         Date currentTime = Calendar.getInstance().getTime();
-
-
 
                                         SharedPreferences.Editor editor = sharedPref.edit();
                                         editor.putString("configTime", String.valueOf(currentTime));
