@@ -12,12 +12,13 @@ import org.json.JSONObject;
 
 //TODO:Close Database
 //TODO: How much space do we use for our database? When do we stop collecting?
+//TODO: Stop data collection if database is full
 public class DatabaseHandler extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 1;
     private static final String DATABASE_NAME = "Raproto";
     private static final String TABLE_NAME = "SensorData";
     private static final String KEY_ID = "id";
-    private static final String KEY_device_id= "device_id";
+    //private static final String KEY_device_id= "device_id";
     private static final String KEY_values= "buffer";
     private final String TAG = "DATABASE HANDLER";
 
@@ -29,7 +30,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         String CREATE_TABLE = "CREATE TABLE " + TABLE_NAME + " (" +
                 KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                KEY_device_id + " TEXT, " +
+                //KEY_device_id + " TEXT, " +
                 KEY_values +  " TEXT)";
 
         db.execSQL(CREATE_TABLE);
@@ -44,11 +45,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     void addJson(JSONObject json) throws JSONException {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues json_values = new ContentValues();
-        json_values.put(KEY_device_id, json.getString("device_id"));
+        //json_values.put(KEY_device_id, json.getString("device_id"));
         json_values.put(KEY_values, json.getString("buffer"));
         db.insert(TABLE_NAME, null, json_values);
 
-        db.close();
+        //db.close();
     }
 
     public long getNumRows(){
@@ -62,10 +63,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         Cursor cursor = db.query(TABLE_NAME, null, null, null, null, null, null);
         JSONObject json = new JSONObject();
         if(cursor.moveToFirst()) {
-            String device_id = cursor.getString(cursor.getColumnIndex(KEY_device_id));
+            //String device_id = cursor.getString(cursor.getColumnIndex(KEY_device_id));
             String buffer = cursor.getString(cursor.getColumnIndex(KEY_values));
             try {
-                json.put("device_id", device_id);
+                //json.put("device_id", device_id);
                 json.put("buffer", buffer);
 
             } catch (JSONException e) {
