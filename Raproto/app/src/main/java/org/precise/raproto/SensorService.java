@@ -8,16 +8,21 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.IBinder;
 import android.provider.Settings;
+import android.util.Log;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 
 public class SensorService extends Service implements SensorEventListener {
 
     private SensorManager mSensorManager;
     private DatabaseHandler db;
+    private String TAG = SENSOR_SERVICE;
 
     StringBuffer buffer = new StringBuffer(1024*10);
+    JSONArray jsonArray = new JSONArray();
 
     public SensorService() {
 
@@ -68,10 +73,21 @@ public class SensorService extends Service implements SensorEventListener {
 
         //TODO: Battery Sensor
 
-        String temp;
-        JSONObject json = new JSONObject();
 
-        if (buffer.length()< 1024*10) {
+        String android_id = Settings.Secure.getString(SensorService.this.getContentResolver(),
+                Settings.Secure.ANDROID_ID);
+
+        //String temp;
+        //JSONObject json = new JSONObject();
+
+        //if (buffer.length()< 1024*10) {
+
+        JSONObject json = new JSONObject();
+        JSONObject json2 = new JSONObject();
+        JSONObject json3 = new JSONObject();
+
+
+        if(jsonArray.toString().getBytes().length < 1024*10){
 
             switch (sensorEvent.sensor.getType()) {
                 case Sensor.TYPE_ACCELEROMETER:
@@ -80,11 +96,31 @@ public class SensorService extends Service implements SensorEventListener {
                     float accel_z = sensorEvent.values[2];
                     long tsLong = System.currentTimeMillis();
 
-                    temp = "{\"ts\":\"" + tsLong + "\",\"values\"={\"ACC\":{\"x\":" + accel_x + "\"y\":"
-                            + accel_y + ",\"z\":" + accel_z + "}}}";
+                    //JSONObject json = new JSONObject();
+                    try {
+                        json = new JSONObject();
+                        json.put("x", accel_x);
+                        json.put("y", accel_y);
+                        json.put("z", accel_z);
+                        json2 = new JSONObject();
+                        json2.put(android_id + "_ACC", json);
+                        json3 = new JSONObject();
+                        json3.put("ts", tsLong);
+                        json3.put("values", json2);
 
-                    buffer.append(temp);
-                    buffer.append(",");
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+
+                    jsonArray.put(json3);
+                    //Log.d(TAG, jsonArray.toString());
+
+                    //temp = "{\"ts\":\"" + tsLong + "\",\"values\"={\"ACC\":{\"x\":" + accel_x + "\"y\":"
+                    //       + accel_y + ",\"z\":" + accel_z + "}}}";
+
+                    //buffer.append(temp);
+                    //buffer.append(",");
 
                     break;
 
@@ -94,10 +130,34 @@ public class SensorService extends Service implements SensorEventListener {
                     float gyro_z = sensorEvent.values[2];
                     tsLong = System.currentTimeMillis();
 
-                    temp = "{\"ts\":\"" + tsLong + "\",\"values\"={\"GYRO\":{\"x\":" + gyro_x + "\"y\":"
-                            + gyro_y + ",\"z\":" + gyro_z + "}}}";
-                    buffer.append(temp);
-                    buffer.append(",");
+                    try {
+                        json = new JSONObject();
+                        json.put("x", gyro_x);
+                        json.put("y", gyro_y);
+                        json.put("z", gyro_z);
+                        json2 = new JSONObject();
+                        json2.put(android_id + "_GYRO", json);
+                        json3 = new JSONObject();
+                        json3.put("ts", tsLong);
+                        json3.put("values", json2);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+
+                    //JSONObject json2 = new JSONObject();
+
+
+                    //JSONObject json3 = new JSONObject();
+
+
+                    jsonArray.put(json3);
+                    //Log.d(TAG, jsonArray.toString());
+
+                    //emp = "{\"ts\":\"" + tsLong + "\",\"values\"={\"GYRO\":{\"x\":" + gyro_x + "\"y\":"
+                      //      + gyro_y + ",\"z\":" + gyro_z + "}}}";
+                    //buffer.append(temp);
+                    //buffer.append(",");
 
                     break;
 
@@ -107,10 +167,35 @@ public class SensorService extends Service implements SensorEventListener {
                     float grav_z = sensorEvent.values[2];
                     tsLong = System.currentTimeMillis();
 
-                    temp = "{\"ts\":\"" + tsLong + "\",\"values\"={\"GRAVITY\":{\"x\":" + grav_x + "\"y\":"
-                            + grav_y + ",\"z\":" + grav_z + "}}}";
-                    buffer.append(temp);
-                    buffer.append(",");
+                    //JSONObject json = new JSONObject();
+                    try {
+                        json = new JSONObject();
+                        json.put("x", grav_x);
+                        json.put("y", grav_y);
+                        json.put("z", grav_z);
+                        json2 = new JSONObject();
+                        json2.put(android_id + "_GRAVITY", json);
+                        json3 = new JSONObject();
+                        json3.put("ts", tsLong);
+                        json3.put("values", json2);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+
+                    //JSONObject json2 = new JSONObject();
+
+
+                    //JSONObject json3 = new JSONObject();
+
+
+                    jsonArray.put(json3);
+                    //Log.d(TAG, jsonArray.toString());
+
+                    //temp = "{\"ts\":\"" + tsLong + "\",\"values\"={\"GRAVITY\":{\"x\":" + grav_x + "\"y\":"
+                    //        + grav_y + ",\"z\":" + grav_z + "}}}";
+                    //buffer.append(temp);
+                    //buffer.append(",");
 
                     break;
 
@@ -119,26 +204,50 @@ public class SensorService extends Service implements SensorEventListener {
                     float hrm = sensorEvent.values[0];
                     tsLong = System.currentTimeMillis();
 
-                    temp = "{\"ts\":\"" + tsLong + "\",\"values\"={\"HRM\":{\"HRM\":" + hrm + "}}}";
-                    buffer.append(temp);
-                    buffer.append(",");
+                    //JSONObject json = new JSONObject();
+                    try {
+                        json = new JSONObject();
+                        json.put("HRM", hrm);
+                        json2 = new JSONObject();
+                        json2.put(android_id + "_HRM", json);
+                        json3 = new JSONObject();
+                        json3.put("ts", tsLong);
+                        json3.put("values", json2);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
 
+                    //JSONObject json2 = new JSONObject();
+
+
+                    //JSONObject json3 = new JSONObject();
+
+
+                    jsonArray.put(json3);
+
+                    //temp = "{\"ts\":\"" + tsLong + "\",\"values\"={\"HRM\":{\"HRM\":" + hrm + "}}}";
+                    //buffer.append(temp);
+                    //buffer.append(",");
                     break;
             }
         }
         else{
+        //JSONObject json = new JSONObject();
+            Log.d(TAG, jsonArray.toString());
+
+
             try {
-                String android_id = Settings.Secure.getString(SensorService.this.getContentResolver(),
-                        Settings.Secure.ANDROID_ID);
+                json = new JSONObject();
                 json.put("device_id", android_id);
-                json.put("buffer", buffer);
+                json.put("buffer", jsonArray);
 
             } catch (JSONException e) {
                 e.printStackTrace();
             }
             try {
                 db.addJson(json);
-                buffer.delete(0, buffer.length());
+                //buffer.delete(0, buffer.length());
+                jsonArray = new JSONArray();
 
             } catch (JSONException e) {
                 e.printStackTrace();
