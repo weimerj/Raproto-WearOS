@@ -96,7 +96,6 @@ public class SensorService extends Service implements SensorEventListener {
                     float accel_z = sensorEvent.values[2];
                     long tsLong = System.currentTimeMillis();
 
-                    //JSONObject json = new JSONObject();
                     try {
                         json = new JSONObject();
                         json.put("x", accel_x);
@@ -112,15 +111,7 @@ public class SensorService extends Service implements SensorEventListener {
                         e.printStackTrace();
                     }
 
-
                     jsonArray.put(json3);
-                    //Log.d(TAG, jsonArray.toString());
-
-                    //temp = "{\"ts\":\"" + tsLong + "\",\"values\"={\"ACC\":{\"x\":" + accel_x + "\"y\":"
-                    //       + accel_y + ",\"z\":" + accel_z + "}}}";
-
-                    //buffer.append(temp);
-                    //buffer.append(",");
 
                     break;
 
@@ -144,20 +135,7 @@ public class SensorService extends Service implements SensorEventListener {
                         e.printStackTrace();
                     }
 
-
-                    //JSONObject json2 = new JSONObject();
-
-
-                    //JSONObject json3 = new JSONObject();
-
-
                     jsonArray.put(json3);
-                    //Log.d(TAG, jsonArray.toString());
-
-                    //emp = "{\"ts\":\"" + tsLong + "\",\"values\"={\"GYRO\":{\"x\":" + gyro_x + "\"y\":"
-                      //      + gyro_y + ",\"z\":" + gyro_z + "}}}";
-                    //buffer.append(temp);
-                    //buffer.append(",");
 
                     break;
 
@@ -167,7 +145,6 @@ public class SensorService extends Service implements SensorEventListener {
                     float grav_z = sensorEvent.values[2];
                     tsLong = System.currentTimeMillis();
 
-                    //JSONObject json = new JSONObject();
                     try {
                         json = new JSONObject();
                         json.put("x", grav_x);
@@ -182,20 +159,7 @@ public class SensorService extends Service implements SensorEventListener {
                         e.printStackTrace();
                     }
 
-
-                    //JSONObject json2 = new JSONObject();
-
-
-                    //JSONObject json3 = new JSONObject();
-
-
                     jsonArray.put(json3);
-                    //Log.d(TAG, jsonArray.toString());
-
-                    //temp = "{\"ts\":\"" + tsLong + "\",\"values\"={\"GRAVITY\":{\"x\":" + grav_x + "\"y\":"
-                    //        + grav_y + ",\"z\":" + grav_z + "}}}";
-                    //buffer.append(temp);
-                    //buffer.append(",");
 
                     break;
 
@@ -204,7 +168,6 @@ public class SensorService extends Service implements SensorEventListener {
                     float hrm = sensorEvent.values[0];
                     tsLong = System.currentTimeMillis();
 
-                    //JSONObject json = new JSONObject();
                     try {
                         json = new JSONObject();
                         json.put("HRM", hrm);
@@ -216,18 +179,7 @@ public class SensorService extends Service implements SensorEventListener {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-
-                    //JSONObject json2 = new JSONObject();
-
-
-                    //JSONObject json3 = new JSONObject();
-
-
                     jsonArray.put(json3);
-
-                    //temp = "{\"ts\":\"" + tsLong + "\",\"values\"={\"HRM\":{\"HRM\":" + hrm + "}}}";
-                    //buffer.append(temp);
-                    //buffer.append(",");
                     break;
             }
         }
@@ -238,7 +190,6 @@ public class SensorService extends Service implements SensorEventListener {
 
             try {
                 json = new JSONObject();
-                json.put("device_id", android_id);
                 json.put("buffer", jsonArray);
 
             } catch (JSONException e) {
@@ -246,7 +197,6 @@ public class SensorService extends Service implements SensorEventListener {
             }
             try {
                 db.addJson(json);
-                //buffer.delete(0, buffer.length());
                 jsonArray = new JSONArray();
 
             } catch (JSONException e) {
