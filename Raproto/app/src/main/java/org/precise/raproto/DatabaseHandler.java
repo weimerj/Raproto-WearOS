@@ -48,7 +48,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         json_values.put(KEY_values, json.getString("buffer"));
         db.insert(TABLE_NAME, null, json_values);
 
-        //db.close();
+        db.close();
     }
 
     public long getNumRows(){

@@ -15,7 +15,6 @@ import org.json.JSONObject;
 public class SensorService extends Service implements SensorEventListener {
 
     private SensorManager mSensorManager;
-
     private DatabaseHandler db;
 
     StringBuffer buffer = new StringBuffer(1024*10);
