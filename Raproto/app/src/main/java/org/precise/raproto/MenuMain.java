@@ -53,9 +53,16 @@ public class MenuMain extends FragmentActivity implements AmbientModeSupport.Amb
                 Settings.Secure.ANDROID_ID);
 
         SharedPreferences sharedPref = getSharedPreferences("Raproto", Context.MODE_PRIVATE);
-        int colorValue = sharedPref.getInt("color", 0);
-        View view = this.getWindow().getDecorView();
-        view.setBackgroundColor(colorValue);
+        int colorValue = sharedPref.getInt("color", -1);
+        if (colorValue == -1) {
+            colorValue = Color.parseColor("#0060ff");
+            View view = this.getWindow().getDecorView();
+            view.setBackgroundColor(colorValue);
+        }else {
+            View view = this.getWindow().getDecorView();
+            view.setBackgroundColor(colorValue);
+        }
+
         //TODO: Fix the Toggle switch to be on if the app is on
         final Intent sensorIntent = new Intent(MenuMain.this,SensorService.class);
         AmbientModeSupport.attach(this);
