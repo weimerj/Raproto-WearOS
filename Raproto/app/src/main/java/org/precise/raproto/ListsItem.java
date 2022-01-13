@@ -21,7 +21,7 @@ import android.content.Intent;
 
 public class ListsItem {
     private final String mItemName;
-    private final String mItemName2;
+    private String mItemName2;
     private final Class mClass;
     private final String mItemType;
 
@@ -60,6 +60,8 @@ public class ListsItem {
     public String getItemName2() {
         return mItemName2;
     }
+
+    public void updateItemName2(String newItemName) { mItemName2 =  newItemName;}
 
     public String getItemType() {
         return mItemType;

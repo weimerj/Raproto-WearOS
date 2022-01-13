@@ -3,29 +3,41 @@ package org.precise.raproto;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.fragment.app.FragmentActivity;
 import androidx.wear.ambient.AmbientModeSupport;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 
-public class MenuMain extends FragmentActivity implements AmbientModeSupport.AmbientCallbackProvider {
+public class MenuMain extends FragmentActivity implements AmbientModeSupport.AmbientCallbackProvider, DatabaseObserver {
 
-    private List<ListsItem> mItems;
+    private ArrayList<ListsItem> mItems = new ArrayList<ListsItem>();
+
     private ListViewAdapterToggle mAdapter;
+    private ListView listView;
     private DatabaseHandler db;
     private final String TAG = "MAIN";
+    private int syncIndex = -1;
+    private ListsItem syncItem;
+    private Handler handler = new Handler();
 
     @SuppressLint("WrongViewCast")
     @Override
@@ -35,6 +47,8 @@ public class MenuMain extends FragmentActivity implements AmbientModeSupport.Amb
 
         db = new DatabaseHandler(this);
 
+        registerDatabaseObserver(this);
+
         String android_id = Settings.Secure.getString(MenuMain.this.getContentResolver(),
                 Settings.Secure.ANDROID_ID);
 
@@ -43,24 +57,23 @@ public class MenuMain extends FragmentActivity implements AmbientModeSupport.Amb
         View view = this.getWindow().getDecorView();
         view.setBackgroundColor(colorValue);
         //TODO: Fix the Toggle switch to be on if the app is on
-
         final Intent sensorIntent = new Intent(MenuMain.this,SensorService.class);
         AmbientModeSupport.attach(this);
         final Intent MQTTIntent = new Intent(MenuMain.this,MQTTService.class);
         AmbientModeSupport.attach(this);
         startService(MQTTIntent);
 
-
-
-
         // Create a list of items for adapter to display.
-        mItems = new ArrayList<>();
+
         mItems.add(new ListsItem(getString(R.string.device_id), android_id, "2_rows"));
         mItems.add(new ListsItem(getString(R.string.on_off), "toggle"));
-        mItems.add(new ListsItem(getString(R.string.sync), String.valueOf(db.getNumRows()),"2_rows"));
+        mItems.add(syncItem = new ListsItem(getString(R.string.sync), String.valueOf(db.getNumRows(true)),"2_rows"));
         mItems.add(new ListsItem(getString(R.string.settings), MenuSettings.class,"arrow"));
         mItems.add(new ListsItem(getString(R.string.about), MenuAbout.class, "arrow"));
         mItems.add(new ListsItem(getString(R.string.exit), getString(R.string.save),"2_rows"));
+
+        syncIndex = mItems.indexOf(syncItem);
+
 
         // Custom adapter used so we can use custom layout for the rows within the list.
         mAdapter =
@@ -97,7 +110,7 @@ public class MenuMain extends FragmentActivity implements AmbientModeSupport.Amb
 
         // Initialize an adapter and set it to ListView listView.
         //ListViewAdapter adapter = new ListViewAdapter(this, mItems);
-        final ListView listView = findViewById(R.id.list_view_lists);
+        listView = findViewById(R.id.list_view_lists);
         listView.setAdapter(mAdapter);
 
         // Set header of listView to be the title from title_layout.
@@ -108,6 +121,7 @@ public class MenuMain extends FragmentActivity implements AmbientModeSupport.Amb
         titleView.setOnClickListener(null); // make title non-clickable.
 
         listView.addHeaderView(titleView);
+
 
         // Goes to a new screen when you click on one of the list items.
         // Dependent upon position of click.
@@ -120,11 +134,43 @@ public class MenuMain extends FragmentActivity implements AmbientModeSupport.Amb
                                 .launchActivity(getApplicationContext());
                     }
                 });
+
+
+
     }
 
     @Override
     public AmbientModeSupport.AmbientCallback getAmbientCallback() {
         return null;
+    }
+
+    @Override
+    public void registerDatabaseObserver(DatabaseObserver dbObserver) {
+        //register this to DBHandler
+        db.setCallBack(dbObserver);
+    }
+
+    @Override
+    public void unregisterDatabaseObserver(DatabaseObserver dbObserver) {
+
+    }
+
+    @Override
+    public void alertStatusChange() {
+        if (syncIndex != -1) {
+            handler.post(new Runnable () {
+                @Override
+                public void run() {
+                    if (syncIndex != -1) {
+                        mItems.get(syncIndex).updateItemName2(String.valueOf(db.getNumRows(false)));
+                        String number = mItems.get(syncIndex).getItemName2();
+                        //update item_text2 of "Sync Now" object
+                        mAdapter.updateHolderTextView(syncIndex, 1);
+                        mAdapter.notifyDataSetChanged();
+                    }
+                }
+            });
+        }
     }
 
     private class MyAmbientCallback extends AmbientModeSupport.AmbientCallback {}

@@ -1,11 +1,15 @@
 package org.precise.raproto;
 
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.os.BatteryManager;
 import android.os.IBinder;
 import android.provider.Settings;
 import android.util.Log;
@@ -16,16 +20,16 @@ import org.json.JSONObject;
 
 
 public class SensorService extends Service implements SensorEventListener {
-
+    private final static int BUFFER_THRESHOLD = 1024 * 10;
     private SensorManager mSensorManager;
     private DatabaseHandler db;
     private String TAG = SENSOR_SERVICE;
+    private Intent batteryStatus;
 
-    StringBuffer buffer = new StringBuffer(1024*10);
+    StringBuffer buffer = new StringBuffer(BUFFER_THRESHOLD);
     JSONArray jsonArray = new JSONArray();
 
     public SensorService() {
-
     }
 
     @Override
@@ -42,13 +46,17 @@ public class SensorService extends Service implements SensorEventListener {
 
         // Get sensor manager on starting the service.
         mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
+        // Battery filter register
+        final IntentFilter batterIntentFilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
 
         // Registering Sensors
-        //TODO: Add Battery
         mSensorManager.registerListener(this, mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_NORMAL);
         mSensorManager.registerListener(this, mSensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE), SensorManager.SENSOR_DELAY_NORMAL);
         mSensorManager.registerListener(this, mSensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY), SensorManager.SENSOR_DELAY_NORMAL);
         mSensorManager.registerListener(this, mSensorManager.getDefaultSensor(Sensor.TYPE_HEART_RATE), SensorManager.SENSOR_DELAY_NORMAL);
+
+        //Register battery sensor
+        batteryStatus = this.registerReceiver(null, batterIntentFilter);
 
         return START_STICKY;
     }
@@ -69,134 +77,42 @@ public class SensorService extends Service implements SensorEventListener {
     }
 
     @Override
-    public void onSensorChanged(SensorEvent sensorEvent  ) {
-
-        //TODO: Battery Sensor
-
+    public void onSensorChanged(SensorEvent sensorEvent) {
 
         String android_id = Settings.Secure.getString(SensorService.this.getContentResolver(),
                 Settings.Secure.ANDROID_ID);
 
-        //String temp;
-        //JSONObject json = new JSONObject();
 
-        //if (buffer.length()< 1024*10) {
-
-        JSONObject json = new JSONObject();
-        JSONObject json2 = new JSONObject();
-        JSONObject json3 = new JSONObject();
-
-
-        if(jsonArray.toString().getBytes().length < 1024*10){
-
+        if(jsonArray.toString().getBytes().length < BUFFER_THRESHOLD){
+            //put sensor value and timestamp to JSON string
             switch (sensorEvent.sensor.getType()) {
                 case Sensor.TYPE_ACCELEROMETER:
-                    float accel_x = sensorEvent.values[0];
-                    float accel_y = sensorEvent.values[1];
-                    float accel_z = sensorEvent.values[2];
-                    long tsLong = System.currentTimeMillis();
-
-                    try {
-                        json = new JSONObject();
-                        json.put("x", accel_x);
-                        json.put("y", accel_y);
-                        json.put("z", accel_z);
-                        json2 = new JSONObject();
-                        json2.put(android_id + "_ACC", json);
-                        json3 = new JSONObject();
-                        json3.put("ts", tsLong);
-                        json3.put("values", json2);
-
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-
-                    jsonArray.put(json3);
-
+                    jsonArray.put(getAccJson(sensorEvent, android_id));
                     break;
 
                 case Sensor.TYPE_GYROSCOPE:
-                    float gyro_x = sensorEvent.values[0];
-                    float gyro_y = sensorEvent.values[1];
-                    float gyro_z = sensorEvent.values[2];
-                    tsLong = System.currentTimeMillis();
-
-                    try {
-                        json = new JSONObject();
-                        json.put("x", gyro_x);
-                        json.put("y", gyro_y);
-                        json.put("z", gyro_z);
-                        json2 = new JSONObject();
-                        json2.put(android_id + "_GYRO", json);
-                        json3 = new JSONObject();
-                        json3.put("ts", tsLong);
-                        json3.put("values", json2);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-
-                    jsonArray.put(json3);
-
+                    jsonArray.put(getGyroJson(sensorEvent, android_id));
                     break;
 
                 case Sensor.TYPE_GRAVITY:
-                    float grav_x = sensorEvent.values[0];
-                    float grav_y = sensorEvent.values[1];
-                    float grav_z = sensorEvent.values[2];
-                    tsLong = System.currentTimeMillis();
-
-                    try {
-                        json = new JSONObject();
-                        json.put("x", grav_x);
-                        json.put("y", grav_y);
-                        json.put("z", grav_z);
-                        json2 = new JSONObject();
-                        json2.put(android_id + "_GRAVITY", json);
-                        json3 = new JSONObject();
-                        json3.put("ts", tsLong);
-                        json3.put("values", json2);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-
-                    jsonArray.put(json3);
-
+                    jsonArray.put(getGravityJson(sensorEvent, android_id));
                     break;
 
                 case Sensor.TYPE_HEART_RATE:
                     //TODO: Look into Green light vs red light
-                    float hrm = sensorEvent.values[0];
-                    tsLong = System.currentTimeMillis();
-
-                    try {
-                        json = new JSONObject();
-                        json.put("HRM", hrm);
-                        json2 = new JSONObject();
-                        json2.put(android_id + "_HRM", json);
-                        json3 = new JSONObject();
-                        json3.put("ts", tsLong);
-                        json3.put("values", json2);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                    jsonArray.put(json3);
+                    jsonArray.put(getHRMJson(sensorEvent, android_id));
                     break;
             }
         }
         else{
-        //JSONObject json = new JSONObject();
+            //include battery data to every buffer
+            jsonArray.put(getBatteryJson(android_id));
+
             Log.d(TAG, jsonArray.toString());
-
-
             try {
-                json = new JSONObject();
-                json.put("buffer", jsonArray);
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            try {
-                db.addJson(json);
+                JSONObject LevelOneJson = new JSONObject();
+                LevelOneJson.put("buffer", jsonArray);
+                db.addJson(LevelOneJson);
                 jsonArray = new JSONArray();
 
             } catch (JSONException e) {
@@ -204,6 +120,121 @@ public class SensorService extends Service implements SensorEventListener {
             }
         }
     }
+    public JSONObject getBatteryJson(String android_id) {
+        JSONObject LevelThrJson = new JSONObject();
+        JSONObject LevelTwoJson = new JSONObject();
+        JSONObject LevelOneJson = new JSONObject();
 
+        //Put timestamp, battery status and level to JSON string
+        int level = batteryStatus.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
+        int scale = batteryStatus.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
+        int status = batteryStatus.getIntExtra(BatteryManager.EXTRA_STATUS, -1);
+        float batteryPot = level * 100 / (float) scale;
+        boolean isCharging = status == BatteryManager.BATTERY_STATUS_CHARGING;
+        long tsLong = System.currentTimeMillis();
+
+        try {
+            LevelThrJson.put("BATTERY", batteryPot);
+            LevelThrJson.put("IsCharging", isCharging);
+            LevelTwoJson.put(android_id + "_BAT", LevelThrJson);
+            LevelOneJson.put("ts", tsLong);
+            LevelOneJson.put("values", LevelTwoJson);
+        }catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return LevelOneJson;
+    }
+
+    public JSONObject getAccJson(SensorEvent sensorEvent, String android_id) {
+        JSONObject LevelThrJson = new JSONObject();
+        JSONObject LevelTwoJson = new JSONObject();
+        JSONObject LevelOneJson = new JSONObject();
+
+        float accel_x = sensorEvent.values[0];
+        float accel_y = sensorEvent.values[1];
+        float accel_z = sensorEvent.values[2];
+        long tsLong = System.currentTimeMillis();
+
+        try {
+            LevelThrJson.put("x", accel_x);
+            LevelThrJson.put("y", accel_y);
+            LevelThrJson.put("z", accel_z);
+            LevelTwoJson.put(android_id + "_ACC", LevelThrJson);
+            LevelOneJson.put("ts", tsLong);
+            LevelOneJson.put("values", LevelTwoJson);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return LevelOneJson;
+    }
+
+    public JSONObject getGyroJson(SensorEvent sensorEvent, String android_id) {
+        JSONObject LevelThrJson = new JSONObject();
+        JSONObject LevelTwoJson = new JSONObject();
+        JSONObject LevelOneJson = new JSONObject();
+
+        float gyro_x = sensorEvent.values[0];
+        float gyro_y = sensorEvent.values[1];
+        float gyro_z = sensorEvent.values[2];
+        long tsLong = System.currentTimeMillis();
+
+        try {
+            LevelThrJson.put("x", gyro_x);
+            LevelThrJson.put("y", gyro_y);
+            LevelThrJson.put("z", gyro_z);
+            LevelTwoJson.put(android_id + "_GYRO", LevelThrJson);
+            LevelOneJson.put("ts", tsLong);
+            LevelOneJson.put("values", LevelTwoJson);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return LevelOneJson;
+    }
+
+    public JSONObject getGravityJson(SensorEvent sensorEvent, String android_id) {
+        JSONObject LevelThrJson = new JSONObject();
+        JSONObject LevelTwoJson = new JSONObject();
+        JSONObject LevelOneJson = new JSONObject();
+
+        float grav_x = sensorEvent.values[0];
+        float grav_y = sensorEvent.values[1];
+        float grav_z = sensorEvent.values[2];
+
+        long tsLong = System.currentTimeMillis();
+
+        try {
+            LevelThrJson.put("x", grav_x);
+            LevelThrJson.put("y", grav_y);
+            LevelThrJson.put("z", grav_z);
+            LevelTwoJson.put(android_id + "_GRAVITY", LevelThrJson);
+            LevelOneJson.put("ts", tsLong);
+            LevelOneJson.put("values", LevelTwoJson);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return LevelOneJson;
+    }
+
+    public JSONObject getHRMJson(SensorEvent sensorEvent, String android_id) {
+        JSONObject LevelThrJson = new JSONObject();
+        JSONObject LevelTwoJson = new JSONObject();
+        JSONObject LevelOneJson = new JSONObject();
+
+        float hrm = sensorEvent.values[0];
+        long tsLong = System.currentTimeMillis();
+
+        try {
+            LevelThrJson.put("HRM", hrm);
+            LevelTwoJson.put(android_id + "_HRM", LevelThrJson);
+            LevelOneJson.put("ts", tsLong);
+            LevelOneJson.put("values", LevelTwoJson);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return LevelOneJson;
+    }
 
 }

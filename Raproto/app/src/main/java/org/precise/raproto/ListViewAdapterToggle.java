@@ -25,6 +25,10 @@ import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ListViewAdapterToggle extends ArrayAdapter<ListsItem> {
@@ -36,13 +40,14 @@ public class ListViewAdapterToggle extends ArrayAdapter<ListsItem> {
     }
 
     private final LayoutInflater mInflater;
-    private List<ListsItem> mItems;
+    private ArrayList<ListsItem> mItems = new ArrayList<ListsItem>();
     private SwitchChangeListener mSwitchChangeListener;
     private Switch mSwitchWidget;
     private Context mContext;
+    private List<Holder> holderList = new ArrayList<Holder>();
 
 
-    public ListViewAdapterToggle(Context context, List<ListsItem> items, SwitchChangeListener switchChangeListener) {
+    public ListViewAdapterToggle(Context context, ArrayList<ListsItem> items, SwitchChangeListener switchChangeListener) {
         super(context, R.layout.list_item_arrow, items);
         mInflater = LayoutInflater.from(context);
         mItems = items;
@@ -52,26 +57,41 @@ public class ListViewAdapterToggle extends ArrayAdapter<ListsItem> {
         mSwitchChangeListener = switchChangeListener;
     }
 
+    public void updateHolderTextView(int holderListPosition, int textViewIdx) {
+        Holder holder = holderList.get(holderListPosition);
+        if (holder == null) {
+            Log.d("holder", "null");
+        }else {
+            if (holder.mTextViewList.get(textViewIdx) != null) {
+                holder.mTextViewList.get(textViewIdx).setText(mItems.get(holderListPosition).getItemName2());
+            }else {
+                Log.d("holder textview", "null");
+            }
+        }
+
+
+    }
+
+
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         Holder holder;
         String type = mItems.get(position).getItemType();
         if (convertView == null) {
             holder = new Holder();
-            Log.d("Type", String.valueOf(type));
             switch(type) {
                 case "text_only":
                     convertView = mInflater.inflate(R.layout.list_item_text_only, parent, false);
-                    holder.mTextView = convertView.findViewById(R.id.item_text);
+                    holder.mTextViewList.add(convertView.findViewById(R.id.item_text));
                     break;
                 case "arrow":
                     convertView = mInflater.inflate(R.layout.list_item_arrow, parent, false);
-                    holder.mTextView = convertView.findViewById(R.id.item_text);
+                    holder.mTextViewList.add(convertView.findViewById(R.id.item_text));
                     holder.mImageView = convertView.findViewById(R.id.item_image);
                     break;
                 case "toggle":
                     convertView = mInflater.inflate(R.layout.list_item_toggle, parent, false);
-                    holder.mTextView = convertView.findViewById(R.id.item_text);
+                    holder.mTextViewList.add(convertView.findViewById(R.id.item_text));
                     mSwitchWidget = convertView.findViewById(R.id.switch_widget);
                     // Set the OnClickListener (Observer pattern used here).
                     convertView.setOnClickListener(
@@ -87,23 +107,26 @@ public class ListViewAdapterToggle extends ArrayAdapter<ListsItem> {
                     break;
                 case "2_rows":
                     convertView = mInflater.inflate(R.layout.list_item_2_rows, parent, false);
-                    holder.mTextView = convertView.findViewById(R.id.item_text);
-                    holder.mTextView2 = convertView.findViewById(R.id.item_text2);
-                    holder.mTextView2.setText(mItems.get(position).getItemName2());
+                    holder.mTextViewList.add(convertView.findViewById(R.id.item_text));
+                    holder.mTextViewList.add(convertView.findViewById(R.id.item_text2));
                     break;
                 case "2_rows_arrow":
                     convertView = mInflater.inflate(R.layout.list_item_2_rows_arrow, parent, false);
-                    holder.mTextView = convertView.findViewById(R.id.item_text);
-                    holder.mTextView2 = convertView.findViewById(R.id.item_text2);
+                    holder.mTextViewList.add(convertView.findViewById(R.id.item_text));
+                    holder.mTextViewList.add(convertView.findViewById(R.id.item_text2));
                     holder.mImageView = convertView.findViewById(R.id.item_image);
-                    holder.mTextView2.setText(mItems.get(position).getItemName2());
                     break;
             }
+
+            holderList.add(holder);
             convertView.setTag(holder); // Cache the holder for future use.
         } else {
             holder = (Holder) convertView.getTag();
         }
-        holder.mTextView.setText(mItems.get(position).getItemName());
+        holder.mTextViewList.get(0).setText(mItems.get(position).getItemName());
+        if (holder.mTextViewList.size() > 1) {
+            holder.mTextViewList.get(1).setText(mItems.get(position).getItemName2());
+        }
         return convertView;
     }
 
@@ -116,9 +139,10 @@ public class ListViewAdapterToggle extends ArrayAdapter<ListsItem> {
         return true;
     }
 
-    private static class Holder {
-        TextView mTextView;
-        TextView mTextView2;
+    private class Holder {
+        ArrayList<TextView> mTextViewList = new ArrayList<TextView>();
         ImageView mImageView;
+
     }
+
 }

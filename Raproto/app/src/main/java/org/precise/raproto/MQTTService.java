@@ -86,7 +86,7 @@ public class MQTTService extends Service {
         public void run() {
             Log.d(TAG, "Made it into Run");
 
-            while(db.getNumRows()>0) {
+            while(db.getNumRows(true) > 0) {
                 JSONObject json = db.readFirstRow();
 
                 try {
