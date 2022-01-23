@@ -20,8 +20,10 @@ import java.io.UnsupportedEncodingException;
 public class MQTTService extends Service {
 
     private final String TAG = "MQTT Service";
-    String topic = "Raproto/data";
-    String brokerAddress = "tcp://broker.hivemq.com:1883";
+    String brokerAddress = "ssl://tb.precise.seas.upenn.edu:8883";
+    String topic = "v1/devices/me/telemetry";
+    private String username = "fbdb89251fdc95aa"; //Access token for device
+    private String password = ""; //leave empty
     int qos = 0;
 
     private DatabaseHandler db;
@@ -43,12 +45,15 @@ public class MQTTService extends Service {
         String clientId = MqttClient.generateClientId();
         client = new MqttAndroidClient(this.getApplicationContext(), brokerAddress, clientId);
 
+        MqttConnectOptions options = new MqttConnectOptions();
+        options.setUserName(username);
+        options.setPassword(password.toCharArray());
+        options.setAutomaticReconnect(true);
+        options.setCleanSession(true);
+        //client.connect(options);
+
         try {
             Log.d(TAG, "Trying to Connect");
-            MqttConnectOptions options = new MqttConnectOptions();
-            options.setAutomaticReconnect(true);
-            options.setCleanSession(true);
-            client.connect(options);
 
             IMqttToken token = client.connect(options);
             token.setActionCallback(new IMqttActionListener() {
