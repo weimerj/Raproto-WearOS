@@ -1,6 +1,7 @@
 package org.precise.raproto;
 
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Handler;
@@ -16,9 +17,11 @@ import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
+import java.util.Map;
 
 public class MQTTService extends Service {
 
@@ -31,6 +34,7 @@ public class MQTTService extends Service {
 
     private DatabaseHandler db;
     MqttAndroidClient client;
+    SharedPreferences sharedPref;
 
     public MQTTService() {
 
@@ -47,6 +51,7 @@ public class MQTTService extends Service {
 
         String clientId = MqttClient.generateClientId();
         client = new MqttAndroidClient(this.getApplicationContext(), brokerAddress, clientId);
+        sharedPref = getSharedPreferences("Raproto", Context.MODE_PRIVATE);
 
         MqttConnectOptions options = new MqttConnectOptions();
         options.setUserName(username);
@@ -112,6 +117,9 @@ public class MQTTService extends Service {
         }
     };
 
+    /**
+     * Subscribes to attribute updates from Thingsboard and adds to shared preferences.
+     */
     private void subscribeToAttributesTopic() {
         try {
             Log.d(TAG, "Subscribing..");
@@ -125,8 +133,29 @@ public class MQTTService extends Service {
                 @Override
                 public void messageArrived(String topic, MqttMessage message) throws Exception {
                     Log.d(TAG, "Message arrived.");
-                    Log.d("tag","message>>" + new String(message.getPayload()));
-                    Log.d("tag","topic>>" + topic);
+                    Log.d(TAG,"message>>" + new String(message.getPayload()));
+                    Log.d(TAG,"topic>>" + topic);
+
+                    // Add values to shared preferences obj
+                    JSONObject response = new JSONObject(message.toString());
+                    JSONObject sharedAttributes = response.getJSONObject("shared");
+                    JSONArray sharedAttributesKeys = sharedAttributes.names();
+
+                    for(int i = 0; i < sharedAttributes.length(); i++){
+                        String key = sharedAttributesKeys.getString(i);
+                        String value = sharedAttributes.getString(key);
+                        SharedPreferences.Editor editor = sharedPref.edit();
+                        editor.putString(key, value);
+                        editor.apply();
+                    }
+
+                    // Confirm values added to sharedPref
+                    /*
+                    Map<String, ?> allEntries = sharedPref.getAll();
+                    for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
+                        Log.d("map values", entry.getKey() + ": " + entry.getValue().toString());
+                    }
+                     */
                 }
 
                 @Override
@@ -140,6 +169,9 @@ public class MQTTService extends Service {
         }
     }
 
+    /**
+     * Requests attribute values from Thingsboard using publish topic.
+     */
     private void getSharedAttributes() {
         try {
             String attributesMessage = "{'GRAVITY': '-1'}";
