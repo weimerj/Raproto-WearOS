@@ -8,7 +8,9 @@ import android.util.Log;
 
 import org.eclipse.paho.android.service.MqttAndroidClient;
 import org.eclipse.paho.client.mqttv3.IMqttActionListener;
+import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.IMqttToken;
+import org.eclipse.paho.client.mqttv3.MqttCallback;
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
@@ -16,6 +18,7 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 
 public class MQTTService extends Service {
 
@@ -24,7 +27,7 @@ public class MQTTService extends Service {
     String topic = "v1/devices/me/telemetry";
     private String username = "fbdb89251fdc95aa"; //Access token for device
     private String password = ""; //leave empty
-    int qos = 0;
+    int qos = 1;
 
     private DatabaseHandler db;
     MqttAndroidClient client;
@@ -50,7 +53,6 @@ public class MQTTService extends Service {
         options.setPassword(password.toCharArray());
         options.setAutomaticReconnect(true);
         options.setCleanSession(true);
-        //client.connect(options);
 
         try {
             Log.d(TAG, "Trying to Connect");
@@ -61,6 +63,8 @@ public class MQTTService extends Service {
                 public void onSuccess(IMqttToken asyncActionToken) {
                     // We are connected
                     Log.d(TAG, "onSuccess");
+                    subscribe();
+                    getSharedAttributes();
                 }
 
                 @Override
@@ -76,7 +80,6 @@ public class MQTTService extends Service {
 
         }
         mHandler.postDelayed(mUpdateTask, 10000);
-
 
     }
 
@@ -108,6 +111,43 @@ public class MQTTService extends Service {
             mHandler.postDelayed(this, 20000);
         }
     };
+
+    private void subscribe() {
+        try {
+            client.subscribe("v1/devices/me/attributes/response/+", qos);
+            client.setCallback(new MqttCallback() {
+                @Override
+                public void connectionLost(Throwable cause) {
+                    Log.d(TAG, "Connection Lost.");
+                }
+
+                @Override
+                public void messageArrived(String topic, MqttMessage message) throws Exception {
+                    Log.d(TAG, "Message arrived.");
+                    Log.d("tag","message>>" + new String(message.getPayload()));
+                    Log.d("tag","topic>>" + topic);
+                }
+
+                @Override
+                public void deliveryComplete(IMqttDeliveryToken token) {
+                    Log.d(TAG, "Delivery complete");
+                }
+            });
+        } catch (MqttException e){
+            Log.d(TAG, "Exception occurred " + e);
+            e.printStackTrace();
+        }
+    }
+
+    private void getSharedAttributes() {
+        MqttMessage message = new MqttMessage("{'sharedKeys': 'GRAVITY'".getBytes(StandardCharsets.UTF_8));
+        try {
+            client.publish("v1/devices/me/attributes/request/3", message);
+        } catch (MqttException e) {
+            Log.d(TAG, "Exception occurred " + e);
+            e.printStackTrace();
+        }
+    }
 
     @Override
     public void onDestroy() {
