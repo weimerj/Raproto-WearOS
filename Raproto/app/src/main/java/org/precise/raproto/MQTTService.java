@@ -62,8 +62,8 @@ public class MQTTService extends Service {
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {
                     // We are connected
-                    Log.d(TAG, "onSuccess");
-                    subscribe();
+                    Log.d(TAG, "Connected Successfully.");
+                    subscribeToAttributesTopic();
                     getSharedAttributes();
                 }
 
@@ -112,8 +112,9 @@ public class MQTTService extends Service {
         }
     };
 
-    private void subscribe() {
+    private void subscribeToAttributesTopic() {
         try {
+            Log.d(TAG, "Subscribing..");
             client.subscribe("v1/devices/me/attributes/response/+", qos);
             client.setCallback(new MqttCallback() {
                 @Override
@@ -130,7 +131,7 @@ public class MQTTService extends Service {
 
                 @Override
                 public void deliveryComplete(IMqttDeliveryToken token) {
-                    Log.d(TAG, "Delivery complete");
+                    Log.d(TAG, "Subscription Successful.");
                 }
             });
         } catch (MqttException e){
