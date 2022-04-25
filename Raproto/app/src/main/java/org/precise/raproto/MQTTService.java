@@ -2,6 +2,7 @@ package org.precise.raproto;
 
 import android.app.Service;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
@@ -18,7 +19,6 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
-import java.nio.charset.StandardCharsets;
 
 public class MQTTService extends Service {
 
@@ -140,10 +140,12 @@ public class MQTTService extends Service {
     }
 
     private void getSharedAttributes() {
-        MqttMessage message = new MqttMessage("{'sharedKeys': 'GRAVITY'".getBytes(StandardCharsets.UTF_8));
         try {
-            client.publish("v1/devices/me/attributes/request/3", message);
-        } catch (MqttException e) {
+            String attributesMessage = "{'GRAVITY': '-1'}";
+            MqttMessage message = new MqttMessage(attributesMessage.getBytes("UTF-8"));
+            client.publish("v1/devices/me/attributes/request/1", message);
+            Log.d(TAG, "Requested shared attributes.");
+        } catch (UnsupportedEncodingException | MqttException e) {
             Log.d(TAG, "Exception occurred " + e);
             e.printStackTrace();
         }
