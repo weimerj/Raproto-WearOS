@@ -3,8 +3,6 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Users/tarek/OneDrive/Desktop/workspace/Raproto-WearOS/Raproto/app/src/main/res/layout/screen_config.xml" value="0.8486842105263158" />
-        <entry key="..\:/Users/tarek/OneDrive/Desktop/workspace/Raproto-WearOS/Raproto/app/src/main/res/layout/screen_disclamer.xml" value="0.8486842105263158" />
         <entry key="app/src/main/res/drawable/raproto_icon.xml" value="1.6357142857142857" />
         <entry key="app/src/main/res/layout/list_item_2_rows.xml" value="0.5509868421052632" />
         <entry key="app/src/main/res/layout/list_item_toggle.xml" value="0.53" />
