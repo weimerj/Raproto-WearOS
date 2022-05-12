@@ -42,7 +42,7 @@ public class ScreenConfiguration extends FragmentActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.screen_disclamer);
+        setContentView(R.layout.screen_config);
 
         // Get the color preference
         SharedPreferences sharedPref = getSharedPreferences("Raproto", Context.MODE_PRIVATE);
@@ -121,12 +121,12 @@ public class ScreenConfiguration extends FragmentActivity implements
                     addToSharedPreferences(message);
 
                     // Confirm values added to sharedPref
-
+                    /*
                     Map<String, ?> allEntries = sharedPref.getAll();
                     for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
                         Log.d("map values", entry.getKey() + ": " + entry.getValue().toString());
                     }
-
+                    */
                 }
 
                 @Override
