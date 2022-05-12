@@ -42,7 +42,7 @@ public class ScreenConfiguration extends FragmentActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.screen_disclamer);
+        setContentView(R.layout.screen_disclamer);
 
         // Get the color preference
         SharedPreferences sharedPref = getSharedPreferences("Raproto", Context.MODE_PRIVATE);
@@ -52,6 +52,8 @@ public class ScreenConfiguration extends FragmentActivity implements
         view.setBackgroundColor(colorValue);
 
         AmbientModeSupport.attach(this);
+
+        this.sharedPref = getSharedPreferences("Raproto", Context.MODE_PRIVATE);
 
         String clientId = MqttClient.generateClientId();
         client = new MqttAndroidClient(this.getApplicationContext(), brokerAddress, clientId);
@@ -99,7 +101,7 @@ public class ScreenConfiguration extends FragmentActivity implements
     private class MyAmbientCallback extends AmbientModeSupport.AmbientCallback {}
 
     /**
-     * Subscribes to attribute updates from Thingsboard and adds to shared preferences.
+     * Subscribes to attribute updates from Thingsboard
      */
     protected void subscribeToAttributesTopic() {
         try {
@@ -114,23 +116,12 @@ public class ScreenConfiguration extends FragmentActivity implements
                 @Override
                 public void messageArrived(String topic, MqttMessage message) throws Exception {
                     Log.d(TAG, "Message arrived.");
-                    Log.d(TAG,"message>>" + new String(message.getPayload()));
-                    Log.d(TAG,"topic>>" + topic);
+                    //Log.d(TAG,"message>>" + new String(message.getPayload()));
 
-                    // Add values to shared preferences obj
-                    JSONObject response = new JSONObject(message.toString());
-                    JSONObject sharedAttributes = response.getJSONObject("shared");
-                    JSONArray sharedAttributesKeys = sharedAttributes.names();
-
-                    for(int i = 0; i < sharedAttributes.length(); i++){
-                        String key = sharedAttributesKeys.getString(i);
-                        String value = sharedAttributes.getString(key);
-                        SharedPreferences.Editor editor = sharedPref.edit();
-                        editor.putString(key, value);
-                        editor.apply();
-                    }
+                    addToSharedPreferences(message);
 
                     // Confirm values added to sharedPref
+
                     Map<String, ?> allEntries = sharedPref.getAll();
                     for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
                         Log.d("map values", entry.getKey() + ": " + entry.getValue().toString());
@@ -145,7 +136,6 @@ public class ScreenConfiguration extends FragmentActivity implements
             });
         } catch (MqttException e){
             Log.d(TAG, "Exception occurred " + e);
-            e.printStackTrace();
         }
     }
 
@@ -160,8 +150,31 @@ public class ScreenConfiguration extends FragmentActivity implements
             Log.d(TAG, "Requested shared attributes.");
         } catch (UnsupportedEncodingException | MqttException e) {
             Log.d(TAG, "Exception occurred " + e);
-            e.printStackTrace();
         }
+    }
+
+
+    /**
+     * Adds attributes to shared preferences object.
+     */
+    protected void addToSharedPreferences(MqttMessage message) {
+        try {
+            // Add values to shared preferences obj
+            JSONObject response = new JSONObject(message.toString());
+            JSONObject sharedAttributes = response.getJSONObject("shared");
+            JSONArray sharedAttributesKeys = sharedAttributes.names();
+
+            for(int i = 0; i < sharedAttributes.length(); i++){
+                String key = sharedAttributesKeys.getString(i);
+                String value = sharedAttributes.getString(key);
+                SharedPreferences.Editor editor = sharedPref.edit();
+                editor.putString(key, value);
+                editor.apply();
+            }
+        } catch (Exception e){
+            Log.d(TAG, "Error parsing message: " + e);
+        }
+
     }
 
 

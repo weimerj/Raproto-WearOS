@@ -21,7 +21,7 @@
             android:paddingTop="4dp"
             android:paddingBottom="4dp"
             android:gravity="center_horizontal"
-            android:text="@string/update_status_title"
+            android:text="@string/disclamer"
             android:textAppearance="@style/android:TextAppearance.Material.Title"/>
         <TextView
             android:id="@+id/description_1_tutorial_image"
@@ -30,7 +30,7 @@
             android:paddingTop="4dp"
             android:paddingBottom="4dp"
             android:gravity="center_horizontal"
-            android:text="@string/update_status_info"
+            android:text="@string/discalmer_info"
             android:textAppearance="@style/android:TextAppearance.Material.Body1"/>
     </LinearLayout>
 </ScrollView>
