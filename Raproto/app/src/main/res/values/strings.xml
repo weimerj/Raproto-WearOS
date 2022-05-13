@@ -80,4 +80,8 @@
     <string name="subscribe_topic_hive">v1/devices/me.attributes/response/</string>
     <string name="publish_topic_hive">Raproto/data</string>
 
+    <!-- Screen Config Update Status -->
+    <string name="update_status_title">Status Updated</string>
+    <string name="update_status_info">Attributes have been updated.</string>
+
 </resources>
