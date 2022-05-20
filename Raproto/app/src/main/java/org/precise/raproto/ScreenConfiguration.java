@@ -124,7 +124,7 @@ public class ScreenConfiguration extends FragmentActivity implements
                     /*
                     Map<String, ?> allEntries = sharedPref.getAll();
                     for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
-                        Log.d("map values", entry.getKey() + ": " + entry.getValue().toString());
+                        Log.d("map values", entry.getKey() + ": " + entry.getValue().toString() + " Class: " + entry.getValue().getClass().toString());
                     }
                     */
                 }
@@ -164,12 +164,20 @@ public class ScreenConfiguration extends FragmentActivity implements
             JSONObject sharedAttributes = response.getJSONObject("shared");
             JSONArray sharedAttributesKeys = sharedAttributes.names();
 
-            for(int i = 0; i < sharedAttributes.length(); i++){
+            for(int i = 0; i < sharedAttributes.length(); i++) {
                 String key = sharedAttributesKeys.getString(i);
-                String value = sharedAttributes.getString(key);
                 SharedPreferences.Editor editor = sharedPref.edit();
-                editor.putString(key, value);
+
+                if(!key.toUpperCase().equals("NAME")){
+                    int value = sharedAttributes.getInt(key);
+                    editor.putInt(key, value);
+                } else {
+                    String value = sharedAttributes.getString(key);
+                    editor.putString(key, value);
+                }
+
                 editor.apply();
+
             }
         } catch (Exception e){
             Log.d(TAG, "Error parsing message: " + e);
