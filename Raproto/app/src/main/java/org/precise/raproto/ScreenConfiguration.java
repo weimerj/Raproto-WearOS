@@ -25,7 +25,6 @@ import org.json.JSONObject;
 import java.io.UnsupportedEncodingException;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Locale;
 import java.util.Map;
 
 public class ScreenConfiguration extends FragmentActivity implements
