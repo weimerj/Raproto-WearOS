@@ -77,7 +77,6 @@ public class ListViewAdapterToggle extends ArrayAdapter<ListsItem> {
     public View getView(int position, View convertView, ViewGroup parent) {
         Holder holder;
         String type = mItems.get(position).getItemType();
-        convertView = null;
         if (convertView == null) {
             holder = new Holder();
             switch(type) {
@@ -108,11 +107,6 @@ public class ListViewAdapterToggle extends ArrayAdapter<ListsItem> {
                     break;
                 case "2_rows":
                     convertView = mInflater.inflate(R.layout.list_item_2_rows, parent, false);
-                    holder.mTextViewList.add(convertView.findViewById(R.id.item_text));
-                    holder.mTextViewList.add(convertView.findViewById(R.id.item_text2));
-                    break;
-                case "2_rows_centered":
-                    convertView = mInflater.inflate(R.layout.list_item_2_rows_centered, parent, false);
                     holder.mTextViewList.add(convertView.findViewById(R.id.item_text));
                     holder.mTextViewList.add(convertView.findViewById(R.id.item_text2));
                     break;
