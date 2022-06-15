@@ -50,25 +50,10 @@ public class SensorService extends Service implements SensorEventListener {
         final IntentFilter batterIntentFilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
 
         // Registering Sensors
-//        mSensorManager.registerListener(this, mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_NORMAL);
-//        mSensorManager.registerListener(this, mSensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE), SensorManager.SENSOR_DELAY_NORMAL);
-//        mSensorManager.registerListener(this, mSensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY), SensorManager.SENSOR_DELAY_NORMAL);
-//        mSensorManager.registerListener(this, mSensorManager.getDefaultSensor(Sensor.TYPE_HEART_RATE), SensorManager.SENSOR_DELAY_NORMAL);
-
-        SharedPreferences sharedPref = getSharedPreferences("Raproto", Context.MODE_PRIVATE);
-
-        if (sharedPref.getInt("ACC", -1) != -1) {
-            mSensorManager.registerListener(this, mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), sharedPref.getInt("ACC", -1));
-        }
-        if (sharedPref.getInt("GYRO", -1) != -1) {
-            mSensorManager.registerListener(this, mSensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE), sharedPref.getInt("GYRO", -1));
-        }
-        if (sharedPref.getInt("GRAVITY", -1) != -1) {
-            mSensorManager.registerListener(this, mSensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY), sharedPref.getInt("GRAVITY", -1));
-        }
-        if (sharedPref.getInt("HRM", -1) != -1) {
-            mSensorManager.registerListener(this, mSensorManager.getDefaultSensor(Sensor.TYPE_HEART_RATE), sharedPref.getInt("HRM", -1));
-        }
+        mSensorManager.registerListener(this, mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_NORMAL);
+        mSensorManager.registerListener(this, mSensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE), SensorManager.SENSOR_DELAY_NORMAL);
+        mSensorManager.registerListener(this, mSensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY), SensorManager.SENSOR_DELAY_NORMAL);
+        mSensorManager.registerListener(this, mSensorManager.getDefaultSensor(Sensor.TYPE_HEART_RATE), SensorManager.SENSOR_DELAY_NORMAL);
 
         //Register battery sensor
         batteryStatus = this.registerReceiver(null, batterIntentFilter);
