@@ -70,6 +70,8 @@ public class SensorService extends Service implements SensorEventListener {
             mSensorManager.registerListener(this, mSensorManager.getDefaultSensor(Sensor.TYPE_HEART_RATE), sharedPref.getInt("HRM", -1));
         }
 
+        //testing
+        
         //Register battery sensor
         batteryStatus = this.registerReceiver(null, batterIntentFilter);
 
