@@ -55,6 +55,8 @@ public class SensorService extends Service implements SensorEventListener {
         mSensorManager.registerListener(this, mSensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY), SensorManager.SENSOR_DELAY_NORMAL);
         mSensorManager.registerListener(this, mSensorManager.getDefaultSensor(Sensor.TYPE_HEART_RATE), SensorManager.SENSOR_DELAY_NORMAL);
 
+        //testing
+        
         //Register battery sensor
         batteryStatus = this.registerReceiver(null, batterIntentFilter);
 
