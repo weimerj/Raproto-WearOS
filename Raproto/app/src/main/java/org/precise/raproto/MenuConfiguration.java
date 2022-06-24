@@ -63,9 +63,6 @@ public class MenuConfiguration extends FragmentActivity
 
         listView.addHeaderView(titleView);
 
-        progressBar = mItems.get(0).
-        progressBar.setVisibility(View.INVISIBLE);
-
         // Goes to a new screen when you click on one of the list items.
         // Dependent upon position of click.
         listView.setOnItemClickListener(
