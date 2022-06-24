@@ -3,22 +3,29 @@ package org.precise.raproto;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.fragment.app.FragmentActivity;
 import androidx.wear.ambient.AmbientModeSupport;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class MenuConfiguration extends FragmentActivity
         implements AmbientModeSupport.AmbientCallbackProvider {
 
     private List<ListsItem> mItems;
+    ProgressBar progressBar;
+    String lastUpdated = "N/A";
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,7 +43,8 @@ public class MenuConfiguration extends FragmentActivity
 
         // Create a list of items for adapter to display.
         mItems = new ArrayList<>();
-        mItems.add(new ListsItem(getString(R.string.update), lastConfig, ScreenConfiguration.class,"2_rows_arrow"));
+        mItems.add(new ListsItem("Update Attributes", "Last Update: " + lastUpdated, "2_rows_arrow_progress_bar"));
+        //mItems.add(new ListsItem(getString(R.string.update), lastConfig, ScreenConfiguration.class,"2_rows_arrow"));
         //mItems.add(new ListsItem(getString(R.string.update), getString(R.string.update_status), "2_rows"));
         mItems.add(new ListsItem(getString(R.string.subscribe), getString(R.string.subscribe_topic), "2_rows"));
         mItems.add(new ListsItem(getString(R.string.publish), getString(R.string.publish_topic),"2_rows"));
@@ -55,6 +63,9 @@ public class MenuConfiguration extends FragmentActivity
 
         listView.addHeaderView(titleView);
 
+        progressBar = mItems.get(0).
+        progressBar.setVisibility(View.INVISIBLE);
+
         // Goes to a new screen when you click on one of the list items.
         // Dependent upon position of click.
         listView.setOnItemClickListener(
@@ -62,6 +73,15 @@ public class MenuConfiguration extends FragmentActivity
                     @Override
                     public void onItemClick(
                             AdapterView<?> parent, View view, int position, long id) {
+
+                        // if first button is clicked, update last updated by field
+                        if(position == 1){
+                            SimpleDateFormat date_format = new SimpleDateFormat("dd-MMM-yy HH:mm");
+                            lastUpdated = date_format.format(Calendar.getInstance().getTime());
+                            mItems.set(0, new ListsItem("Update Attributes", "Last Update: " + lastUpdated, "2_rows_arrow_progress_bar"));
+                            listView.setAdapter(adapter);
+                        }
+
                         mItems.get(position - listView.getHeaderViewsCount())
                                 .launchActivity(getApplicationContext());
                     }
