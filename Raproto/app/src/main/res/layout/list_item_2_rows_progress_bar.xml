@@ -29,7 +29,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/default_text"
-            android:textSize="10sp"
+            android:textSize="12sp"
             android:textAppearance="@style/android:TextAppearance.Material.Body2" />
 
     </LinearLayout>
