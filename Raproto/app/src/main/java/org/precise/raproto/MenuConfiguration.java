@@ -60,7 +60,6 @@ public class MenuConfiguration extends FragmentActivity
         String lastConfig = sharedPref.getString("configTime", "");
         lastUpdated = sharedPref.getString("lastUpdated", "N/A");
 
-
         View view = this.getWindow().getDecorView();
         view.setBackgroundColor(colorValue);
 
