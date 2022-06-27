@@ -75,6 +75,13 @@ public class ListViewAdapter extends ArrayAdapter<ListsItem> {
                     holder.mImageView = convertView.findViewById(R.id.item_image);
                     holder.mTextView2.setText(mItems.get(position).getItemName2());
                     break;
+                case "2_rows_arrow_progress_bar":
+                    convertView = mInflater.inflate(R.layout.list_item_2_rows_progress_bar, parent, false);
+                    holder.mTextView = convertView.findViewById(R.id.item_text);
+                    holder.mTextView2 = convertView.findViewById(R.id.item_text2);
+                    holder.mImageView = convertView.findViewById(R.id.item_image);
+                    holder.mTextView2.setText(mItems.get(position).getItemName2());
+                    break;
             }
             convertView.setTag(holder); // Cache the holder for future use.
         } else {
