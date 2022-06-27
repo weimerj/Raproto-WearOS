@@ -1,10 +1,8 @@
 package org.precise.raproto;
 
 import android.app.Service;
-import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.SharedPreferences;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -134,6 +132,7 @@ public class SensorService extends Service implements SensorEventListener {
         float batteryPot = level * 100 / (float) scale;
         boolean isCharging = status == BatteryManager.BATTERY_STATUS_CHARGING;
         long tsLong = System.currentTimeMillis();
+
 
         try {
             LevelThrJson.put("BATTERY", batteryPot);
