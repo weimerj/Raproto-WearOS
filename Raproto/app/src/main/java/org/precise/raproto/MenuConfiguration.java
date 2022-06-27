@@ -48,16 +48,18 @@ public class MenuConfiguration extends FragmentActivity
     ListView listView;
     ListViewAdapter adapter;
 
-    String lastUpdated = "N/A";
+    String lastUpdated;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.menu);
 
-        // Get the color preference
+        // Get shared preferences
         sharedPref = getSharedPreferences("Raproto", Context.MODE_PRIVATE);
         int colorValue = sharedPref.getInt("color", 0);
         String lastConfig = sharedPref.getString("configTime", "");
+        lastUpdated = sharedPref.getString("lastUpdated", "N/A");
+
 
         View view = this.getWindow().getDecorView();
         view.setBackgroundColor(colorValue);
@@ -212,10 +214,10 @@ public class MenuConfiguration extends FragmentActivity
             JSONObject response = new JSONObject(message.toString());
             JSONObject sharedAttributes = response.getJSONObject("shared");
             JSONArray sharedAttributesKeys = sharedAttributes.names();
+            SharedPreferences.Editor editor = sharedPref.edit();
 
             for(int i = 0; i < sharedAttributes.length(); i++) {
                 String key = sharedAttributesKeys.getString(i);
-                SharedPreferences.Editor editor = sharedPref.edit();
 
                 if(!key.toUpperCase().equals("NAME")){
                     int value = sharedAttributes.getInt(key);
@@ -226,10 +228,15 @@ public class MenuConfiguration extends FragmentActivity
                 }
 
                 editor.apply();
-                lastUpdated = new SimpleDateFormat("MMM-dd-yy HH:mm").format(Calendar.getInstance().getTime());
-                mItems.set(0, new ListsItem("Update Attributes", "Last Update: " + lastUpdated, "2_rows_arrow"));
-                listView.setAdapter(adapter);
             }
+
+            lastUpdated = new SimpleDateFormat("MMM-dd-yy HH:mm").format(Calendar.getInstance().getTime());
+            editor.putString("lastUpdated", lastUpdated);
+            editor.apply();
+
+            mItems.set(0, new ListsItem("Update Attributes", "Last Update: " + lastUpdated, "2_rows_arrow"));
+            listView.setAdapter(adapter);
+
         } catch (Exception e){
             Log.d(TAG, "Error parsing message: " + e);
         }
