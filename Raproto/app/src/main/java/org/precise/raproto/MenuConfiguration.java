@@ -226,7 +226,6 @@ public class MenuConfiguration extends FragmentActivity
                     editor.putString(key, value);
                 }
 
-                editor.apply();
             }
 
             lastUpdated = new SimpleDateFormat("MMM-dd-yy HH:mm").format(Calendar.getInstance().getTime());
