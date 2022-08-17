@@ -16,6 +16,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DecimalFormat;
+
 
 public class SensorService extends Service implements SensorEventListener {
     private final static int BUFFER_THRESHOLD = 1024 * 10;
@@ -52,8 +54,6 @@ public class SensorService extends Service implements SensorEventListener {
         mSensorManager.registerListener(this, mSensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE), SensorManager.SENSOR_DELAY_NORMAL);
         mSensorManager.registerListener(this, mSensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY), SensorManager.SENSOR_DELAY_NORMAL);
         mSensorManager.registerListener(this, mSensorManager.getDefaultSensor(Sensor.TYPE_HEART_RATE), SensorManager.SENSOR_DELAY_NORMAL);
-
-        //testing
         
         //Register battery sensor
         batteryStatus = this.registerReceiver(null, batterIntentFilter);
@@ -150,6 +150,7 @@ public class SensorService extends Service implements SensorEventListener {
         JSONObject LevelThrJson = new JSONObject();
         JSONObject LevelTwoJson = new JSONObject();
         JSONObject LevelOneJson = new JSONObject();
+        DecimalFormat precision = new DecimalFormat("0.000");
 
         float accel_x = sensorEvent.values[0];
         float accel_y = sensorEvent.values[1];
@@ -157,9 +158,9 @@ public class SensorService extends Service implements SensorEventListener {
         long tsLong = System.currentTimeMillis();
 
         try {
-            LevelThrJson.put("x", accel_x);
-            LevelThrJson.put("y", accel_y);
-            LevelThrJson.put("z", accel_z);
+            LevelThrJson.put("x", precision.format(accel_x));
+            LevelThrJson.put("y", precision.format(accel_y));
+            LevelThrJson.put("z", precision.format(accel_z));
             LevelTwoJson.put(android_id + "_ACC", LevelThrJson);
             LevelOneJson.put("ts", tsLong);
             LevelOneJson.put("values", LevelTwoJson);
@@ -173,6 +174,7 @@ public class SensorService extends Service implements SensorEventListener {
         JSONObject LevelThrJson = new JSONObject();
         JSONObject LevelTwoJson = new JSONObject();
         JSONObject LevelOneJson = new JSONObject();
+        DecimalFormat precision = new DecimalFormat("0.000");
 
         float gyro_x = sensorEvent.values[0];
         float gyro_y = sensorEvent.values[1];
@@ -180,9 +182,9 @@ public class SensorService extends Service implements SensorEventListener {
         long tsLong = System.currentTimeMillis();
 
         try {
-            LevelThrJson.put("x", gyro_x);
-            LevelThrJson.put("y", gyro_y);
-            LevelThrJson.put("z", gyro_z);
+            LevelThrJson.put("x", precision.format(gyro_x));
+            LevelThrJson.put("y", precision.format(gyro_y));
+            LevelThrJson.put("z", precision.format(gyro_z));
             LevelTwoJson.put(android_id + "_GYRO", LevelThrJson);
             LevelOneJson.put("ts", tsLong);
             LevelOneJson.put("values", LevelTwoJson);
@@ -197,6 +199,7 @@ public class SensorService extends Service implements SensorEventListener {
         JSONObject LevelThrJson = new JSONObject();
         JSONObject LevelTwoJson = new JSONObject();
         JSONObject LevelOneJson = new JSONObject();
+        DecimalFormat precision = new DecimalFormat("0.000");
 
         float grav_x = sensorEvent.values[0];
         float grav_y = sensorEvent.values[1];
@@ -205,9 +208,9 @@ public class SensorService extends Service implements SensorEventListener {
         long tsLong = System.currentTimeMillis();
 
         try {
-            LevelThrJson.put("x", grav_x);
-            LevelThrJson.put("y", grav_y);
-            LevelThrJson.put("z", grav_z);
+            LevelThrJson.put("x", precision.format(grav_x));
+            LevelThrJson.put("y", precision.format(grav_y));
+            LevelThrJson.put("z", precision.format(grav_z));
             LevelTwoJson.put(android_id + "_GRAVITY", LevelThrJson);
             LevelOneJson.put("ts", tsLong);
             LevelOneJson.put("values", LevelTwoJson);
@@ -222,6 +225,7 @@ public class SensorService extends Service implements SensorEventListener {
         JSONObject LevelThrJson = new JSONObject();
         JSONObject LevelTwoJson = new JSONObject();
         JSONObject LevelOneJson = new JSONObject();
+        DecimalFormat precision = new DecimalFormat("0.000");
 
         float hrm = sensorEvent.values[0];
         long tsLong = System.currentTimeMillis();
