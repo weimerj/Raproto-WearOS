@@ -2,6 +2,7 @@ package org.precise.raproto;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.ContentObserver;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
@@ -73,6 +74,25 @@ public class DatabaseHandler extends SQLiteOpenHelper{
             return recordNum;
         }
     }
+
+//    public JSONObject readFirstRow() {
+//        SQLiteDatabase db = this.getWritableDatabase();
+//        Cursor cursor = db.query(TABLE_NAME, null, null, null, null, null, null);
+//        JSONObject json = new JSONObject();
+//        if(cursor.moveToFirst()) {
+//            //String device_id = cursor.getString(cursor.getColumnIndex(KEY_device_id));
+//            String buffer = cursor.getString(cursor.getColumnIndex(KEY_values));
+//            try {
+//                //json.put("device_id", device_id);
+//                json.put("buffer", buffer);
+//
+//            } catch (JSONException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//        cursor.close();
+//        return json;
+//    }
 
     public String readFirstRow() {
         SQLiteDatabase db = this.getWritableDatabase();

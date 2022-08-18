@@ -1,35 +1,33 @@
-//package org.precise.raproto;
+package org.precise.raproto;
 
-//import android.content.Context;
-//import android.content.Intent;
-//import android.content.SharedPreferences;
-//import android.os.Bundle;
-//import android.util.Log;
-//import android.view.View;
-//
-//import androidx.fragment.app.FragmentActivity;
-//import androidx.wear.ambient.AmbientModeSupport;
-//
-//import org.eclipse.paho.android.service.MqttAndroidClient;
-//import org.eclipse.paho.client.mqttv3.IMqttActionListener;
-//import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
-//import org.eclipse.paho.client.mqttv3.IMqttToken;
-//import org.eclipse.paho.client.mqttv3.MqttCallback;
-//import org.eclipse.paho.client.mqttv3.MqttClient;
-//import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
-//import org.eclipse.paho.client.mqttv3.MqttException;
-//import org.eclipse.paho.client.mqttv3.MqttMessage;
-//import org.json.JSONArray;
-//import org.json.JSONObject;
-//
-//import java.io.UnsupportedEncodingException;
-//import java.util.Calendar;
-//import java.util.Date;
-//import java.util.Map;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
 
-// This class is no longer used and its function has been moved to MenuConfiguration
+import androidx.fragment.app.FragmentActivity;
+import androidx.wear.ambient.AmbientModeSupport;
 
-/*public class ScreenConfiguration extends FragmentActivity implements
+import org.eclipse.paho.android.service.MqttAndroidClient;
+import org.eclipse.paho.client.mqttv3.IMqttActionListener;
+import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
+import org.eclipse.paho.client.mqttv3.IMqttToken;
+import org.eclipse.paho.client.mqttv3.MqttCallback;
+import org.eclipse.paho.client.mqttv3.MqttClient;
+import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
+import org.eclipse.paho.client.mqttv3.MqttException;
+import org.eclipse.paho.client.mqttv3.MqttMessage;
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.io.UnsupportedEncodingException;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Map;
+
+public class ScreenConfiguration extends FragmentActivity implements
         AmbientModeSupport.AmbientCallbackProvider {
 
     private final String TAG = "Screen Configuration";
@@ -102,9 +100,9 @@
 
     private class MyAmbientCallback extends AmbientModeSupport.AmbientCallback {}
 
-    *//**
+    /**
      * Subscribes to attribute updates from Thingsboard
-     *//*
+     */
     protected void subscribeToAttributesTopic() {
         try {
             Log.d(TAG, "Subscribing..");
@@ -123,12 +121,12 @@
                     addToSharedPreferences(message);
 
                     // Confirm values added to sharedPref
-                    *//*
+                    /*
                     Map<String, ?> allEntries = sharedPref.getAll();
                     for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
                         Log.d("map values", entry.getKey() + ": " + entry.getValue().toString() + " Class: " + entry.getValue().getClass().toString());
                     }
-                    *//*
+                    */
                 }
 
                 @Override
@@ -141,9 +139,9 @@
         }
     }
 
-    *//**
+    /**
      * Requests attribute values from Thingsboard using publish topic.
-     *//*
+     */
     protected void getSharedAttributes() {
         try {
             String attributesMessage = "{'GRAVITY': '-1'}";
@@ -156,9 +154,9 @@
     }
 
 
-    *//**
+    /**
      * Adds attributes to shared preferences object.
-     *//*
+     */
     protected void addToSharedPreferences(MqttMessage message) {
         try {
             // Add values to shared preferences obj
@@ -188,5 +186,5 @@
     }
 
 
-}*/
+}
 

@@ -1,8 +1,14 @@
 package org.precise.raproto;
 
+import static android.hardware.Sensor.TYPE_HEART_RATE;
+
+import android.Manifest;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -11,6 +17,7 @@ import android.os.BatteryManager;
 import android.os.IBinder;
 import android.provider.Settings;
 import android.util.Log;
+
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -23,6 +30,7 @@ public class SensorService extends Service implements SensorEventListener {
     private DatabaseHandler db;
     private String TAG = SENSOR_SERVICE;
     private Intent batteryStatus;
+    private MenuMain mMain = new MenuMain();
 
     StringBuffer buffer = new StringBuffer(BUFFER_THRESHOLD);
     JSONArray jsonArray = new JSONArray();
@@ -32,6 +40,8 @@ public class SensorService extends Service implements SensorEventListener {
 
     @Override
     public void onCreate() {
+
+        PackageManager packman = getPackageManager();
         super.onCreate();
 
         //Create Database handler
@@ -48,13 +58,33 @@ public class SensorService extends Service implements SensorEventListener {
         final IntentFilter batterIntentFilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
 
         // Registering Sensors
-        mSensorManager.registerListener(this, mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_NORMAL);
-        mSensorManager.registerListener(this, mSensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE), SensorManager.SENSOR_DELAY_NORMAL);
-        mSensorManager.registerListener(this, mSensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY), SensorManager.SENSOR_DELAY_NORMAL);
-        mSensorManager.registerListener(this, mSensorManager.getDefaultSensor(Sensor.TYPE_HEART_RATE), SensorManager.SENSOR_DELAY_NORMAL);
+//        mSensorManager.registerListener(this, mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_NORMAL);
+//        mSensorManager.registerListener(this, mSensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE), SensorManager.SENSOR_DELAY_NORMAL);
+//        mSensorManager.registerListener(this, mSensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY), SensorManager.SENSOR_DELAY_NORMAL);
+//        mSensorManager.registerListener(this, mSensorManager.getDefaultSensor(Sensor.TYPE_HEART_RATE), SensorManager.SENSOR_DELAY_NORMAL);
 
-        //testing
-        
+        SharedPreferences sharedPref = getSharedPreferences("Raproto", Context.MODE_PRIVATE);
+
+        //Register ACC sensor
+        if (sharedPref.getInt("ACC", -1) != -1) {
+            mSensorManager.registerListener(this, mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), sharedPref.getInt("ACC", -1) * 1000, sharedPref.getInt("ACC", -1) * 1000);
+        }
+
+        //Register GYRO sensor
+        if (sharedPref.getInt("GYRO", -1) != -1) {
+            mSensorManager.registerListener(this, mSensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE), sharedPref.getInt("GYRO", -1) * 1000, sharedPref.getInt("GYRO", -1) * 1000);
+            }
+
+        //Register GRAVITY sensor
+        if (sharedPref.getInt("GRAVITY", -1) != -1) {
+            mSensorManager.registerListener(this, mSensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY), sharedPref.getInt("GRAVITY", -1) * 1000, sharedPref.getInt("GRAVITY", -1) * 1000);
+        }
+
+        //Register HRM sensor
+        if (sharedPref.getInt("HRM", -1) != -1) {
+            mSensorManager.registerListener(this, mSensorManager.getDefaultSensor(Sensor.TYPE_HEART_RATE), sharedPref.getInt("HRM", -1) * 1000, sharedPref.getInt("HRM", -1) * 1000);
+        }
+
         //Register battery sensor
         batteryStatus = this.registerReceiver(null, batterIntentFilter);
 
@@ -98,7 +128,7 @@ public class SensorService extends Service implements SensorEventListener {
                     jsonArray.put(getGravityJson(sensorEvent, android_id));
                     break;
 
-                case Sensor.TYPE_HEART_RATE:
+                case TYPE_HEART_RATE:
                     //TODO: Look into Green light vs red light
                     jsonArray.put(getHRMJson(sensorEvent, android_id));
                     break;

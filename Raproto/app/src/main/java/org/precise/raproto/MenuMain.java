@@ -1,10 +1,12 @@
 package org.precise.raproto;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
@@ -17,6 +19,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentActivity;
 import androidx.wear.ambient.AmbientModeSupport;
 
@@ -42,6 +45,12 @@ public class MenuMain extends FragmentActivity implements AmbientModeSupport.Amb
     @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        //Get BODY_SENSORS permission from user
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.BODY_SENSORS) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.BODY_SENSORS}, 0);
+        }
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.menu_main);
 
@@ -72,6 +81,7 @@ public class MenuMain extends FragmentActivity implements AmbientModeSupport.Amb
 
         // Create a list of items for adapter to display.
 
+        mItems.add(new ListsItem(getString(R.string.raproto), sharedPref.getString("NAME",""), "2_rows_centered"));
         mItems.add(new ListsItem(getString(R.string.device_id), android_id, "2_rows"));
         mItems.add(new ListsItem(getString(R.string.on_off), "toggle"));
         mItems.add(syncItem = new ListsItem(getString(R.string.sync), String.valueOf(db.getNumRows(true)),"2_rows"));
@@ -80,7 +90,6 @@ public class MenuMain extends FragmentActivity implements AmbientModeSupport.Amb
         mItems.add(new ListsItem(getString(R.string.exit), getString(R.string.save),"2_rows"));
 
         syncIndex = mItems.indexOf(syncItem);
-
 
         // Custom adapter used so we can use custom layout for the rows within the list.
         mAdapter =
@@ -121,13 +130,13 @@ public class MenuMain extends FragmentActivity implements AmbientModeSupport.Amb
         listView.setAdapter(mAdapter);
 
         // Set header of listView to be the title from title_layout.
-        LayoutInflater inflater = LayoutInflater.from(this);
-        View titleLayout = inflater.inflate(R.layout.title, null);
-        TextView titleView = titleLayout.findViewById(R.id.title_text);
-        titleView.setText(R.string.app_name);
-        titleView.setOnClickListener(null); // make title non-clickable.
-
-        listView.addHeaderView(titleView);
+//        LayoutInflater inflater = LayoutInflater.from(this);
+//        View titleLayout = inflater.inflate(R.layout.title, null);
+//        TextView titleView = titleLayout.findViewById(R.id.title_text);
+//        titleView.setText(R.string.app_name);
+//        titleView.setOnClickListener(null); // make title non-clickable.
+//
+//        listView.addHeaderView(titleView);
 
 
         // Goes to a new screen when you click on one of the list items.
@@ -141,9 +150,6 @@ public class MenuMain extends FragmentActivity implements AmbientModeSupport.Amb
                                 .launchActivity(getApplicationContext());
                     }
                 });
-
-
-
     }
 
     @Override

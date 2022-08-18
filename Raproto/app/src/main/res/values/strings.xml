@@ -24,8 +24,7 @@
 
     <!-- MQTT Menu -->
     <string name="MQTT">MQTT</string>
-    <string name="update">Update Attributes:</string>
-    <string name="last_update">Last Update:</string>
+    <string name="update">Update Status:</string>
     <string name="update_status">Unknown</string>
     <string name="subscribe">Subscribe Topic:</string>
     <string name="subscribe_topic">v1/devices/me.attributes/response/</string>
