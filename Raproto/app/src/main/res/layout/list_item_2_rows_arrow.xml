@@ -27,8 +27,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:text="@string/default_text"
-                android:textAppearance="@style/android:TextAppearance.Material.Body2"
-                android:textSize="12sp"/>
+                android:textAppearance="@style/android:TextAppearance.Material.Body2"/>
     </LinearLayout>
     <ImageView
         android:id="@+id/item_image"

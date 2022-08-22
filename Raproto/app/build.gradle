@@ -4,7 +4,6 @@ plugins {
 
 android {
     compileSdkVersion 30
-    buildToolsVersion "30.0.2"
 
     defaultConfig {
         applicationId "org.precise.raproto"
@@ -34,4 +33,5 @@ dependencies {
     compileOnly 'com.google.android.wearable:wearable:2.8.1'
     implementation'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.1.0'
     implementation 'org.eclipse.paho:org.eclipse.paho.android.service:1.1.1'
+//    implementation 'androidx.appcompat:appcompat:1.4.2'
 }
