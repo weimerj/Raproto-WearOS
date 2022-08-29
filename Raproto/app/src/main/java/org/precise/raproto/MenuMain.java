@@ -148,9 +148,17 @@ public class MenuMain extends FragmentActivity implements AmbientModeSupport.Amb
                             AdapterView<?> parent, View view, int position, long id) {
                         mItems.get(position - listView.getHeaderViewsCount())
                                 .launchActivity(getApplicationContext());
+
+                        // If sync now button is pressed
+                        //Todo: change from hard-coded position
+                        if(position == 3){
+                            Intent intent = new Intent(MenuMain.this,MQTTService.class);
+                            startService(intent);
+                        }
                     }
                 });
     }
+
 
     @Override
     public AmbientModeSupport.AmbientCallback getAmbientCallback() {
