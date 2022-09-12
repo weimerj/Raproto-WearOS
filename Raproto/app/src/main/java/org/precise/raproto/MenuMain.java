@@ -152,6 +152,8 @@ public class MenuMain extends FragmentActivity implements AmbientModeSupport.Amb
                         // If sync now button is pressed
                         //Todo: change from hard-coded position
                         if(position == 3){
+                            Log.d(TAG, "Syncing...");
+                            stopService(MQTTIntent);
                             Intent intent = new Intent(MenuMain.this,MQTTService.class);
                             startService(intent);
                         }
