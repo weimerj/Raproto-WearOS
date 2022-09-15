@@ -87,7 +87,6 @@ public class MenuMain extends FragmentActivity implements AmbientModeSupport.Amb
         mItems.add(syncItem = new ListsItem(getString(R.string.sync), String.valueOf(db.getNumRows(true)),"2_rows"));
         mItems.add(new ListsItem(getString(R.string.settings), MenuSettings.class,"arrow"));
         mItems.add(new ListsItem(getString(R.string.about), MenuAbout.class, "arrow"));
-        mItems.add(new ListsItem(getString(R.string.exit), getString(R.string.save),"2_rows"));
 
         syncIndex = mItems.indexOf(syncItem);
 

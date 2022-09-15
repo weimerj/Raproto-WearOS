@@ -44,8 +44,8 @@
     <string name="info">Info</string>
 
     <!-- Exit -->
-    <string name="exit">Exit</string>
-    <string name="save">Save and Stop</string>
+    <!-- <string name="exit">Exit</string> -->
+    <!-- <string name="save">Save and Stop</string> -->
 
     <!-- Disclamer Screen -->
     <string name="disclamer">Disclamer</string>
