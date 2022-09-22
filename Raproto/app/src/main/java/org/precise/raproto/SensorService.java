@@ -2,7 +2,6 @@ package org.precise.raproto;
 
 import static android.hardware.Sensor.TYPE_HEART_RATE;
 
-import android.Manifest;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -18,12 +17,9 @@ import android.os.IBinder;
 import android.provider.Settings;
 import android.util.Log;
 
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.text.DecimalFormat;
 
 
 public class SensorService extends Service implements SensorEventListener {
@@ -183,7 +179,6 @@ public class SensorService extends Service implements SensorEventListener {
         JSONObject LevelThrJson = new JSONObject();
         JSONObject LevelTwoJson = new JSONObject();
         JSONObject LevelOneJson = new JSONObject();
-        DecimalFormat precision = new DecimalFormat("0.000");
 
         float accel_x = sensorEvent.values[0];
         float accel_y = sensorEvent.values[1];
@@ -191,9 +186,9 @@ public class SensorService extends Service implements SensorEventListener {
         long tsLong = System.currentTimeMillis();
 
         try {
-            LevelThrJson.put("x", precision.format(accel_x));
-            LevelThrJson.put("y", precision.format(accel_y));
-            LevelThrJson.put("z", precision.format(accel_z));
+            LevelThrJson.put("x", Math.round(accel_x * 1000.0) / 1000.0);
+            LevelThrJson.put("y", Math.round(accel_y * 1000.0) / 1000.0);
+            LevelThrJson.put("z", Math.round(accel_z * 1000.0) / 1000.0);
             LevelTwoJson.put(android_id + "_ACC", LevelThrJson);
             LevelOneJson.put("ts", tsLong);
             LevelOneJson.put("values", LevelTwoJson);
@@ -207,7 +202,6 @@ public class SensorService extends Service implements SensorEventListener {
         JSONObject LevelThrJson = new JSONObject();
         JSONObject LevelTwoJson = new JSONObject();
         JSONObject LevelOneJson = new JSONObject();
-        DecimalFormat precision = new DecimalFormat("0.000");
 
         float gyro_x = sensorEvent.values[0];
         float gyro_y = sensorEvent.values[1];
@@ -215,9 +209,9 @@ public class SensorService extends Service implements SensorEventListener {
         long tsLong = System.currentTimeMillis();
 
         try {
-            LevelThrJson.put("x", precision.format(gyro_x));
-            LevelThrJson.put("y", precision.format(gyro_y));
-            LevelThrJson.put("z", precision.format(gyro_z));
+            LevelThrJson.put("x", Math.round(gyro_x * 1000.0) / 1000.0);
+            LevelThrJson.put("y", Math.round(gyro_y * 1000.0) / 1000.0);
+            LevelThrJson.put("z", Math.round(gyro_z * 1000.0) / 1000.0);
             LevelTwoJson.put(android_id + "_GYRO", LevelThrJson);
             LevelOneJson.put("ts", tsLong);
             LevelOneJson.put("values", LevelTwoJson);
@@ -232,7 +226,6 @@ public class SensorService extends Service implements SensorEventListener {
         JSONObject LevelThrJson = new JSONObject();
         JSONObject LevelTwoJson = new JSONObject();
         JSONObject LevelOneJson = new JSONObject();
-        DecimalFormat precision = new DecimalFormat("0.000");
 
         float grav_x = sensorEvent.values[0];
         float grav_y = sensorEvent.values[1];
@@ -241,9 +234,9 @@ public class SensorService extends Service implements SensorEventListener {
         long tsLong = System.currentTimeMillis();
 
         try {
-            LevelThrJson.put("x", precision.format(grav_x));
-            LevelThrJson.put("y", precision.format(grav_y));
-            LevelThrJson.put("z", precision.format(grav_z));
+            LevelThrJson.put("x", Math.round(grav_x * 1000.0) / 1000.0);
+            LevelThrJson.put("y", Math.round(grav_y * 1000.0) / 1000.0);
+            LevelThrJson.put("z", Math.round(grav_z * 1000.0) / 1000.0);
             LevelTwoJson.put(android_id + "_GRAVITY", LevelThrJson);
             LevelOneJson.put("ts", tsLong);
             LevelOneJson.put("values", LevelTwoJson);
@@ -258,7 +251,6 @@ public class SensorService extends Service implements SensorEventListener {
         JSONObject LevelThrJson = new JSONObject();
         JSONObject LevelTwoJson = new JSONObject();
         JSONObject LevelOneJson = new JSONObject();
-        DecimalFormat precision = new DecimalFormat("0.000");
 
         float hrm = sensorEvent.values[0];
         long tsLong = System.currentTimeMillis();
