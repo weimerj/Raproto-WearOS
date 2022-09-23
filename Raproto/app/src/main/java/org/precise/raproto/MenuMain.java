@@ -4,7 +4,6 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -12,22 +11,15 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentActivity;
 import androidx.wear.ambient.AmbientModeSupport;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 
 public class MenuMain extends FragmentActivity implements AmbientModeSupport.AmbientCallbackProvider, DatabaseObserver {
@@ -64,9 +56,8 @@ public class MenuMain extends FragmentActivity implements AmbientModeSupport.Amb
         SharedPreferences sharedPref = getSharedPreferences("Raproto", Context.MODE_PRIVATE);
         int colorValue = sharedPref.getInt("color", -1);
         if (colorValue == -1) {
-            colorValue = Color.parseColor("#0060ff");
             View view = this.getWindow().getDecorView();
-            view.setBackgroundColor(colorValue);
+            view.setBackgroundColor(Color.BLACK);
         }else {
             View view = this.getWindow().getDecorView();
             view.setBackgroundColor(colorValue);
@@ -91,6 +82,7 @@ public class MenuMain extends FragmentActivity implements AmbientModeSupport.Amb
         syncIndex = mItems.indexOf(syncItem);
 
         // Custom adapter used so we can use custom layout for the rows within the list.
+        int finalColorValue = colorValue;
         mAdapter =
                 new ListViewAdapterToggle(
                         this,
@@ -99,24 +91,25 @@ public class MenuMain extends FragmentActivity implements AmbientModeSupport.Amb
                             @SuppressLint("ResourceAsColor")
                             @Override
                             public void onChange(boolean switchOn) {
+                                SharedPreferences sharedPref = MenuMain.this.getSharedPreferences("Raproto", Context.MODE_PRIVATE);
+                                int colorValue = sharedPref.getInt("color", -1);
+                                if (colorValue == -1) switchOn = true;
                                 if (switchOn) {
-                                    //Todo: Make the toggle switch work not just pressing the list item
                                     View view = getWindow().getDecorView();
-                                    //Todo: Change this color of green to match the Tizen App
                                     int color = Color.parseColor("#37803a");
                                     view.setBackgroundColor(color);
                                     startService(sensorIntent);
-                                    SharedPreferences sharedPref = MenuMain.this.getSharedPreferences("Raproto",Context.MODE_PRIVATE);
                                     SharedPreferences.Editor editor = sharedPref.edit();
                                     editor.putInt("color", color);
+                                    editor.putString("switch", "On");
                                     editor.apply();
 
                                 } else {
                                     View view = getWindow().getDecorView();
                                     view.setBackgroundColor(Color.BLACK);
-                                    SharedPreferences sharedPref = MenuMain.this.getSharedPreferences("Raproto",Context.MODE_PRIVATE);
                                     SharedPreferences.Editor editor = sharedPref.edit();
                                     editor.putInt("color", Color.BLACK);
+                                    editor.putString("switch", "Off");
                                     editor.apply();
                                     stopService(sensorIntent);
                                 }
