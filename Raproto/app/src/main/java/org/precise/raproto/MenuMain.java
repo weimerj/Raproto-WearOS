@@ -61,6 +61,7 @@ public class MenuMain extends FragmentActivity implements AmbientModeSupport.Amb
         }else {
             View view = this.getWindow().getDecorView();
             view.setBackgroundColor(colorValue);
+
         }
 
         //TODO: Fix the Toggle switch to be on if the app is on
@@ -92,8 +93,6 @@ public class MenuMain extends FragmentActivity implements AmbientModeSupport.Amb
                             @Override
                             public void onChange(boolean switchOn) {
                                 SharedPreferences sharedPref = MenuMain.this.getSharedPreferences("Raproto", Context.MODE_PRIVATE);
-                                int colorValue = sharedPref.getInt("color", -1);
-                                if (colorValue == -1) switchOn = true;
                                 if (switchOn) {
                                     View view = getWindow().getDecorView();
                                     int color = Color.parseColor("#37803a");
@@ -101,7 +100,6 @@ public class MenuMain extends FragmentActivity implements AmbientModeSupport.Amb
                                     startService(sensorIntent);
                                     SharedPreferences.Editor editor = sharedPref.edit();
                                     editor.putInt("color", color);
-                                    editor.putString("switch", "On");
                                     editor.apply();
 
                                 } else {
@@ -109,7 +107,6 @@ public class MenuMain extends FragmentActivity implements AmbientModeSupport.Amb
                                     view.setBackgroundColor(Color.BLACK);
                                     SharedPreferences.Editor editor = sharedPref.edit();
                                     editor.putInt("color", Color.BLACK);
-                                    editor.putString("switch", "Off");
                                     editor.apply();
                                     stopService(sensorIntent);
                                 }
