@@ -1,5 +1,6 @@
 package org.precise.raproto;
 
+import android.app.Notification;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -104,15 +105,31 @@ public class MQTTService extends Service {
 //                    byte[] encodedPayload = json.toString().getBytes("UTF-8");
                     byte[] encodedPayload = row.getBytes("UTF-8");
                     MqttMessage message = new MqttMessage(encodedPayload);
+
+                    //Set Quality of Service to QOS shared preference
+                    //If shared pref is set to -1, default to 1
+                    if (sharedPref.getInt("QOS", 1) != -1) {
+                        message.setQos(sharedPref.getInt("qos", 1));
+                    } else {
+                        message.setQos(1);
+                    }
+
                     client.publish(topic, message);
                     db.deleteFirstRow();
                 } catch (UnsupportedEncodingException | MqttException e) {
                     Log.d(TAG, "Exception Occurred" + e);
-
                     e.printStackTrace();
                 }
             }
-            mHandler.postDelayed(this, 20000);
+
+            //Delay data transmission by TX_RATE shared preference
+            //If shared pref is set to -1, default to 60 seconds
+            if (sharedPref.getInt("TX_RATE", -1) != -1) {
+                mHandler.postDelayed(this, sharedPref.getInt("TX_RATE", 0));
+            } else {
+                mHandler.postDelayed(this, 60000);
+            }
+
         }
     };
 
