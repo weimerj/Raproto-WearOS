@@ -9,6 +9,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.PowerManager;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
@@ -43,7 +44,13 @@ public class MenuMain extends FragmentActivity implements AmbientModeSupport.Amb
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.BODY_SENSORS}, 0);
         }
 
+        // Set wake-lock to force device to stay on
+        PowerManager powerManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
+        PowerManager.WakeLock wakeLock = powerManager.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK, "wakelock-flag:");
+
         super.onCreate(savedInstanceState);
+        wakeLock.acquire();
+
         setContentView(R.layout.menu_main);
 
         db = new DatabaseHandler(this);
