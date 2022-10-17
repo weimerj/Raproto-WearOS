@@ -72,7 +72,7 @@ public class MenuMain extends FragmentActivity implements AmbientModeSupport.Amb
         AmbientModeSupport.attach(this);
         final Intent MQTTIntent = new Intent(MenuMain.this,MQTTService.class);
         AmbientModeSupport.attach(this);
-        startService(MQTTIntent);
+        startForegroundService(MQTTIntent);
 
         // Create a list of items for adapter to display.
 
@@ -100,7 +100,7 @@ public class MenuMain extends FragmentActivity implements AmbientModeSupport.Amb
                                     View view = getWindow().getDecorView();
                                     int color = Color.parseColor("#37803a");
                                     view.setBackgroundColor(color);
-                                    startService(sensorIntent);
+                                    startForegroundService(sensorIntent);
                                     SharedPreferences.Editor editor = sharedPref.edit();
                                     editor.putInt("color", color);
                                     editor.apply();
@@ -147,7 +147,7 @@ public class MenuMain extends FragmentActivity implements AmbientModeSupport.Amb
                             Log.d(TAG, "Syncing...");
                             stopService(MQTTIntent);
                             Intent intent = new Intent(MenuMain.this,MQTTService.class);
-                            startService(intent);
+                            startForegroundService(intent);
                         }
                     }
                 });

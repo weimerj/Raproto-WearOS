@@ -2,6 +2,10 @@ package org.precise.raproto;
 
 import static android.hardware.Sensor.TYPE_HEART_RATE;
 
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -16,6 +20,8 @@ import android.os.BatteryManager;
 import android.os.IBinder;
 import android.provider.Settings;
 import android.util.Log;
+
+import androidx.core.app.NotificationCompat;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -49,6 +55,20 @@ public class SensorService extends Service implements SensorEventListener {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        // Start Foreground Service
+        createNotificationChannel();
+
+        Intent intent1 = new Intent(MenuMain.class.toString());
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent1, 0);
+
+        Notification notification = new NotificationCompat.Builder(
+                this, "ChannelID")
+                .setContentTitle("MQTT Foreground Service")
+                .setContentText("Service Running")
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setContentIntent(pendingIntent).build();
+
+        startForeground(1, notification);
 
         // Get sensor manager on starting the service.
         mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
@@ -88,6 +108,17 @@ public class SensorService extends Service implements SensorEventListener {
         batteryStatus = this.registerReceiver(null, batterIntentFilter);
 
         return START_STICKY;
+    }
+
+    private void createNotificationChannel() {
+        NotificationChannel notificationChannel = new NotificationChannel(
+                "ChannelID",
+                "NotificationChannel",
+                NotificationManager.IMPORTANCE_HIGH
+        );
+
+        NotificationManager manager = getSystemService(NotificationManager.class);
+        manager.createNotificationChannel(notificationChannel);
     }
 
     @Override
