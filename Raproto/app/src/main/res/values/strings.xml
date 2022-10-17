@@ -22,6 +22,9 @@
     <string name="configuration">Configuration</string>
     <string name="config_time">Never</string>
 
+    <!-- Exit -->
+    <string name="exit">Exit</string>
+
     <!-- MQTT Menu -->
     <string name="MQTT">MQTT</string>
     <string name="update">Update Status:</string>
