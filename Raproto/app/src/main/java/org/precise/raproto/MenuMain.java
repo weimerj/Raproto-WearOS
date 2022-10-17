@@ -12,7 +12,6 @@ import android.os.Handler;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
@@ -45,8 +44,6 @@ public class MenuMain extends FragmentActivity implements AmbientModeSupport.Amb
         }
 
         super.onCreate(savedInstanceState);
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-
         setContentView(R.layout.menu_main);
 
         db = new DatabaseHandler(this);
