@@ -79,6 +79,7 @@ public class MenuMain extends FragmentActivity implements AmbientModeSupport.Amb
         mItems.add(syncItem = new ListsItem(getString(R.string.sync), String.valueOf(db.getNumRows(true)),"2_rows"));
         mItems.add(new ListsItem(getString(R.string.settings), MenuSettings.class,"arrow"));
         mItems.add(new ListsItem(getString(R.string.about), MenuAbout.class, "arrow"));
+        mItems.add(new ListsItem(getString(R.string.exit),"arrow"));
 
         syncIndex = mItems.indexOf(syncItem);
 
@@ -145,6 +146,12 @@ public class MenuMain extends FragmentActivity implements AmbientModeSupport.Amb
                             stopService(MQTTIntent);
                             Intent intent = new Intent(MenuMain.this,MQTTService.class);
                             startForegroundService(intent);
+                        }
+
+                        if (position == 6){
+                            Log.d(TAG, "Exiting app");
+                            finish();
+                            System.exit(0);
                         }
                     }
                 });
