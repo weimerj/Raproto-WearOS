@@ -190,13 +190,13 @@ public class SensorService extends Service implements SensorEventListener {
         int scale = batteryStatus.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
         int status = batteryStatus.getIntExtra(BatteryManager.EXTRA_STATUS, -1);
         float batteryPot = level * 100 / (float) scale;
-        boolean isCharging = status == BatteryManager.BATTERY_STATUS_CHARGING;
+        //boolean isCharging = status == BatteryManager.BATTERY_STATUS_CHARGING;
         long tsLong = System.currentTimeMillis();
 
 
         try {
             LevelThrJson.put("BATTERY", batteryPot);
-            LevelThrJson.put("IsCharging", isCharging);
+            //LevelThrJson.put("IsCharging", isCharging);
             LevelTwoJson.put(android_id + "_BAT", LevelThrJson);
             LevelOneJson.put("ts", tsLong);
             LevelOneJson.put("values", LevelTwoJson);
