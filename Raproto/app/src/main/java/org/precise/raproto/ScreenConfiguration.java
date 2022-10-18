@@ -1,9 +1,9 @@
 package org.precise.raproto;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 
@@ -23,8 +23,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.Map;
 
 public class ScreenConfiguration extends FragmentActivity implements
@@ -32,7 +30,7 @@ public class ScreenConfiguration extends FragmentActivity implements
 
     private final String TAG = "Screen Configuration";
     String brokerAddress = "ssl://tb.precise.seas.upenn.edu:8883";
-    private String username = "fbdb89251fdc95aa"; // Access token for device
+    //private String username = "fbdb89251fdc95aa"; // Access token for device
     private String password = ""; // leave empty
     int qos = 1;
 
@@ -43,6 +41,9 @@ public class ScreenConfiguration extends FragmentActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.screen_config);
+
+        String username = Settings.Secure.getString(ScreenConfiguration.this.getContentResolver(),
+                Settings.Secure.ANDROID_ID);
 
         // Get the color preference
         SharedPreferences sharedPref = getSharedPreferences("Raproto", Context.MODE_PRIVATE);
@@ -116,17 +117,17 @@ public class ScreenConfiguration extends FragmentActivity implements
                 @Override
                 public void messageArrived(String topic, MqttMessage message) throws Exception {
                     Log.d(TAG, "Message arrived.");
-                    //Log.d(TAG,"message>>" + new String(message.getPayload()));
+                    Log.d(TAG,"message>>" + new String(message.getPayload()));
 
                     addToSharedPreferences(message);
 
                     // Confirm values added to sharedPref
-                    /*
+
                     Map<String, ?> allEntries = sharedPref.getAll();
                     for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
                         Log.d("map values", entry.getKey() + ": " + entry.getValue().toString() + " Class: " + entry.getValue().getClass().toString());
                     }
-                    */
+
                 }
 
                 @Override

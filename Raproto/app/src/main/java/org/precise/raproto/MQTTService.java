@@ -17,15 +17,11 @@ import androidx.core.app.NotificationCompat;
 
 import org.eclipse.paho.android.service.MqttAndroidClient;
 import org.eclipse.paho.client.mqttv3.IMqttActionListener;
-import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.IMqttToken;
-import org.eclipse.paho.client.mqttv3.MqttCallback;
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 
@@ -166,71 +162,8 @@ public class MQTTService extends Service {
 
         }
     };
-    /**
-     * Subscribes to attribute updates from Thingsboard and adds to shared preferences.
-     */
-    private void subscribeToAttributesTopic() {
-        try {
-            Log.d(TAG, "Subscribing..");
-            client.subscribe("v1/devices/me/attributes/response/+", 1);
-            client.setCallback(new MqttCallback() {
-                @Override
-                public void connectionLost(Throwable cause) {
-                    Log.d(TAG, "Connection Lost.");
-                }
 
-                @Override
-                public void messageArrived(String topic, MqttMessage message) throws Exception {
-                    Log.d(TAG, "Message arrived.");
-                    Log.d(TAG,"message>>" + new String(message.getPayload()));
-                    Log.d(TAG,"topic>>" + topic);
 
-                    // Add values to shared preferences obj
-                    JSONObject response = new JSONObject(message.toString());
-                    JSONObject sharedAttributes = response.getJSONObject("shared");
-                    JSONArray sharedAttributesKeys = sharedAttributes.names();
-
-                    for(int i = 0; i < sharedAttributes.length(); i++){
-                        String key = sharedAttributesKeys.getString(i);
-                        String value = sharedAttributes.getString(key);
-                        SharedPreferences.Editor editor = sharedPref.edit();
-                        editor.putString(key, value);
-                        editor.apply();
-                    }
-
-                    // Confirm values added to sharedPref
-                    /*
-                    Map<String, ?> allEntries = sharedPref.getAll();
-                    for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
-                        Log.d("map values", entry.getKey() + ": " + entry.getValue().toString());
-                    }
-                     */
-                }
-
-                @Override
-                public void deliveryComplete(IMqttDeliveryToken token) {
-                    Log.d(TAG, "Subscription Successful.");
-                }
-            });
-        } catch (MqttException e){
-            Log.d(TAG, "Exception occurred " + e);
-            e.printStackTrace();
-        }
-    }
-    /**
-     * Requests attribute values from Thingsboard using publish topic.
-     */
-    private void getSharedAttributes() {
-        try {
-            String attributesMessage = "{'GRAVITY': '-1'}";
-            MqttMessage message = new MqttMessage(attributesMessage.getBytes("UTF-8"));
-            client.publish("v1/devices/me/attributes/request/1", message);
-            Log.d(TAG, "Requested shared attributes.");
-        } catch (UnsupportedEncodingException | MqttException e) {
-            Log.d(TAG, "Exception occurred " + e);
-            e.printStackTrace();
-        }
-    }
 
     @Override
     public void onDestroy() {
