@@ -11,7 +11,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -33,7 +32,7 @@ public class SensorService extends Service implements SensorEventListener {
     private SensorManager mSensorManager;
     private DatabaseHandler db;
     private String TAG = SENSOR_SERVICE;
-    private Intent batteryStatus;
+    //private Intent batteryStatus;
     private MenuMain mMain = new MenuMain();
 
     StringBuffer buffer = new StringBuffer(BUFFER_THRESHOLD);
@@ -45,7 +44,7 @@ public class SensorService extends Service implements SensorEventListener {
     @Override
     public void onCreate() {
 
-        PackageManager packman = getPackageManager();
+        //PackageManager packman = getPackageManager();
         super.onCreate();
 
         //Create Database handler
@@ -73,7 +72,7 @@ public class SensorService extends Service implements SensorEventListener {
         // Get sensor manager on starting the service.
         mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         // Battery filter register
-        final IntentFilter batterIntentFilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
+        //final IntentFilter batterIntentFilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
 
         // Registering Sensors
 
@@ -103,9 +102,6 @@ public class SensorService extends Service implements SensorEventListener {
         if (sharedPref.getInt("HRM", -1) != -1) {
             mSensorManager.registerListener(this, mSensorManager.getDefaultSensor(Sensor.TYPE_HEART_RATE), sharedPref.getInt("HRM", -1) * 1000, sharedPref.getInt("HRM", -1) * 1000);
         }
-
-        //Register battery sensor
-        batteryStatus = this.registerReceiver(null, batterIntentFilter);
 
         return START_STICKY;
     }
@@ -165,8 +161,14 @@ public class SensorService extends Service implements SensorEventListener {
             }
         }
         else{
+
             //include battery data to every buffer
-            jsonArray.put(getBatteryJson(android_id));
+            
+            IntentFilter ifilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
+            Intent batteryStatus = this.registerReceiver(null, ifilter);
+            int level = batteryStatus.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
+
+            jsonArray.put(getBatteryJson(level, android_id));
 
             Log.d(TAG, jsonArray.toString());
             try {
@@ -180,22 +182,22 @@ public class SensorService extends Service implements SensorEventListener {
             }
         }
     }
-    public JSONObject getBatteryJson(String android_id) {
+    public JSONObject getBatteryJson(float bat, String android_id) {
         JSONObject LevelThrJson = new JSONObject();
         JSONObject LevelTwoJson = new JSONObject();
         JSONObject LevelOneJson = new JSONObject();
 
         //Put timestamp, battery status and level to JSON string
-        int level = batteryStatus.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
-        int scale = batteryStatus.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
-        int status = batteryStatus.getIntExtra(BatteryManager.EXTRA_STATUS, -1);
-        float batteryPot = level * 100 / (float) scale;
+        //int level = batteryStatus.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
+        //int scale = batteryStatus.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
+        //int status = batteryStatus.getIntExtra(BatteryManager.EXTRA_STATUS, -1);
+        //float batteryPot = level * 100 / (float) scale;
         //boolean isCharging = status == BatteryManager.BATTERY_STATUS_CHARGING;
         long tsLong = System.currentTimeMillis();
 
 
         try {
-            LevelThrJson.put("BATTERY", batteryPot);
+            LevelThrJson.put("BATTERY", bat);
             //LevelThrJson.put("IsCharging", isCharging);
             LevelTwoJson.put(android_id + "_BAT", LevelThrJson);
             LevelOneJson.put("ts", tsLong);
