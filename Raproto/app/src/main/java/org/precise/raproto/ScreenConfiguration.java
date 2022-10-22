@@ -27,7 +27,7 @@ import java.util.Map;
 
 public class ScreenConfiguration extends FragmentActivity implements
         AmbientModeSupport.AmbientCallbackProvider {
-
+    //todo: What happens if client doesnt connect
     private final String TAG = "Screen Configuration";
     String brokerAddress = "ssl://tb.precise.seas.upenn.edu:8883";
     //private String username = "fbdb89251fdc95aa"; // Access token for device
@@ -62,7 +62,7 @@ public class ScreenConfiguration extends FragmentActivity implements
         MqttConnectOptions options = new MqttConnectOptions();
         options.setUserName(username);
         options.setPassword(password.toCharArray());
-        options.setAutomaticReconnect(true);
+        //options.setAutomaticReconnect(true);
         options.setCleanSession(true);
 
         Log.d(TAG, "Attempting to connect");

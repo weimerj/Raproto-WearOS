@@ -72,7 +72,7 @@ public class MenuMain extends FragmentActivity implements AmbientModeSupport.Amb
         startForegroundService(MQTTIntent);
 
         // Create a list of items for adapter to display.
-
+        //todo: fix name to be the name from thingsboard shared preferences
         mItems.add(new ListsItem(getString(R.string.raproto), sharedPref.getString("NAME",""), "2_rows_centered"));
         mItems.add(new ListsItem(getString(R.string.device_id), android_id, "2_rows"));
         mItems.add(new ListsItem(getString(R.string.on_off), "toggle"));
