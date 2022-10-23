@@ -62,7 +62,7 @@ public class ScreenConfiguration extends FragmentActivity implements
         MqttConnectOptions options = new MqttConnectOptions();
         options.setUserName(username);
         options.setPassword(password.toCharArray());
-        options.setAutomaticReconnect(true);
+        //options.setAutomaticReconnect(true);
         options.setCleanSession(true);
 
         Log.d(TAG, "Attempting to connect");

@@ -17,6 +17,7 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.BatteryManager;
 import android.os.IBinder;
+import android.os.PowerManager;
 import android.provider.Settings;
 import android.util.Log;
 
@@ -35,6 +36,8 @@ public class SensorService extends Service implements SensorEventListener {
     //private Intent batteryStatus;
     private MenuMain mMain = new MenuMain();
 
+    private PowerManager.WakeLock wakeLock = null;
+
     StringBuffer buffer = new StringBuffer(BUFFER_THRESHOLD);
     JSONArray jsonArray = new JSONArray();
 
@@ -49,6 +52,9 @@ public class SensorService extends Service implements SensorEventListener {
 
         //Create Database handler
         db = new DatabaseHandler(this);
+
+        PowerManager manager = (PowerManager) getSystemService(Context.POWER_SERVICE);
+        wakeLock = manager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "Wakelock :: TAG");
 
     }
 
@@ -121,6 +127,14 @@ public class SensorService extends Service implements SensorEventListener {
     public void onDestroy() {
         super.onDestroy();
         mSensorManager.unregisterListener(this);
+        try{
+            if (wakeLock.isHeld())
+                wakeLock.release();//always release before acquiring for safety just in case
+        }
+        catch(Exception e){
+            //probably already released
+            Log.e(TAG, e.getMessage());
+        }
     }
 
     @Override
@@ -179,6 +193,10 @@ public class SensorService extends Service implements SensorEventListener {
 
             } catch (JSONException e) {
                 e.printStackTrace();
+            }
+            if(!wakeLock.isHeld()) {
+                Log.d(TAG, "Wakelock Acquired.");
+                wakeLock.acquire();
             }
         }
     }

@@ -30,9 +30,6 @@ public class MQTTService extends Service {
     private final String TAG = "MQTT Service";
     String brokerAddress = "ssl://tb.precise.seas.upenn.edu:8883";
     String topic = "v1/devices/me/telemetry";
-    //private String username = "fbdb89251fdc95aa"; //Access token for device
-    //String username = Settings.Secure.getString(MQTTService.this.getContentResolver(),
-            //Settings.Secure.ANDROID_ID);
     private String password = ""; //leave empty
 
     private DatabaseHandler db;
@@ -49,46 +46,10 @@ public class MQTTService extends Service {
 
         //Create Database handler
         db = new DatabaseHandler(this);
-
-        Log.d(TAG, "Starting MQTT Service");
-
         String clientId = MqttClient.generateClientId();
         client = new MqttAndroidClient(this.getApplicationContext(), brokerAddress, clientId);
-        sharedPref = getSharedPreferences("Raproto", Context.MODE_PRIVATE);
-        String username = Settings.Secure.getString(MQTTService.this.getContentResolver(),
-                Settings.Secure.ANDROID_ID);
 
-        MqttConnectOptions options = new MqttConnectOptions();
-        options.setUserName(username);
-        options.setPassword(password.toCharArray());
-        options.setAutomaticReconnect(true);
-        options.setCleanSession(true);
-
-        try {
-            Log.d(TAG, "Trying to Connect");
-
-            IMqttToken token = client.connect(options);
-            token.setActionCallback(new IMqttActionListener() {
-                @Override
-                public void onSuccess(IMqttToken asyncActionToken) {
-                    // We are connected
-                    Log.d(TAG, "Connected Successfully.");
-                }
-
-                @Override
-                public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
-                    // Something went wrong e.g. connection timeout or firewall problems
-                    Log.d(TAG, "onFailure");
-                    Log.d(TAG, "Exception Occurred" + exception);
-                }
-            });
-        } catch (MqttException e) {
-            Log.d(TAG, "Exception Occurred" + e);
-            e.printStackTrace();
-
-        }
         mHandler.postDelayed(mUpdateTask, 10000);
-
     }
 
     @Override
@@ -127,30 +88,77 @@ public class MQTTService extends Service {
         public void run() {
             Log.d(TAG, "Made it into Run");
 
-            while(db.getNumRows(true) > 0) {
-//                JSONObject json = db.readFirstRow();
-                String row = db.readFirstRow();
 
-                try {
-//                    byte[] encodedPayload = json.toString().getBytes("UTF-8");
-                    byte[] encodedPayload = row.getBytes("UTF-8");
-                    MqttMessage message = new MqttMessage(encodedPayload);
+            sharedPref = getSharedPreferences("Raproto", Context.MODE_PRIVATE);
+            String username = Settings.Secure.getString(MQTTService.this.getContentResolver(),
+                    Settings.Secure.ANDROID_ID);
 
-                    //Set Quality of Service to QOS shared preference
-                    //If shared pref is set to -1, default to 1
-                    if (sharedPref.getInt("QOS", 1) != -1) {
-                        message.setQos(sharedPref.getInt("qos", 1));
-                    } else {
-                        message.setQos(1);
+            MqttConnectOptions options = new MqttConnectOptions();
+            options.setUserName(username);
+            options.setPassword(password.toCharArray());
+            options.setAutomaticReconnect(true);
+            options.setCleanSession(true);
+
+            try {
+                Log.d(TAG, "Starting MQTT Service");
+                Log.d(TAG, "Trying to Connect");
+
+                IMqttToken token = client.connect(options);
+                token.setActionCallback(new IMqttActionListener() {
+                    @Override
+                    public void onSuccess(IMqttToken asyncActionToken) {
+                        // We are connected
+                        Log.d(TAG, "Connected Successfully.");
+                        Log.d(TAG, String.valueOf(db.getNumRows(true)));
+
+                        while(db.getNumRows(true) > 0) {
+                            Log.d(TAG, "Reading Database.");
+                            String row = db.readFirstRow();
+                            try {
+                                byte[] encodedPayload = row.getBytes("UTF-8");
+                                MqttMessage message = new MqttMessage(encodedPayload);
+
+                                //Set Quality of Service to QOS shared preference
+                                //If shared pref is set to -1, default to 1
+                                if (sharedPref.getInt("QOS", 1) != -1) {
+                                    message.setQos(sharedPref.getInt("qos", 1));
+                                } else {
+                                    message.setQos(1);
+                                }
+                                Log.d(TAG, "Publishing Data.");
+                                client.publish(topic, message);
+                                db.deleteFirstRow();
+                            } catch (UnsupportedEncodingException | MqttException e) {
+                                Log.d(TAG, "Exception Occurred" + e);
+                                e.printStackTrace();
+                            }
+                        }
+                        Log.d(TAG, "Done Reading Database.");
+
+                        //Disconnect MQTT
+                        try {
+                            Log.d(TAG, "Disconnecting MQTT.");
+                            client.disconnect();
+                        } catch (MqttException e) {
+                            Log.d(TAG, "Exception Occurred" + e);
+                        }
+
                     }
 
-                    client.publish(topic, message);
-                    db.deleteFirstRow();
-                } catch (UnsupportedEncodingException | MqttException e) {
-                    Log.d(TAG, "Exception Occurred" + e);
-                    e.printStackTrace();
-                }
+                    @Override
+                    public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
+                        // Something went wrong e.g. connection timeout or firewall problems
+                        Log.d(TAG, "onFailure");
+                        Log.d(TAG, "Exception Occurred" + exception);
+                    }
+                });
+            } catch (MqttException e) {
+                Log.d(TAG, "Exception Occurred" + e);
+                e.printStackTrace();
+
             }
+
+
 
             //Delay data transmission by TX_RATE shared preference
             //If shared pref is set to -1, default to 60 seconds
