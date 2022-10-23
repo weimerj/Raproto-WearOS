@@ -9,6 +9,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.PowerManager;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
@@ -33,6 +34,8 @@ public class MenuMain extends FragmentActivity implements AmbientModeSupport.Amb
     private int syncIndex = -1;
     private ListsItem syncItem;
     private Handler handler = new Handler();
+    private PowerManager.WakeLock wakeLock = null;
+
 
     @SuppressLint("WrongViewCast")
     @Override
@@ -95,6 +98,13 @@ public class MenuMain extends FragmentActivity implements AmbientModeSupport.Amb
                             public void onChange(boolean switchOn) {
                                 SharedPreferences sharedPref = MenuMain.this.getSharedPreferences("Raproto", Context.MODE_PRIVATE);
                                 if (switchOn) {
+                                    Log.d(TAG, "Switch On");
+                                    PowerManager manager = (PowerManager) getSystemService(Context.POWER_SERVICE);
+                                    wakeLock = manager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "Wakelock :: TAG");
+                                    if(!wakeLock.isHeld()) {
+                                        Log.d(TAG, "Wakelock Acquired.");
+                                        wakeLock.acquire();
+                                    }
                                     View view = getWindow().getDecorView();
                                     int color = Color.parseColor("#37803a");
                                     view.setBackgroundColor(color);
@@ -104,12 +114,23 @@ public class MenuMain extends FragmentActivity implements AmbientModeSupport.Amb
                                     editor.apply();
 
                                 } else {
+                                    Log.d(TAG, "Switch Off");
+
                                     View view = getWindow().getDecorView();
                                     view.setBackgroundColor(Color.BLACK);
                                     SharedPreferences.Editor editor = sharedPref.edit();
                                     editor.putInt("color", Color.BLACK);
                                     editor.apply();
                                     stopService(sensorIntent);
+
+                                    try{
+                                        if (wakeLock.isHeld())
+                                            wakeLock.release();//always release before acquiring for safety just in case
+                                    }
+                                    catch(Exception e){
+                                        //probably already released
+                                        Log.e(TAG, e.getMessage());
+                                    }
                                 }
                             }
                         });
