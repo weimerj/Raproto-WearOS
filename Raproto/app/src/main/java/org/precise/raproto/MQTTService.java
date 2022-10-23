@@ -1,9 +1,5 @@
 package org.precise.raproto;
 
-import android.app.Notification;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -12,8 +8,6 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.provider.Settings;
 import android.util.Log;
-
-import androidx.core.app.NotificationCompat;
 
 import org.eclipse.paho.android.service.MqttAndroidClient;
 import org.eclipse.paho.client.mqttv3.IMqttActionListener;
@@ -54,33 +48,8 @@ public class MQTTService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        // Start Foreground Service
-        createNotificationChannel();
-
-        Intent intent1 = new Intent(MenuMain.class.toString());
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent1, 0);
-
-        Notification notification = new NotificationCompat.Builder(
-                this, "ChannelID")
-                .setContentTitle("MQTT Foreground Service")
-                .setContentText("Service Running")
-                .setSmallIcon(R.mipmap.ic_launcher)
-                .setContentIntent(pendingIntent).build();
-
-        startForeground(1, notification);
 
         return START_STICKY;
-    }
-
-    private void createNotificationChannel() {
-        NotificationChannel notificationChannel = new NotificationChannel(
-                "ChannelID",
-                "NotificationChannel",
-                NotificationManager.IMPORTANCE_HIGH
-        );
-
-        NotificationManager manager = getSystemService(NotificationManager.class);
-        manager.createNotificationChannel(notificationChannel);
     }
 
     private Handler mHandler = new Handler();
