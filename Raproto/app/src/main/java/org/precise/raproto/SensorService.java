@@ -128,7 +128,8 @@ public class SensorService extends Service implements SensorEventListener {
         super.onDestroy();
         mSensorManager.unregisterListener(this);
         try{
-            wakeLock.release();//always release before acquiring for safety just in case
+            if (wakeLock.isHeld())
+                wakeLock.release();//always release before acquiring for safety just in case
         }
         catch(Exception e){
             //probably already released
@@ -194,6 +195,7 @@ public class SensorService extends Service implements SensorEventListener {
                 e.printStackTrace();
             }
             if(!wakeLock.isHeld()) {
+                Log.d(TAG, "Wakelock Acquired.");
                 wakeLock.acquire();
             }
         }
