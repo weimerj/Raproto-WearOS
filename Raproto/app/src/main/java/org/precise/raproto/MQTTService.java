@@ -66,7 +66,7 @@ public class MQTTService extends Service {
             MqttConnectOptions options = new MqttConnectOptions();
             options.setUserName(username);
             options.setPassword(password.toCharArray());
-            options.setAutomaticReconnect(true);
+            //options.setAutomaticReconnect(false);
             options.setCleanSession(true);
 
             try {
