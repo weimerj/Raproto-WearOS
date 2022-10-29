@@ -48,6 +48,7 @@ public class MQTTService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        mHandler.postDelayed(mUpdateTask, 10);
 
         return START_STICKY;
     }
@@ -65,7 +66,7 @@ public class MQTTService extends Service {
             MqttConnectOptions options = new MqttConnectOptions();
             options.setUserName(username);
             options.setPassword(password.toCharArray());
-            options.setAutomaticReconnect(true);
+            //options.setAutomaticReconnect(false);
             options.setCleanSession(true);
 
             try {
@@ -103,7 +104,7 @@ public class MQTTService extends Service {
                             }
                         }
                         Log.d(TAG, "Done Reading Database.");
-
+                        db.close();
                         //Disconnect MQTT
                         try {
                             Log.d(TAG, "Disconnecting MQTT.");

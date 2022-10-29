@@ -2,7 +2,6 @@ package org.precise.raproto;
 
 import android.content.ContentValues;
 import android.content.Context;
-import android.database.ContentObserver;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
@@ -30,6 +29,7 @@ public class DatabaseHandler extends SQLiteOpenHelper{
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         Log.d(TAG, "new database");
     }
+
     public static void setCallBack(DatabaseObserver databaseObserver) {
         dbObserver = databaseObserver;
     }
@@ -61,7 +61,7 @@ public class DatabaseHandler extends SQLiteOpenHelper{
             recordNum++;
             dbObserver.alertStatusChange();
         }
-        //db.close();
+        db.close();
     }
 
     public long getNumRows(boolean readFromDataBase){
@@ -73,26 +73,8 @@ public class DatabaseHandler extends SQLiteOpenHelper{
         }else {
             return recordNum;
         }
-    }
 
-//    public JSONObject readFirstRow() {
-//        SQLiteDatabase db = this.getWritableDatabase();
-//        Cursor cursor = db.query(TABLE_NAME, null, null, null, null, null, null);
-//        JSONObject json = new JSONObject();
-//        if(cursor.moveToFirst()) {
-//            //String device_id = cursor.getString(cursor.getColumnIndex(KEY_device_id));
-//            String buffer = cursor.getString(cursor.getColumnIndex(KEY_values));
-//            try {
-//                //json.put("device_id", device_id);
-//                json.put("buffer", buffer);
-//
-//            } catch (JSONException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//        cursor.close();
-//        return json;
-//    }
+    }
 
     public String readFirstRow() {
         SQLiteDatabase db = this.getWritableDatabase();

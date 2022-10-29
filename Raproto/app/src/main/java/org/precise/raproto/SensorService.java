@@ -17,7 +17,6 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.BatteryManager;
 import android.os.IBinder;
-import android.os.PowerManager;
 import android.provider.Settings;
 import android.util.Log;
 
@@ -189,12 +188,6 @@ public class SensorService extends Service implements SensorEventListener {
         JSONObject LevelTwoJson = new JSONObject();
         JSONObject LevelOneJson = new JSONObject();
 
-        //Put timestamp, battery status and level to JSON string
-        //int level = batteryStatus.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
-        //int scale = batteryStatus.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
-        //int status = batteryStatus.getIntExtra(BatteryManager.EXTRA_STATUS, -1);
-        //float batteryPot = level * 100 / (float) scale;
-        //boolean isCharging = status == BatteryManager.BATTERY_STATUS_CHARGING;
         long tsLong = System.currentTimeMillis();
 
 
@@ -219,6 +212,8 @@ public class SensorService extends Service implements SensorEventListener {
         float accel_y = sensorEvent.values[1];
         float accel_z = sensorEvent.values[2];
         long tsLong = System.currentTimeMillis();
+        //Log.d(TAG, String.valueOf(tsLong));
+
 
         try {
             LevelThrJson.put("x", Math.round(accel_x * 1000.0) / 1000.0);
